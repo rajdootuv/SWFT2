@@ -1,0 +1,1130 @@
+<div
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
+>
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-2xl font-extrabold tracking-tight">Manage Floors</div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-0 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field
+                class="fuse-mat-dense fuse-mat-rounded min-w-50"
+                [subscriptSizing]="'dynamic'"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"
+                ></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search floors'"
+                />
+            </mat-form-field>
+            <!-- filter button -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'" (click)="toggleFilterBox()"
+                style="width: 42px !important; min-width: 42px !important"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_outline:filter'"
+                ></mat-icon>
+            </button>
+            <!-- Add floor button -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="add()"
+                (click)="newfloorDrawer2.toggle()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!---Filter section---->
+    <div *ngIf="showFilterBox==true">
+        <!-- for filter selector  -->
+        <div class="relative flex flex-col flex-auto items-center px-3">
+            <div class="w-full">
+                <form>
+                    <!-- Name -->
+                    <div class="mt-2">
+                        <mat-grid-list
+                            gutterSize="16px"
+                            [cols]="isScreenSmall ? 1 : 12"
+                            rowHeight="70px"
+                        >
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select placeholder="Select Operator"
+                                        [(ngModel)]="selectedOperator"
+                                        name="selectedOperator"
+                                    >
+                                        <mat-option
+                                            *ngFor="let operator of operators"
+                                            [value]="operator"
+                                        >
+                                            {{ operator }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1">
+                                <span style="padding-top: 15px;
+                                font-weight: bold;">When</span>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select placeholder="Select Column"
+                                        [(ngModel)]="selectedColumn"
+                                        name="selectedColumn"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let colName of Select_columnName
+                                            "
+                                            [value]="colName"
+                                        >
+                                            {{ colName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select placeholder="Select Comparison"
+                                        [(ngModel)]="selectedComparison"
+                                        name="selectedComparison"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let Comparison of comparisons
+                                            "
+                                            [value]="Comparison"
+                                        >
+                                            {{ Comparison }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="3">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <input
+                                        matInput
+                                        name="selectedValue"
+                                        [(ngModel)]="selectedValue"
+                                        #NAME="ngModel"
+                                        [placeholder]="'Enter Value'"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    [matMenuTriggerFor]="menu"
+                                >
+                                    Insert Condition
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="generateQuery()"
+                                    >
+                                        Insert Condition
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="insertSubCondition()"
+                                    >
+                                        Insert Sub-condition
+                                    </button>
+                                </mat-menu>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- filter display  -->
+
+        <div *ngFor="let filterLine of filterList; let j = index">
+            <div class="filterborder" >
+                <div
+                    *ngFor="let tag of filterLine['tagList']; let i = index"
+                    style="display: flex"
+                >
+                    <div class="filtertag">
+                        <div>{{ tag }}</div>
+                        <mat-icon
+                            class="delete-icon"
+                            (click)="removeTagGroup(j,i)"
+                            >close</mat-icon
+                        >
+                    </div>
+                    <div class="operator">{{ filterLine['tagList1'][i] }}</div>
+                </div>
+            </div>
+            <div>
+                <div class="operator" style="text-align: center;">{{ filterListOperators[j] }}</div>
+            </div>
+        </div>
+
+        <!-- filter display  -->
+
+        <div style="margin: 8px 20px 8px 0px">
+            <div style="text-align: end">
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px" (click)="resetFilter()"
+                >
+                    <span class="ml-2">Reset</span>
+                </button>
+
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px"
+                >
+                    <span class="ml-2">Create</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Floors list -->
+        <div
+            class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
+        >
+            <ng-container *ngIf="floors$ | async as floors">
+                <ng-container *ngIf="floors.length > 0; else noFloors">
+                    <div class="overflow-x-auto mx-6">
+                        <table
+                            class="w-full bg-transparent"
+                            mat-table
+                            matSort
+                            [dataSource]="recentTransactionsDataSource"
+                            [trackBy]="trackByFn"
+                            #floorsTable
+                        >
+                            <!-- Checkbox Column -->
+                            <ng-container matColumnDef="checkbox">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    style="
+                                        min-width: 70px !important;
+                                        padding-right: 0px;
+                                        padding-left: 5px;
+                                    "
+                                >
+                                    <button
+                                        mat-icon-button
+                                        style="width: 20px !important"
+                                        [matMenuTriggerFor]="menu"
+                                        aria-label="Menu"
+                                    >
+                                        <mat-icon>sort</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <span class="example-list-section">
+                                            <ul>
+                                                <li
+                                                    *ngFor="
+                                                        let col of floorsTableColumns2;
+                                                        let i = index
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        [(ngModel)]="
+                                                            floorsTableColumns2[
+                                                                i
+                                                            ]['SHOW']
+                                                        "
+                                                        name="column{{ i }}"
+                                                        (ngModelChange)="
+                                                            updateAllComplete(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ col.NAME }}
+                                                    </mat-checkbox>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </mat-menu>
+
+                                    <mat-checkbox
+                                        name="selectall"
+                                        class="selectall"
+                                        (change)="
+                                            $event ? toggleAllRows() : null
+                                        "
+                                        [checked]="
+                                            selection.hasValue() &&
+                                            isAllSelected()
+                                        "
+                                        [indeterminate]="
+                                            selection.hasValue() &&
+                                            !isAllSelected()
+                                        "
+                                        [aria-label]="checkboxLabel()"
+                                    >
+                                    </mat-checkbox>
+                                </th>
+                                <td
+                                    mat-cell
+                                    style="text-align: center !important"
+                                    *matCellDef="let row"
+                                >
+                                    <mat-checkbox
+                                        name="selectall{{ row.ID }}"
+                                        (click)="$event.stopPropagation()"
+                                        (click)="showMultiBox()"
+                                        (change)="
+                                            $event
+                                                ? selection.toggle(row)
+                                                : null
+                                        "
+                                        [checked]="selection.isSelected(row)"
+                                        [aria-label]="checkboxLabel(row)"
+                                    >
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <!-- Action -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span
+                                        style="display: inline-flex"
+                                        class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                    >
+                                        <span
+                                            (click)="edit(floor)"
+                                            (click)="newfloorDrawer2.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Edit Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_solid:pencil-alt'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+                                        <span
+                                            (click)="details(floor)"
+                                            (click)="floorDrawer2.toggle()"
+                                            ><mat-icon
+                                                class="icon-size-5"
+                                                [matTooltip]="
+                                                    'View Information'
+                                                "
+                                                aria-hidden="false"
+                                                aria-label="Details"
+                                                fontIcon="menu"
+                                            ></mat-icon
+                                        ></span>
+                                        <span
+                                            (click)="detailsDelete(floor)"
+                                            (click)="floorDrawer2.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Delete Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_outline:trash'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+                            <!-- NAME -->
+                            <ng-container matColumnDef="NAME">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef
+                                >
+                                    Name
+                                    <span
+                                        style="position: absolute; right: 0px"
+                                        matTooltip="Filter"
+                                        (click)="showMenu = !showMenu"
+                                        matTooltipPosition="above"
+                                        [matMenuTriggerFor]="menu"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                font-size: 18px;
+                                                margin: 0 6px 0 0;
+                                            "
+                                            >filter_alt</mat-icon
+                                        >
+                                    </span>
+                                    <mat-menu
+                                        #menu="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    style="
+                                                        border-radius: 20px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                        font-size: 12px;
+                                                    "
+                                                >
+                                                    <input
+                                                        (keydown.enter)="
+                                                            colum1Search(
+                                                                $event.target
+                                                                    .value
+                                                            )
+                                                        "
+                                                        type="search"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span>
+                                                        <mat-icon
+                                                            style="
+                                                                position: absolute;
+                                                                top: 15px;
+                                                                right: 0px;
+                                                            "
+                                                            class="icon-size-4"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ floor.NAME }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- LOCATION -->
+                            <ng-container matColumnDef="LOCATION">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef
+                                >
+                                    Location
+                                    <span
+                                        style="position: absolute; right: 0px"
+                                        matTooltip="Filter"
+                                        (click)="showMenu = !showMenu"
+                                        matTooltipPosition="above"
+                                        [matMenuTriggerFor]="menu2"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                font-size: 18px;
+                                                margin: 0 6px 0 0;
+                                            "
+                                            >filter_alt</mat-icon
+                                        >
+                                    </span>
+                                    <mat-menu
+                                        #menu2="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    style="
+                                                        border-radius: 20px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                        font-size: 12px;
+                                                    "
+                                                >
+                                                    <input
+                                                        (keydown.enter)="
+                                                            colum2Search(
+                                                                $event.target
+                                                                    .value
+                                                            )
+                                                        "
+                                                        type="search"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span>
+                                                        <mat-icon
+                                                            style="
+                                                                position: absolute;
+                                                                top: 15px;
+                                                                right: 0px;
+                                                            "
+                                                            class="icon-size-4"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ floor.LOCATION }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- LENGTH -->
+                            <ng-container matColumnDef="LENGTH">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef
+                                >
+                                    Length
+                                    <span
+                                        style="position: absolute; right: 0px"
+                                        matTooltip="Filter"
+                                        (click)="showMenu = !showMenu"
+                                        matTooltipPosition="above"
+                                        [matMenuTriggerFor]="menu3"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                font-size: 18px;
+                                                margin: 0 6px 0 0;
+                                            "
+                                            >filter_alt</mat-icon
+                                        >
+                                    </span>
+                                    <mat-menu
+                                        #menu3="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    style="
+                                                        border-radius: 20px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                        font-size: 12px;
+                                                    "
+                                                >
+                                                    <input
+                                                        (keydown.enter)="
+                                                            colum3Search(
+                                                                $event.target
+                                                                    .value
+                                                            )
+                                                        "
+                                                        type="search"
+                                                        minlength="0"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span>
+                                                        <mat-icon
+                                                            style="
+                                                                position: absolute;
+                                                                top: 15px;
+                                                                right: 0px;
+                                                            "
+                                                            class="icon-size-4"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ floor.LENGTH }}
+
+                                        <span
+                                            *ngIf="
+                                                floor.LENGTH != undefined &&
+                                                floor.LENGTH != null &&
+                                                floor.LENGTH_UNIT == 'F'
+                                            "
+                                            >Feet
+                                        </span>
+                                        <span
+                                            *ngIf="
+                                                floor.LENGTH != undefined &&
+                                                floor.LENGTH != null &&
+                                                floor.LENGTH_UNIT == 'M'
+                                            "
+                                            >Meter
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- WIDTH -->
+                            <ng-container matColumnDef="WIDTH">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef
+                                >
+                                    Width
+                                    <span
+                                        style="position: absolute; right: 0px"
+                                        matTooltip="Filter"
+                                        (click)="showMenu = !showMenu"
+                                        matTooltipPosition="above"
+                                        [matMenuTriggerFor]="menu4"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                font-size: 18px;
+                                                margin: 0 6px 0 0;
+                                            "
+                                            >filter_alt</mat-icon
+                                        >
+                                    </span>
+                                    <mat-menu
+                                        #menu4="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    style="
+                                                        border-radius: 20px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                        font-size: 12px;
+                                                    "
+                                                >
+                                                    <input
+                                                        (keydown.enter)="
+                                                            colum4Search(
+                                                                $event.target
+                                                                    .value
+                                                            )
+                                                        "
+                                                        type="search"
+                                                        minlength="0"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span>
+                                                        <mat-icon
+                                                            style="
+                                                                position: absolute;
+                                                                top: 15px;
+                                                                right: 0px;
+                                                            "
+                                                            class="icon-size-4"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ floor.WIDTH }}
+
+                                        <span
+                                            *ngIf="
+                                                floor.WIDTH != undefined &&
+                                                floor.WIDTH != null &&
+                                                floor.WIDTH_UNIT == 'F'
+                                            "
+                                            >Feet
+                                        </span>
+                                        <span
+                                            *ngIf="
+                                                floor.WIDTH != undefined &&
+                                                floor.WIDTH != null &&
+                                                floor.WIDTH_UNIT == 'M'
+                                            "
+                                            >Meter
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- HEIGHT -->
+                            <ng-container matColumnDef="HEIGHT">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef
+                                >
+                                    Height
+
+                                    <span
+                                        style="position: absolute; right: 0px"
+                                        matTooltip="Filter"
+                                        (click)="showMenu = !showMenu"
+                                        matTooltipPosition="above"
+                                        [matMenuTriggerFor]="menu5"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                font-size: 18px;
+                                                margin: 0 6px 0 0;
+                                            "
+                                            >filter_alt</mat-icon
+                                        >
+                                    </span>
+                                    <mat-menu
+                                        #menu5="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    style="
+                                                        border-radius: 20px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                        font-size: 12px;
+                                                    "
+                                                >
+                                                    <input
+                                                        (keydown.enter)="
+                                                            colum5Search(
+                                                                $event.target
+                                                                    .value
+                                                            )
+                                                        "
+                                                        type="search"
+                                                        minlength="0"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span>
+                                                        <mat-icon
+                                                            style="
+                                                                position: absolute;
+                                                                top: 15px;
+                                                                right: 0px;
+                                                            "
+                                                            class="icon-size-4"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let floor">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ floor.HEIGHT }}
+                                        <span
+                                            *ngIf="
+                                                floor.HEIGHT != undefined &&
+                                                floor.HEIGHT != null &&
+                                                floor.HEIGHT_UNIT == 'F'
+                                            "
+                                            >Feet
+                                        </span>
+                                        <span
+                                            *ngIf="
+                                                floor.HEIGHT != undefined &&
+                                                floor.HEIGHT != null &&
+                                                floor.HEIGHT_UNIT == 'M'
+                                            "
+                                            >Meter
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="floorsTableColumns"
+                            ></tr>
+                            <tr
+                                class="order-row h-16"
+                                mat-row
+                                *matRowDef="
+                                    let row;
+                                    columns: floorsTableColumns
+                                "
+                            ></tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator
+                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        [length]="pagination.length"
+                        [pageIndex]="pagination.page"
+                        [pageSize]="pagination.size"
+                        [pageSizeOptions]="[10, 20, 30, 40, 50]"
+                        [showFirstLastButtons]="true"
+                    ></mat-paginator>
+                </ng-container>
+            </ng-container>
+
+            <ng-template #noFloors>
+                <div
+                    class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+                >
+                    There are no floors data!
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <div
+        style="
+            justify-content: center;
+            position: relative;
+            align-items: center;
+            display: flex;
+        "
+    >
+        <mat-card
+            *ngIf="showMultiSelect == true"
+            style="
+                padding: 2px;
+                margin: 10px;
+                position: absolute;
+                z-index: 777;
+                width: 370px;
+                bottom: 37px;
+            "
+        >
+            <mat-grid-list [cols]="12" rowHeight="50px">
+                <mat-grid-tile [colspan]="2" class="detailed_card_content">
+                    <div
+                        style="
+                            border-radius: 8px;
+                            background-color: grey;
+                            color: white;
+                            text-align: center;
+                            padding: 20px;
+                        "
+                    >
+                        {{ rowsSelected }}
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="6" class="detailed_card_content">
+                    <b *ngIf="rowsSelected == 1">row selected</b>
+                    <b *ngIf="rowsSelected > 1">rows selected</b>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" class="detailed_card_content">
+                    <span>
+                        <mat-icon
+                            (click)="editSelection()"
+                            [matTooltip]="'Edit Selected Rows'"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"
+                        ></mat-icon>
+                    </span>
+
+                    <span>
+                        <mat-icon
+                            (click)="deleteSelection()"
+                            [matTooltip]="'Delete Selected Rows'"
+                            [svgIcon]="'heroicons_outline:trash'"
+                        ></mat-icon>
+                    </span>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="2"
+                    class="detailed_card_content"
+                    style="border-left: 1px solid grey"
+                >
+                    <div>
+                        <mat-icon
+                            (click)="removeSelection()"
+                            [matTooltip]="'Remove Selection'"
+                            [svgIcon]="'heroicons_solid:x-circle'"
+                        ></mat-icon>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card>
+    </div>
+</div>
+
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'floorDrawer2'"
+    [position]="'right'"
+    #floorDrawer2
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <!-- drawer header-->
+
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <!-- <mat-icon
+                class="icon-size-7 text-current"
+                [svgIcon]="'heroicons_solid:cog'"
+            ></mat-icon> -->
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                <span
+                    *ngIf="
+                        selectedFloor.ID != undefined &&
+                        selectedFloor.ID > 0 &&
+                        deleteShow == true
+                    "
+                    >Delete Floor Details</span
+                >
+                <span
+                    *ngIf="
+                        selectedFloor.ID != undefined &&
+                        selectedFloor.ID > 0 &&
+                        deleteShow == false
+                    "
+                    >View Floor Details</span
+                >
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer2
+                id="closeDrawer2"
+                (click)="floorDrawer2.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+        <!-- component of details -->
+
+        <floordetails
+            [selectedFloor]="selectedFloor"
+            [countries]="countries"
+            [drawerClose]="floororDrawerCloseCallback"
+        >
+        </floordetails>
+
+        <!-- Actions -->
+        <div
+            *ngIf="
+                selectedFloor.ID != undefined &&
+                selectedFloor.ID > 0 &&
+                deleteShow == true
+            "
+            style="
+                width: 100%;
+                position: absolute;
+                bottom: 0px;
+                right: 6%;
+                z-index: 1;
+            "
+            class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+        >
+            <div style="text-align: center; width: 100%">
+                <div>
+                    To delete the above informartion, Please solve below
+                    question.
+                </div>
+                <span style="margin-right: 10px"
+                    >{{ value }} + {{ value2 }} =
+                </span>
+                <mat-form-field
+                    style="width: 110px"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <input
+                        matInput
+                        type="number"
+                        min="0"
+                        name="Answer"
+                        style="width: 110px !important"
+                        [(ngModel)]="answer"
+                        [placeholder]="'Answer'"
+                    />
+                </mat-form-field>
+                <!-- Delete -->
+                <button
+                    class="ml-2"
+                    mat-flat-button
+                    [color]="'warn'"
+                    [matTooltip]="'Delete'"
+                    (click)="deleteInfo()"
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</fuse-drawer>
+
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'newfloorDrawer2'"
+    [position]="'right'"
+    #newfloorDrawer2
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <!-- drawer header-->
+
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <!-- <mat-icon
+                class="icon-size-7 text-current"
+                [svgIcon]="'heroicons_solid:cog'"
+            ></mat-icon> -->
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                <span *ngIf="newfloor.ID != undefined && newfloor.ID > 0"
+                    >Edit Floor Info</span
+                >
+                <span
+                    *ngIf="
+                        newfloor.ID == undefined ||
+                        newfloor.ID == null ||
+                        newfloor.ID == 0
+                    "
+                    >Add New Floor</span
+                >
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closenewfloorDrawer
+                id="closenewfloorDrawer"
+                (click)="newfloorDrawer2.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+        <!-- add component-->
+
+        <addfloor
+            [DATA]="newfloor"
+            [countries]="countries"
+            [drawerClose]="newfloorDrawerCloseCallback"
+        ></addfloor>
+    </div>
+</fuse-drawer>

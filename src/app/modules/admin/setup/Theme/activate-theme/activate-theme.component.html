@@ -1,0 +1,204 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <div class="mt-2">
+                            <mat-grid-list
+                                gutterSize="16px"
+                                style="margin-bottom: 73px"
+                                [cols]="isScreenSmall ? 1 : 4"
+                                rowHeight="450px"
+                                style="margin-bottom: 33px"
+                                style="border: 1px solid black; display: block"
+                            >
+                                <mat-grid-tile
+                                    [colspan]="1"
+                                    style="border-right: 1px solid black"
+                                >
+                                    <!-- <div style="display: block;"> -->
+
+                                    <!--                                 
+                                    <mat-grid-list
+                                        [cols]="isScreenSmall ? 1 : 1"
+                                        style="width: 286px"
+                                        rowHeight="400px"
+                                    > -->
+                                    <!-- <mat-grid-tile [colspan]="1"> -->
+
+                                    <div
+                                        style="
+                                            display: block;
+                                            width: 262px;
+                                            height: 399px;
+                                            margin-top: 40px;
+                                            overflow: hidden;
+                                        "
+                                    >
+                                        <div style="display: block">
+                                            <mat-form-field
+                                                class="flex-auto w-full"
+                                                [subscriptSizing]="'dynamic'"
+                                                style="margin-bottom: 7px"
+                                            >
+                                                <mat-label
+                                                    ><span style="color: red"
+                                                        >*</span
+                                                    >Select
+                                                    Organization</mat-label
+                                                >
+                                                <mat-select
+                                                    class="mr-1"
+                                                    name="Layout Style"
+                                                    style="width: 351px"
+                                                    [placeholder]="
+                                                        'Select Organization'
+                                                    "
+                                                >
+                                                    <ng-container>
+                                                        <mat-option
+                                                            [value]="'E'"
+                                                            >Table layout.
+                                                        </mat-option>
+                                                        <mat-option
+                                                            [value]="'M'"
+                                                            >Positioning
+                                                        </mat-option>
+                                                        <mat-option
+                                                            [value]="'L'"
+                                                            >Floats
+                                                        </mat-option>
+                                                        <mat-option
+                                                            [value]="'G'"
+                                                            >Grid
+                                                        </mat-option>
+                                                        <mat-option
+                                                            [value]="'F'"
+                                                            >Flexbox
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div style="display: block">
+                                            <mat-label class="color-option"
+                                                >Activate Theme</mat-label
+                                            >
+                                            <!-- <span style="border : 1px solid black"> -->
+                                            <mat-radio-group
+                                                name="radio"
+                                                class="color-option"
+                                                [(ngModel)]="selectedColor"
+                                                style="
+                                                    height: 257px;
+                                                    border: 1px solid black;
+                                                    margin-top: 14px;
+                                                "
+                                            >
+                                                <mat-radio-button
+                                                    class="color-option"
+                                                    value="th1"
+                                                    >Theme 1</mat-radio-button
+                                                >
+                                                <mat-radio-button
+                                                    class="color-option"
+                                                    value="th2"
+                                                    >Theme 2</mat-radio-button
+                                                >
+                                                <mat-radio-button
+                                                    class="color-option"
+                                                    value="th3"
+                                                    >Theme 3</mat-radio-button
+                                                >
+                                                <mat-radio-button
+                                                    class="color-option"
+                                                    value="th4"
+                                                    >Theme 4</mat-radio-button
+                                                >
+                                            </mat-radio-group>
+
+                                            <!-- </span> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- </mat-grid-tile> -->
+
+                                    <!-- <mat-grid-tile [colspan]="1">
+                                               
+                                                 
+                                               
+                                            </mat-grid-tile> -->
+                                    <!-- </mat-grid-list> -->
+                                    <!-- </div> -->
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="isScreenSmall?1:3" style="display: inline-block;">
+                                    <!-- <div style="display:block ; width: 100%;">
+                                        <mat-label style="margin-top: 3px;margin-bottom: 3px;"
+                                        >Preview</mat-label
+                                    >
+                                    </div> -->
+                                    <div style="width:100% ;padding:0;margin:0 ;display:block ;">
+                                        <mat-label style="margin-top: 3px;margin-bottom: 3px;"
+                                        >Preview</mat-label>
+                                        <div
+                                        class="container"
+                                        style="height: 396px; width: 883px"
+                                    >
+                                        <div class="part part-1"></div>
+                                        <div class="part part-2"></div>
+                                        <div class="part part-3"></div>
+                                        <div class="part part-4">
+                                            <div class="row">
+                                                <div class="card"></div>
+                                                <div class="card"></div>
+                                                <div class="card"></div>
+                                            </div>
+                                           
+                                            <div class="outer" >
+                                                <div class="inner-1">
+                                                    <div class="card11"></div>
+                                                </div>
+                                                <div class="inner-2">
+                                                    <span>
+                                                        <div class="innercard"></div>
+    
+                                                    </span>
+                                                    <span>
+                                                        <div class="innercard"></div>
+    
+                                                    </span>
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="card"></div>
+                                                <div class="card" style="width:66%" colspan="2" ></div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+
+        <button class="ml-2" mat-flat-button (click)="save()" [color]="'primary'">
+            <span>Apply</span>
+        </button>
+    </div>
+</div>

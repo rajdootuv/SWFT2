@@ -1,0 +1,221 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form #floorForm="ngForm">
+                        <!-- Name -->
+                        <div class="mt-2">
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Floor Name</mat-label>
+                                        <input
+                                            matInput
+                                            name="NAME"
+                                            [(ngModel)]="DATA.NAME"
+                                            #NAME="ngModel"
+                                            [placeholder]="'Floor Name'"
+                                            required
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                NAME.invalid &&
+                                                NAME.errors &&
+                                                NAME.errors['required']
+                                            "
+                                            >Floor Name is required</mat-error
+                                        >
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Location</mat-label>
+                                        <input
+                                            matInput
+                                            name="LOCATION"
+                                            [(ngModel)]="DATA.LOCATION"
+                                            #LOCATION="ngModel"
+                                            [placeholder]="'Location'"
+                                            required
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                            LOCATION.invalid &&
+                                            LOCATION.errors &&
+                                            LOCATION.errors['required']
+                                            "
+                                            >Location is required</mat-error
+                                        >
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Length</mat-label>
+                                        <input
+                                            matInput
+                                            minlength="0"
+                                            name="Length"
+                                            [(ngModel)]="DATA.LENGTH"
+                                            [placeholder]="'Length'"
+                                            required
+                                            #LENGTH="ngModel"
+                                        />
+                                        <mat-select
+                                            class="mr-1"
+                                            name="LENGTH_UNIT"
+                                            style="width: 100px"
+                                            matSuffix
+                                            [(ngModel)]="DATA.LENGTH_UNIT"
+                                        >
+                                            <ng-container>
+                                                <mat-option [value]="'F'"
+                                                    >Feet
+                                                </mat-option>
+                                                <mat-option [value]="'M'"
+                                                    >Meter
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+
+
+                                        <mat-error
+                                            *ngIf="
+                                            LENGTH.invalid &&
+                                            LENGTH.errors &&
+                                            LENGTH.errors['required']
+                                            "
+                                            >Length is required</mat-error
+                                        >
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Width</mat-label>
+                                        <input
+                                            matInput
+                                            minlength="0"
+                                            name="Width"
+                                            [(ngModel)]="DATA.WIDTH"
+                                            [placeholder]="'width'"
+                                            required
+                                            #WIDTH="ngModel"
+
+                                        />
+                                        <mat-select
+                                            class="mr-1"
+                                            name="WIDTH_UNIT"
+                                            style="width: 100px"
+                                            matSuffix
+                                            [(ngModel)]="DATA.WIDTH_UNIT"
+                                        >
+                                            <ng-container>
+                                                <mat-option [value]="'F'"
+                                                    >Feet
+                                                </mat-option>
+                                                <mat-option [value]="'M'"
+                                                    >Meter
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+
+                                        <mat-error
+                                            *ngIf="
+                                            WIDTH.invalid &&
+                                            WIDTH.errors &&
+                                            WIDTH.errors['required']
+                                            "
+                                            >Width is required</mat-error
+                                        >
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Height</mat-label>
+                                        <input
+                                            matInput
+                                            minlength="0"
+                                            name="Height"
+                                            [(ngModel)]="DATA.HEIGHT"
+                                            [placeholder]="'Height'"
+                                            
+                                            #HEIGHT="ngModel"
+
+                                        />
+                                        <mat-select
+                                            class="mr-1"
+                                            name="HEIGHT_UNIT"
+                                            style="width: 100px"
+                                            matSuffix
+                                            [(ngModel)]="DATA.HEIGHT_UNIT"
+                                        >
+                                            <ng-container>
+                                                <mat-option [value]="'F'"
+                                                    >Feet
+                                                </mat-option>
+                                                <mat-option [value]="'M'"
+                                                    >Meter
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <!-- Delete -->
+        <!-- <button
+            mat-button
+            [color]="'warn'"
+            [matTooltip]="'Delete'"
+            (click)="deleteContact()"
+        >
+            Delete
+        </button> -->
+        <!-- Cancel -->
+        <button class="ml-auto" mat-button (click)="closeDrawer(floorForm)">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save(floorForm)"
+        >
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
