@@ -1,0 +1,177 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <div class="mt-2 ">
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+                                <!-- Name -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span> Name</mat-label>
+                                        <input [(ngModel)]="DATA.NAME" matInput name="Name" [placeholder]="'Name'"
+                                            #name="ngModel" required />
+                                        <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+                                            <span *ngIf="name.errors?.required">Name is required.</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Website -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Website</mat-label>
+                                        <input [(ngModel)]="DATA.WEBSITE" matInput name="Website"
+                                            [placeholder]="'Website'" #Website="ngModel" required />
+                                        <mat-error *ngIf="Website.invalid && (Website.dirty || Website.touched)">
+                                            <span *ngIf="Website.errors?.required">Website is required.</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                            </mat-grid-list>
+
+                            <fieldset style="width:100%" class="border-2 border-black rounded-3xl mb-5 p-5">
+                                <legend class="ml-5"><b>Address </b></legend>
+                                <!-- Address1 -->
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1   : 3" rowHeight="100px">
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span> Address Line 1</mat-label>
+                                            <input [(ngModel)]="DATA.ADDRESS_LINE_1" matInput name="ADDRESS_LINE_1"
+                                                [placeholder]="'Address Line 1'" #address1="ngModel" required />
+                                            <mat-error *ngIf="address1.invalid && (address1.dirty || address1.touched)">
+                                                <span *ngIf="address1.errors?.required">Address is required.</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Address2 -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label>Address Line 2</mat-label>
+                                            <input [(ngModel)]="DATA.ADDRESS_LINE_2" matInput name="ADDRESS_LINE_2"
+                                                [placeholder]="'Address Line 1'" />
+                                            <!-- <mat-error *ngIf="address2.invalid && (address2.dirty || address2.touched)">
+                                                    <span *ngIf="address2.errors?.required">Website is required.</span>
+                                                </mat-error> -->
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- City -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>City</mat-label>
+                                            <input [(ngModel)]="DATA.CITY" matInput name="CITY" [placeholder]="'City'"
+                                                #city="ngModel" required />
+                                            <mat-error *ngIf="city.invalid && (city.dirty || city.touched)">
+                                                <span *ngIf="city.errors?.required">City is required.</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1   : 3" rowHeight="100px"
+                                    [cols]="12">
+
+                                    <!-- State -->
+                                    <mat-grid-tile [colspan]="4">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>State</mat-label>
+                                            <mat-select [(ngModel)]="DATA.STATE" name="STATE" #state="ngModel" required>
+                                                <ng-container *ngFor="let state of studio">
+                                                    <mat-option [value]="state.ID">
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error *ngIf="state.invalid && (state.dirty || state.touched)">
+                                                <span *ngIf="state.errors?.required">State is required.</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Country -->
+                                    <mat-grid-tile [colspan]="4">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>Country</mat-label>
+                                            <mat-select [(ngModel)]="DATA.COUNTRY" name="COUNTRY" #country="ngModel"
+                                                required>
+                                                <ng-container *ngFor="let country of studio">
+                                                    <mat-option [value]="country.ID">
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error *ngIf="country.invalid && (country.dirty || country.touched)">
+                                                <span *ngIf="country.errors?.required">Country is required.</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- PIN/ZIP -->
+                                    <mat-grid-tile [colspan]="2">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>PIN/ZIP</mat-label>
+                                            <input [(ngModel)]="DATA.PIN" matInput name="PIN" [placeholder]="'PIN/ZIP'"
+                                                #pin="ngModel" required />
+                                            <mat-error *ngIf="pin.invalid && (pin.dirty || pin.touched)">
+                                                <span *ngIf="pin.errors?.required">PIN is required.</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Location -->
+                                    <mat-grid-tile [colspan]="2">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label>Geo Location</mat-label>
+                                            <input [(ngModel)]="DATA.GEO_LOCATION" matInput name="GEO_LOCATION"
+                                                [placeholder]="'Select Location'" />
+                                            <mat-icon matPrefix>location_on</mat-icon>
+                                        </mat-form-field>
+
+                                    </mat-grid-tile>
+                                    <!-- <mat-grid-tile class="mt-2.5" [colspan]="1">
+                                            <button mat-raised-button (click)="openDialog(myDialog)"                    
+                                             color="primary"><mat-icon>location_on</mat-icon>
+                                              Geo Location
+                                        </button>
+                                    </mat-grid-tile> -->
+                                </mat-grid-list>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- <ng-template #myDialog>
+
+        <google-map [center]="center" [zoom]="zoom" (mapClick)="addMarker2($event)">
+
+            <map-marker [position]="markerPositions" [options]="markerOptions"></map-marker>
+
+        </google-map>
+
+        <mat-dialog-actions align="end">
+
+            <button mat-button matDialogClose color="primary">Dismiss</button>
+
+        </mat-dialog-actions>
+
+    </ng-template> -->
+
+    <div style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button class="ml-2" mat-flat-button [color]="'primary'" (click)="Save()">
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,404 @@
+<div class="flex flex-col p-6" style="width: 100%">
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-2xl font-extrabold tracking-tight">
+ 
+            <span
+                class="material-icons"
+                style="position: absolute; margin: 3px 0px 0px -24px;cursor: pointer;"
+                [routerLink]="['/sign-in']"
+                >arrow_back</span
+            >
+            Registration
+        </div>
+    </div>
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <!-- Name -->
+                        <div class="mt-2">
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span>
+                                            Name</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="NAME"
+                                            [(ngModel)]="DATA.NAME"
+                                            [placeholder]="'Name'"
+                                            required
+                                            #inputValue="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue.touched &&
+                                                inputValue.invalid
+                                            "
+                                            >Enter Name
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Title -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span
+                                            >Emaill ID</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="EMAIL_ID"
+                                            [(ngModel)]="DATA.EMAIL_ID"
+                                            [placeholder]="'Emaill'"
+                                            required
+                                            #inputValue1="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue1.touched &&
+                                                inputValue1.invalid
+                                            "
+                                            >Enter Email Id
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <!-- Title -->
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span
+                                            >Phone No.</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="MOBILE_NO"
+                                            maxlength="10"
+                                            minlength="10"
+                                            pattern="^[6-9][0-9]{9}$"
+                                            [(ngModel)]="DATA.MOBILE_NO"
+                                            [placeholder]="'Phone'"
+                                            required
+                                            #inputValue4="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue4.touched &&
+                                                inputValue4.invalid
+                                            "
+                                            >Enter Phone Number
+                                        </mat-error>
+                                        <mat-select
+                                            class="mr-1"
+                                            name="Code"
+                                            style="width: 60px"
+                                            matPrefix
+                                            [(ngModel)]="DATA.CODE"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let country of countries
+                                                "
+                                            >
+                                                <mat-option
+                                                    [value]="country.code"
+                                                >
+                                                    {{ country.code }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select> </mat-form-field
+                                    ><br />
+                                </mat-grid-tile>
+                                <span
+                                    style="position: absolute; margin-top: 80px"
+                                >
+                                    <mat-checkbox (click)="PhoneToWSP()"
+                                        >This is Whatsapp number</mat-checkbox
+                                    >
+                                </span>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span
+                                            >Whatsapp No.</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="MOBILE_NO"
+                                            maxlength="10"
+                                            minlength="10"
+                                            pattern="^[6-9][0-9]{9}$"
+                                            [(ngModel)]="DATA.WHATSAPP_NO"
+                                            [placeholder]="'Phone'"
+                                            required
+                                            #inputValue4="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue4.touched &&
+                                                inputValue4.invalid
+                                            "
+                                            >Enter Phone Number
+                                        </mat-error>
+                                        <mat-select
+                                            class="mr-1"
+                                            name="Code"
+                                            style="width: 60px"
+                                            matPrefix
+                                            [(ngModel)]="DATA.CODE"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let country of countries
+                                                "
+                                            >
+                                                <mat-option
+                                                    [value]="country.code"
+                                                >
+                                                    {{ country.code }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 2" rowHeight="100px"> -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span>
+                                            Date</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            [matDatepicker]="picker"
+                                            name="DOB"
+                                            [(ngModel)]="DATA.DOB"
+                                            required
+                                            #inputValuee="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValuee.touched &&
+                                                inputValuee.invalid
+                                            "
+                                            >Enter Date
+                                        </mat-error>
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle
+                                            matIconSuffix
+                                            [for]="picker"
+                                        ></mat-datepicker-toggle>
+                                        <mat-datepicker
+                                            #picker
+                                        ></mat-datepicker>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span
+                                            >Company Name</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="COMPANY_NAME"
+                                            [(ngModel)]="DATA.COMPANY_NAME"
+                                            [placeholder]="'Company'"
+                                            required
+                                            #inputValue4="ngModel"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue4.touched &&
+                                                inputValue4.invalid
+                                            "
+                                            >Enter Company Name
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span>
+                                            Password</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="PASSWORD"
+                                            [(ngModel)]="DATA.PASSWORD"
+                                            [placeholder]="'Password'"
+                                            required
+                                            #inputValue5="ngModel"
+                                        />
+                                        <button
+                                            mat-icon-button
+                                            matSuffix
+                                            (click)="hide = !hide"
+                                            [attr.aria-label]="'Hide password'"
+                                            [attr.aria-pressed]="hide"
+                                        >
+                                            <mat-icon>{{
+                                                hide
+                                                    ? "visibility_off"
+                                                    : "visibility"
+                                            }}</mat-icon>
+                                        </button>
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue5.touched &&
+                                                inputValue5.invalid
+                                            "
+                                            >Enter Password
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Title -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            ><span style="color: red">*</span
+                                            >Confirm Password
+                                        </mat-label>
+                                        <input
+                                            matInput
+                                            name="CONFIRM_PASSWORD"
+                                            [(ngModel)]="DATA.CONFIRM_PASSWORD"
+                                            [placeholder]="'Confirm_Password'"
+                                            required
+                                            #inputValue6="ngModel"
+                                        />
+                                        <button
+                                            mat-icon-button
+                                            matSuffix
+                                            (click)="hide = !hide"
+                                            [attr.aria-label]="'Hide password'"
+                                            [attr.aria-pressed]="hide"
+                                        >
+                                            <mat-icon>{{
+                                                hide
+                                                    ? "visibility_off"
+                                                    : "visibility"
+                                            }}</mat-icon>
+                                        </button>
+                                        <mat-error
+                                            *ngIf="
+                                                inputValue6.touched &&
+                                                inputValue6.invalid
+                                            "
+                                            >Enter Confirm Password
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div
+        style="width: 100%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <div
+            style="
+                position: absolute;
+                margin: 0px 0px 45px 20px;
+                font-weight: bold;
+            "
+        >
+            Select Form
+        </div>
+        <mat-checkbox style="margin-left: 20px"
+            ><span
+                style="margin-top: 12px; position: absolute; margin-left: -45px"
+                >Talent</span
+            ></mat-checkbox
+        >
+        <mat-checkbox style="margin-left: 20px"
+            ><span
+                style="margin-top: 12px; position: absolute; margin-left: -45px"
+                >Vender</span
+            ></mat-checkbox
+        >
+        <mat-checkbox style="margin-left: 20px"
+            ><span
+                style="margin-top: 12px; position: absolute; margin-left: -45px"
+                >Customer</span
+            ></mat-checkbox
+        >
+        <mat-checkbox style="margin-left: 20px"
+            ><span
+                style="margin-top: 12px; position: absolute; margin-left: -45px"
+                >Models</span
+            ></mat-checkbox
+        >
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save()"
+            style="float: right"
+        >
+            <span>Next</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,1076 @@
+<div
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
+>
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-2xl font-extrabold tracking-tight">Manage Studios</div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-0 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field
+                class="fuse-mat-dense fuse-mat-rounded min-w-50"
+                [subscriptSizing]="'dynamic'"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"
+                ></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search by name'"
+                />
+            </mat-form-field>
+            <!-- filter button -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'"
+                style="width: 42px !important; min-width: 42px !important"
+                (click)="toggleFilterBox()"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_outline:filter'"
+                ></mat-icon>
+            </button>
+            <!-- Add button -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="studioDrawer.toggle()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div *ngIf="showFilterBox == true">
+        <!-- for filter selector-->
+        <div class="relative flex flex-col flex-auto items-center px-3">
+            <div class="w-full">
+                <form>
+                    <!-- Name -->
+
+                    <div class="mt-2">
+                        <mat-grid-list
+                            gutterSize="16px"
+                            [cols]="12"
+                            rowHeight="70px"
+                        >
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Operator"
+                                        [(ngModel)]="selectedOperator"
+                                        name="selectedOperator"
+                                    >
+                                        <mat-option
+                                            *ngFor="let operator of operators"
+                                            [value]="operator"
+                                        >
+                                            {{ operator }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1">
+                                <span style="padding-top: 15px">When</span>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Column"
+                                        [(ngModel)]="selectedColumn"
+                                        name="selectedColumn"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let colName of Select_columnName
+                                            "
+                                            [value]="colName"
+                                        >
+                                            {{ colName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Comparison"
+                                        [(ngModel)]="selectedComparison"
+                                        name="selectedComparison"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let Comparison of comparisons
+                                            "
+                                        >
+                                            {{ Comparison }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="3">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <input
+                                        matInput
+                                        name="selectedValue"
+                                        [(ngModel)]="selectedValue"
+                                        #NAME="ngModel"
+                                        [placeholder]="'Enter Value'"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    [matMenuTriggerFor]="menu"
+                                >
+                                    Insert Condition
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="generateQuery()"
+                                    >
+                                        Insert Condition
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="insertSubCondition()"
+                                    >
+                                        Insert Sub-condition
+                                    </button>
+                                </mat-menu>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- filter display-->
+        <div *ngFor="let filterLine of filterList; let j = index">
+            <div class="filterborder">
+                <div
+                    *ngFor="let tag of filterLine['tagList']; let i = index"
+                    style="display: flex"
+                >
+                    <div class="filtertag">
+                        <div>{{ tag }}</div>
+                        <mat-icon
+                            class="delete-icon"
+                            (click)="removeTagGroup(j, i)"
+                        >
+                            close
+                        </mat-icon>
+                    </div>
+                    <div class="operator">{{ filterLine["tagList1"][i] }}</div>
+                </div>
+            </div>
+            <div>
+                <div class="operator" style="text-align: center">
+                    {{ filterListOperators[j] }}
+                </div>
+            </div>
+        </div>
+
+        <!-- filter display-->
+        <div style="margin: 8px 20px 8px 0px">
+            <div style="text-align: end">
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px"
+                    (click)="resetFilter()"
+                >
+                    <span class="ml-2">Reset</span>
+                </button>
+
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px"
+                >
+                    <span class="ml-2">Create</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- End Filter  -->
+
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Visitors list -->
+        <div
+            class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
+        >
+            <div class="overflow-x-auto mx-6">
+                <ng-container *ngIf="searchInputControl != null; else noStudio">
+                    <div class="overflow-x-auto mx-6">
+                        <table
+                            class="w-full bg-transparent"
+                            mat-table
+                            matSort
+                            [dataSource]="dataSource"
+                            [trackBy]="trackByFn"
+                            #customerTable
+                        >
+                            <!-- Checkbox Column -->
+                            <ng-container matColumnDef="checkbox">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    style="
+                                        min-width: 70px !important;
+                                        padding-right: 0px;
+                                        padding-left: 5px;
+                                    "
+                                >
+                                    <button
+                                        mat-icon-button
+                                        style="width: 20px !important"
+                                        [matMenuTriggerFor]="menu"
+                                        aria-label="Menu"
+                                    >
+                                        <mat-icon>sort</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <span class="example-list-section">
+                                            <ul>
+                                                <li
+                                                    *ngFor="
+                                                        let col of studioTableColumns2;
+                                                        let i = index
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        [(ngModel)]="
+                                                            studioTableColumns2[
+                                                                i
+                                                            ]['SHOW']
+                                                        "
+                                                        name="column{{ i }}"
+                                                        (ngModelChange)="
+                                                            updateAllComplete(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ col.NAME }}
+                                                    </mat-checkbox>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </mat-menu>
+
+                                    <mat-checkbox
+                                        (change)="
+                                            $event ? toggleAllRows() : null
+                                        "
+                                        [checked]="
+                                            selection.hasValue() &&
+                                            isAllSelected()
+                                        "
+                                        [indeterminate]="
+                                            selection.hasValue() &&
+                                            !isAllSelected()
+                                        "
+                                        [aria-label]="checkboxLabel()"
+                                        [color]="'primary'"
+                                    >
+                                    </mat-checkbox>
+                                </th>
+                                <td
+                                    mat-cell
+                                    style="text-align: center !important"
+                                    *matCellDef="let row"
+                                >
+                                    <mat-checkbox
+                                        (click)="$event.stopPropagation()"
+                                        (click)="showMultiBox()"
+                                        style="
+                                            position: relative;
+                                            right: -32px;
+                                            margin-right: 20px;
+                                        "
+                                        (change)="
+                                            $event
+                                                ? selection.toggle(row)
+                                                : null
+                                        "
+                                        [checked]="selection.isSelected(row)"
+                                        [aria-label]="checkboxLabel(row)"
+                                        [color]="'primary'"
+                                    >
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <!-- Action -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let studio">
+                                    <span
+                                        style="display: inline-flex"
+                                        class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                    >
+                                        <!-- Edit -->
+                                        <span
+                                            (click)="edit(studio)"
+                                            (click)="studioDrawer.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Edit Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_solid:pencil-alt'
+                                                "
+                                            >
+                                            </mat-icon>
+                                        </span>
+                                        <!--End Edit -->
+                                        <!-- Details -->
+                                        <span
+                                            (click)="details(studio)"
+                                            (click)="studioDrawer2.toggle()"
+                                        >
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                [matTooltip]="
+                                                    'View Information'
+                                                "
+                                                aria-hidden="false"
+                                                aria-label="Details"
+                                                fontIcon="menu"
+                                            >
+                                            </mat-icon>
+                                        </span>
+                                        <!-- Details -->
+                                        <!-- Delete -->
+                                        <span
+                                            (click)="detailsDelete(studio)"
+                                            (click)="studioDrawer2.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Delete Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_outline:trash'
+                                                "
+                                            >
+                                            </mat-icon>
+                                        </span>
+                                        <!--End  Delete -->
+                                    </span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="NAME">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by NAME"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Name </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div (click)="
+                                                $event.stopPropagation()
+                                            "
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.NAME }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- End NAME -->
+
+                            <!-- EMAIL_ID -->
+                            <ng-container matColumnDef="WEBSITE">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by WEBSITE"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Website </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div (click)="
+                                                $event.stopPropagation()
+                                            "
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let studio">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ studio.WEBSITE }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- City -->
+                            <ng-container matColumnDef="CITY">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by CITY"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> City </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div (click)="
+                                                $event.stopPropagation()
+                                            "
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let studio">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ studio.CITY }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- State -->
+                            <ng-container matColumnDef="STATE">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by STATE"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> State </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-select
+                                                            name="STATE"
+                                                            #country="ngModel"
+                                                            [(ngModel)]="STATE"
+                                                        >
+                                                            <ng-container
+                                                                *ngFor="
+                                                                    let state of states
+                                                                "
+                                                            >
+                                                                <mat-option
+                                                                    [value]="
+                                                                        state.ID
+                                                                    "
+                                                                    >{{
+                                                                        state.NAME
+                                                                    }}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let studio">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ studio.STATE }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="COUNTRY">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by COUNTRY"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Country </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    (click)="
+                                                        $event.stopPropagation()
+                                                    "
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-select
+                                                            name="COUNTRY"
+                                                            #country="ngModel"
+                                                            [(ngModel)]="
+                                                                COUNTRY
+                                                            "
+                                                        >
+                                                            <ng-container
+                                                                *ngFor="
+                                                                    let country of country
+                                                                "
+                                                            >
+                                                                <mat-option
+                                                                    [value]="
+                                                                        country.ID
+                                                                    "
+                                                                    >{{
+                                                                        country.NAME
+                                                                    }}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let studio">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ studio.COUNTRY }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="studioTableColumns"
+                            ></tr>
+                            <tr
+                                class="order-row h-16"
+                                mat-row
+                                *matRowDef="
+                                    let row;
+                                    columns: studioTableColumns
+                                "
+                            ></tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator
+                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        [length]="pagination.length"
+                        [pageIndex]="pagination.page"
+                        [pageSize]="pagination.size"
+                        [pageSizeOptions]="[10, 20, 30, 40, 50]"
+                        [showFirstLastButtons]="true"
+                    >
+                    </mat-paginator>
+                </ng-container>
+
+                <ng-template #noStudio>
+                    <div
+                        class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+                    >
+                        There are no studio data!
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <!-- How Many rows are selected card desgin -->
+    <div
+        style="
+            justify-content: center;
+            position: relative;
+            align-items: center;
+            display: flex;
+        "
+    >
+        <mat-card
+            *ngIf="showMultiSelect == true"
+            style="
+                padding: 2px;
+                margin: 10px;
+                position: absolute;
+                z-index: 777;
+                width: 370px;
+                bottom: 37px;
+            "
+        >
+            <mat-grid-list [cols]="12" rowHeight="50px">
+                <mat-grid-tile [colspan]="2">
+                    <div
+                        style="
+                            border-radius: 8px;
+                            background-color: grey;
+                            color: white;
+                            text-align: center;
+                            padding: 20px;
+                        "
+                    >
+                        {{ rowsSelected }}
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="6" class="detailed_card_content">
+                    <b *ngIf="rowsSelected == 1">row selected</b>
+                    <b *ngIf="rowsSelected > 1">rows selected</b>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2">
+                    <span>
+                        <mat-icon
+                            (click)="editSelection()"
+                            [matTooltip]="'Edit Selected Rows'"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"
+                        >
+                        </mat-icon>
+                    </span>
+
+                    <span>
+                        <mat-icon
+                            (click)="deleteSelection()"
+                            [matTooltip]="'Delete Selected Rows'"
+                            [svgIcon]="'heroicons_outline:trash'"
+                        >
+                        </mat-icon>
+                    </span>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="2"
+                    style="border-left: 1px solid grey"
+                >
+                    <div>
+                        <mat-icon
+                            (click)="removeSelection()"
+                            [matTooltip]="'Remove Selection'"
+                            [svgIcon]="'heroicons_solid:x-circle'"
+                        >
+                        </mat-icon>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card>
+    </div>
+</div>
+<!-- End How Many rows are selected card desgin -->
+
+<!-- Add And Edit Drawer  -->
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'studioDrawer'"
+    [position]="'right'"
+    #studioDrawer
+>
+    <div class="flex flex-col w-full bg-card">
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                <span *ngIf="editstudio.ID != undefined && editstudio.ID > 0"
+                    >Edit New Studio</span
+                >
+                <span
+                    *ngIf="
+                        editstudio.ID == undefined ||
+                        editstudio.ID == null ||
+                        editstudio.ID == 0
+                    "
+                    >Add New Studio</span
+                >
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer
+                id="closeDrawer"
+                (click)="studioDrawer.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+
+        <app-addstudio></app-addstudio>
+    </div>
+</fuse-drawer>
+<!-- End Add And Edit Drawer  -->
+
+<!-- Detail and Delete Drawer  -->
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'studioDrawer2'"
+    [position]="'right'"
+    #studioDrawer2
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <div
+                class="ml-3 text-2xl font-semibold tracking-tight"
+                *ngIf="deleteShow == false"
+            >
+                Studio Details
+            </div>
+            <div
+                class="ml-3 text-2xl font-semibold tracking-tight"
+                *ngIf="
+                    selectedVisitor.ID != undefined &&
+                    selectedVisitor.ID > 0 &&
+                    deleteShow == true
+                "
+            >
+                Do You Really Want To Delete?
+            </div>
+
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer2
+                id="closeDrawer2"
+                (click)="studioDrawer2.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+
+        <app-detail-delete-studio
+            [DATA]="selectedVisitor"
+            [drawerClose]="closeCallback"
+        ></app-detail-delete-studio>
+
+        <div
+            *ngIf="
+                selectedVisitor.ID != undefined &&
+                selectedVisitor.ID > 0 &&
+                deleteShow == true
+            "
+            style="width: 100%; position: absolute; bottom: 0px; right: 6%"
+            class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+        >
+            <div style="text-align: center; width: 100%">
+                <div>
+                    <span
+                        >To delete the above informartion, Please solve below
+                        question.</span
+                    >
+                </div>
+                <span style="margin-right: 10px"
+                    >{{ value }} + {{ value2 }} =
+                </span>
+                <mat-form-field
+                    style="width: 110px"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <input
+                        matInput
+                        type="number"
+                        min="0"
+                        name="Answer"
+                        style="width: 110px !important"
+                        [(ngModel)]="answer"
+                        [placeholder]="'Answer'"
+                    />
+                </mat-form-field>
+                <!-- Delete -->
+                <button
+                    class="ml-2"
+                    mat-flat-button
+                    [color]="'warn'"
+                    [matTooltip]="'Delete'"
+                    (click)="deleteInfo()"
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</fuse-drawer>
+
+<!-- End Detail and Delete Drawer  -->

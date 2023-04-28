@@ -1,0 +1,18 @@
+<google-map height="400px" width="750px" [center]="center" [zoom]="zoom" (mapClick)="addMarker($event)"
+    (mapMousemove)="move($event)">
+    <!-- <map-marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition" [options]="markerOptions">
+    </map-marker> -->
+</google-map>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+    <span>
+        <button type="button" mat-flat-button color="primary" (click)="Submit()">
+            Submit
+        </button>
+        <button type="button" mat-stroked-button color="primary" (click)="CloseDialog()">
+            Cancel
+        </button>
+    </span>
+</div>
+
+<div>Latitude: {{display?.lat}}</div>
+<div>Longitude: {{display?.lng}}</div>

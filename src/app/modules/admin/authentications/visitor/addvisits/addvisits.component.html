@@ -1,0 +1,243 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <!-- Name -->
+                        <div class="mt-2">
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label><span style="color:red;">*</span>Visitor Name</mat-label>
+                                        <mat-select
+                                            name="VISITOR_ID"
+                                            [(ngModel)]="DATA.VISITOR_ID"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let visitor of oldvisitors
+                                                "
+                                            >
+                                                <mat-option
+                                                    [value]="visitor.ID"
+                                                >
+                                                    {{ visitor.NAME }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-icon [matTooltip]="'Add New Visitor'" (click)="addVisitor()" (click)="newvisitorDrawer.toggle()"
+                                        style="margin-top: 25px"
+                                        [svgIcon]="
+                                            'heroicons_solid:plus-circle'
+                                        "
+                                    ></mat-icon>
+                                </mat-grid-tile>
+
+                                <!-- Title -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label><span style="color:red;">*</span>Purpose Of Visit</mat-label>
+                                        <input
+                                            matInput
+                                            name="PURPOSE_OF_VISIT"
+                                            [(ngModel)]="DATA.PURPOSE_OF_VISIT"
+                                            [placeholder]="'Purpose of visit'"
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Company -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label><span style="color:red;">*</span>Meeting With</mat-label>
+                                        <mat-select
+                                            name="MEETING_WITH_ID"
+                                            [(ngModel)]="DATA.MEETING_WITH_ID"
+                                        >
+                                            <ng-container
+                                                *ngFor="let vendor of vendors"
+                                            >
+                                                <mat-option [value]="vendor.ID">
+                                                    {{ vendor.NAME }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                    <mat-form-field
+                                        class="w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label><span style="color:red;">*</span>Date Of Visit</mat-label>
+
+                                        <input
+                                            matInput
+                                            name="DATE_OF_VISIT"
+                                            [matDatepicker]="birthdayDatepicker"
+                                            [(ngModel)]="DATA.DATE_OF_VISIT"
+                                            [placeholder]="'Date Of Visit'"
+                                        />
+                                        <mat-datepicker-toggle
+                                            matSuffix
+                                            [for]="birthdayDatepicker"
+                                        >
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                            #birthdayDatepicker
+                                        ></mat-datepicker>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label><span style="color:red;">*</span>Duration Of Visit </mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            type="number"
+                                            min="0"
+                                            max="24"
+                                            style="width: 80% !important"
+                                            name="Hrs"
+                                            [(ngModel)]="DATA.DURATION_HRS"
+                                            [placeholder]="'Hrs'"
+                                        />
+                                        <span style="margin-left: 5px"
+                                            >Hrs.</span
+                                        >
+                                     
+                                    </mat-form-field>
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            > </mat-label
+                                        >
+                                  
+                                        <input
+                                            matInput
+                                            type="number"
+                                            min="0"
+                                            max="59"
+                                            name="Minutes"
+                                            style="width: 80% !important"
+                                            [(ngModel)]="DATA.DURATION_MINUTES"
+                                            [placeholder]="'Minutes'"
+                                        />
+                                        <span style="margin-left: 5px">Min.</span>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <!-- Delete -->
+        <!-- <button
+            mat-button
+            [color]="'warn'"
+            [matTooltip]="'Delete'"
+            (click)="deleteContact()"
+        >
+            Delete
+        </button> -->
+        <!-- Cancel -->
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save()"
+        >
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
+
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'newvisitorDrawer'"
+    [position]="'right'"
+    #newvisitorDrawer
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <!-- <mat-icon
+                class="icon-size-7 text-current"
+                [svgIcon]="'heroicons_solid:cog'"
+            ></mat-icon> -->
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                 
+                <span *ngIf="newvisitor.ID != undefined && newvisitor.ID > 0"
+                    >Edit Visitor Info</span
+                >
+                <span
+                    *ngIf="
+                    newvisitor.ID == undefined ||
+                    newvisitor.ID == null ||
+                    newvisitor.ID == 0
+                    "
+                    >Add New Visitor</span
+                >
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer
+                id="closenewvisitorDrawer"
+                (click)="newvisitorDrawer.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+        <addvisitor
+        [DATA]="newvisitor" [countries]="countries"
+        [drawerClose]="newvisitorDrawerCloseCallback"
+    ></addvisitor>
+    </div>
+</fuse-drawer>

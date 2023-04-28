@@ -1,0 +1,292 @@
+<div class="flex flex-col flex-col p-6 ">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form #form="ngForm">
+                        <!-- Name -->
+                        <div class="mt-2 ">
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+
+                                <!-- NAME -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span> Name</mat-label>
+                                        <input [(ngModel)]="DATA.NAME" matInput name="Name" [placeholder]="'Name'"
+                                            #name="ngModel" required />
+                                        <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+                                            Please Enter Valid Name
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- WEBSITE -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Website</mat-label>
+                                        <input [(ngModel)]="DATA.WEBSITE" matInput name="Website"
+                                            [placeholder]="'Website'" #Website="ngModel" required />
+                                        <mat-error *ngIf="Website.invalid && (Website.dirty || Website.touched)">
+                                            Please Enter Valid Website
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- BILLING_INFORMATION_ID -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Billing Information</mat-label>
+                                        <mat-select [(ngModel)]="DATA.BILLING_INFORMATION_ID"
+                                            name="BILLING_INFORMATION_ID" #Billing_Information="ngModel" required>
+                                            <ng-container *ngFor="let vendor of vendors">
+                                                <mat-option [value]="vendor.ID">
+                                                    <!-- {{ vendor.NAME }} -->
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="Billing_Information.invalid && (Billing_Information.dirty || Billing_Information.touched)">
+                                            Please Select Valid Billing Information
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <fieldset style="" class="border-2 border-black rounded-3xl mb-5 p-5 ">
+                                <legend class="ml-5"><b>Address </b></legend>
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+                                    <!-- ADDRESS_LINE_1 -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span> Address Line 1</mat-label>
+                                            <input [(ngModel)]="DATA.ADDRESS_LINE_1" matInput name="ADDRESS_LINE_1"
+                                                #address1="ngModel" [placeholder]="'Address Line 1'" required />
+                                            <mat-error *ngIf="address1.invalid && (address1.dirty || address1.touched)">
+                                                Please Enter Address Line 1
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- ADDRESS_LINE_2 -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label>Address Line 2</mat-label>
+                                            <input [(ngModel)]="DATA.ADDRESS_LINE_2" matInput name="ADDRESS_LINE_2"
+                                                [placeholder]="'Address Line 1'" #address2="ngModel" required />
+                                            <mat-error *ngIf="address2.invalid && (address2.dirty || address2.touched)">
+                                                Please Enter Address Line 2
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- CITY -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>City</mat-label>
+                                            <input [(ngModel)]="DATA.CITY" matInput name="CITY" [placeholder]="'City'"
+                                                #City="ngModel" required />
+                                            <mat-error *ngIf="City.invalid && (City.dirty || City.touched)">
+                                                Please Enter City
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <!-- COUNTRY -->
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1   : 4" rowHeight="100px">
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>Country</mat-label>
+                                            <mat-select [(ngModel)]="DATA.COUNTRY" name="COUNTRY" #Country="ngModel"
+                                                required>
+                                                <ng-container *ngFor="let vendor of vendors">
+                                                    <mat-option [value]="vendor.ID">
+                                                        <!-- {{ vendor.NAME }} -->
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error *ngIf="Country.invalid && (Country.dirty || Country.touched)">
+                                                Please Select Country
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- STATE -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>State</mat-label>
+                                            <mat-select [(ngModel)]="DATA.STATE" name="STATE" #State="ngModel" required>
+                                                <ng-container *ngFor="let vendor of vendors">
+                                                    <mat-option [value]="vendor.ID">
+                                                        <!-- {{ vendor.NAME }} -->
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error *ngIf="State.invalid && (State.dirty || State.touched)">
+                                                Please Select Country
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- PRN -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>PRN/ZIP</mat-label>
+                                            <input [(ngModel)]="DATA.PRN" matInput name="PRN" [placeholder]="'PRN/ZIP'"
+                                                #PRN="ngModel" required />
+                                            <mat-error *ngIf="PRN.invalid && (PRN.dirty || PRN.touched)">
+                                                Please Enter PRN/ZIP
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <mat-grid-tile class="mt-2.5" [colspan]="1">
+                                        <button mat-raised-button (click)="openDialog(myDialog)"
+                                            color="primary"><mat-icon>location_on</mat-icon>
+                                            Geo Location</button>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+                            </fieldset>
+
+                            <fieldset class=" border-2 border-black rounded-3xl mb-5 p-5">
+                                <legend class="ml-5 inline-block"><b>Biling Address </b>
+                                    <input class="ml-5" type="checkbox" name="" id="">
+
+                                    <label for="a">Some As Address</label>
+                                </legend>
+
+                                
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span> Address Line 1</mat-label>
+                                            <input [(ngModel)]="DATA.BillingADDRESS_LINE_1" matInput
+                                                name="BillingADDRESS_LINE_1" [placeholder]="'Address Line 1'"
+                                                #BillingADDRESS_LINE_1="ngModel" required />
+                                            <mat-error
+                                                *ngIf="BillingADDRESS_LINE_1.invalid && (BillingADDRESS_LINE_1.dirty || BillingADDRESS_LINE_1.touched)">
+                                                Please Enter Address 1
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Title -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label>Address Line 2</mat-label>
+                                            <input [(ngModel)]="DATA.BillingADDRESS_LINE_2" matInput
+                                                name="BillingADDRESS_LINE_2" [placeholder]="'Address Line 2'"  #BillingADDRESS_LINE_2="ngModel" required/>
+
+                                                <mat-error
+                                                *ngIf="BillingADDRESS_LINE_2.invalid && (BillingADDRESS_LINE_2.dirty || BillingADDRESS_LINE_2.touched)">
+                                                Please Enter Address 2
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Company -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>City</mat-label>
+                                            <input [(ngModel)]="DATA.BillingCITY" matInput name="BillingCITY"
+                                                [placeholder]="'City'" #BillingCITY="ngModel" required/>
+                                                <mat-error
+                                                *ngIf="BillingCITY.invalid && (BillingCITY.dirty || BillingCITY.touched)">
+                                                Please Enter City
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1   : 4" rowHeight="100px">
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>Country</mat-label>
+                                            <mat-select [(ngModel)]="DATA.BillingCOUNTRY" name="BillingCOUNTRY" #BillingCOUNTRY="ngModel" required>
+                                                <ng-container *ngFor="let vendor of vendors">
+                                                    <mat-option [value]="vendor.ID">
+                                                        <!-- {{ vendor.NAME }} -->
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="BillingCOUNTRY.invalid && (BillingCOUNTRY.dirty || BillingCOUNTRY.touched)">
+                                                Please Select Country
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Title -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>State</mat-label>
+                                            <mat-select [(ngModel)]="DATA.BillingSTATE" name="BillingSTATE" #BillingSTATE="ngModel" required>
+                                                <ng-container *ngFor="let vendor of vendors">
+                                                    <mat-option [value]="vendor.ID">
+                                                        <!-- {{ vendor.NAME }} -->
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                            <mat-error
+                                            *ngIf="BillingSTATE.invalid && (BillingSTATE.dirty || BillingSTATE.touched)">
+                                            Please Select State
+                                        </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <!-- Company -->
+                                    <mat-grid-tile [colspan]="1">
+                                        <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>PRN/ZIP</mat-label>
+                                            <input [(ngModel)]="DATA.BillingPRN" matInput name="BillingPRN"
+                                                [placeholder]="'ZIP'" #BillingPRN="ngModel" required/>
+                                                <mat-error
+                                            *ngIf="BillingPRN.invalid && (BillingPRN.dirty || BillingPRN.touched)">
+                                            Please Enter PRN/ZIP
+                                        </mat-error>
+                                        </mat-form-field>
+                                    </mat-grid-tile>
+
+                                    <mat-grid-tile class="mt-2.5" [colspan]="1">
+                                        <button mat-raised-button (click)="openDialog(myDialog)"
+                                            color="primary"><mat-icon>location_on</mat-icon>
+                                            Geo Location</button>
+                                        <!-- <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                            <mat-label><span style="color:red;">*</span>Geo Location</mat-label>
+                                            <input [(ngModel)]="DATA.GEO_LOCATION" matInput name="GEO_LOCATION" [placeholder]="'Select Location'" />
+                                            <mat-icon matPrefix>location_on</mat-icon>
+                                        </mat-form-field> -->
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+                            </fieldset>
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button class="ml-2" mat-flat-button [color]="'primary'" (click)="Save()">
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
+
+<ng-template #myDialog>
+    <google-map [center]="center" [zoom]="zoom" (mapClick)="addMarker2($event)">
+        <map-marker [position]="markerPositions" [options]="markerOptions"></map-marker>
+    </google-map>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose color="primary">Dismiss</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,1416 @@
+<div class="flex flex-col p-6">
+    <mat-accordion class="mt-1" [multi]="true" #accordion="matAccordion">
+        <ng-container>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight"
+                        >Primary Information</mat-panel-title
+                    >
+                </mat-expansion-panel-header>
+                <mat-grid-list
+                    gutterSize="16px"
+                    style="margin-bottom: 73px"
+                    [cols]="isScreenSmall ? 1 : 3"
+                    rowHeight="100px"
+                >
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label
+                                ><span style="color: red">*</span
+                                >Name</mat-label
+                            >
+                            <input
+                            [disabled]="true"
+                                matInput
+                                name="NAME"
+                                [(ngModel)]="DATA.NAME"
+                                [placeholder]="' Name'"
+                            />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label
+                                ><span style="color: red">*</span>Font
+                                Family</mat-label
+                            >
+                            <mat-select
+                            
+                                class="mr-1"
+                                name="Font Family"
+                                style="width: 351px"
+                                [placeholder]="'Select Font Family'"
+                                [(ngModel)]="DATA.FONTFAMILY"
+                                [disabled]="true"
+                            >
+                                <ng-container *ngFor="let abc of dataList">
+                                    <mat-option [value]="abc.FONTFAMILY">
+                                        {{ abc.FONTFAMILY }}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>
+                                <!-- <span style="color: red">*</span
+                            > -->
+
+                                Font Size</mat-label
+                            >
+
+                            <mat-select
+                                class="mr-1"
+                                name="Font Size"
+                                style="width: 351px"
+                                [placeholder]="'Select Font Size'"
+                                [(ngModel)]="DATA.FONTSIZE"
+                                [disabled]="true"
+                            >
+                                <ng-container *ngFor="let abc of dataList">
+                                    <mat-option [value]="abc.FONTSIZE">
+                                        {{ abc.FONTSIZE }}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                    ><span
+                                        style="
+                                            color: red;
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Primary Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        class="innerht1"
+                                        readonly
+                                        name="11"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        name="Primary Color"
+                                        #colorPicker
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.selectedColor"
+                                        [(colorPicker)]="DATA.selectedColor"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.selectedColor"
+                                    />
+                                    <mat-icon
+                                        class="iconmax"
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        matSuffix
+                                        [matTooltip]="'Select Color'"
+                                        (click)="colorPicker.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                        <!-- Primary color -->
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                    ><span
+                                        style="
+                                            color: red;
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Secondary Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        name="21"
+                                        class="innerht1"
+                                        readonly
+                                        matInput
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        name="Secondary Color"
+                                        #colorPicker1
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.selectedColor2"
+                                        [(colorPicker)]="DATA.selectedColor2"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.selectedColor2"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        matSuffix
+                                        [matTooltip]="'Select Color'"
+                                        class="iconmax"
+                                        (click)="colorPicker1.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(249, 248, 248);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                    ></span
+                                    >Tertairy Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        readonly
+                                        class="innerht1"
+                                        name="31"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="31"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        name="Tertairy Color"
+                                        #colorPicker2
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.selectedColor3"
+                                        [(colorPicker)]="DATA.selectedColor3"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.selectedColor3"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        class="iconmax"
+                                        matSuffix
+                                        (click)="colorPicker2.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!-- Background color light -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Background Color Light</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        class="innerht1"
+                                        name="b1"
+                                        readonly
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Background Color Light"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #color2
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.background2light"
+                                        [(colorPicker)]="DATA.background2light"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.background2light"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        (click)="color2.click()"
+                                        class="iconmax"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- Background color Dark -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Background Color Dark</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        class="innerht1"
+                                        readonly
+                                        matInput
+                                        name="51"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Background Color Dark"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #background2dark
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.background1dark"
+                                        [(colorPicker)]="DATA.background1dark"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.background1dark"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        (click)="background2dark.click()"
+                                        class="iconmax"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!--  -->
+                    <!-- text color light -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Text Color Light</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        class="innerht1"
+                                        name="61"
+                                        readonly=""
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Text Color LightText Color Light"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #textcolor2
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.textcolor1"
+                                        [(colorPicker)]="DATA.textcolor1"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.textcolor1"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        class="iconmax"
+                                        (click)="textcolor2.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+                    <!-- Text color Dark -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Text Color Dark</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        name="71"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                        class="innerht1"
+                                        readonly
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Text Color Dark"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #Textdark
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.Textdark1"
+                                        [(colorPicker)]="DATA.Textdark1"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.Textdark1"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        class="iconmax"
+                                        (click)="Textdark.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!-- Info Color -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Info Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        name="Info Color"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                        class="innerht1"
+                                        readonly
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Info Color"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #Info
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.info1"
+                                        [(colorPicker)]="DATA.info1"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.info1"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        class="iconmax"
+                                        (click)="Info.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!-- Warning Color -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Warning Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        name="101"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                        class="innerht1"
+                                        readonly
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Warning Color"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #warning
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.warning1"
+                                        [(colorPicker)]="DATA.warning1"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.warning1"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        class="iconmax"
+                                        (click)="warning.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!-- Danger Color -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <span
+                                        style="
+                                            color: rgb(230, 13, 13);
+                                            margin-left: 0px;
+                                            margin-bottom: -33px;
+                                        "
+                                        >*</span
+                                    >Danger Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        name="111"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                        class="innerht1"
+                                        readonly
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Danger Color"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #colorpicker12
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.d1"
+                                        [(colorPicker)]="DATA.d1"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.d1"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        matSuffix
+                                        (click)="colorpicker12.click()"
+                                        class="iconmax"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- </mat-form-field> -->
+                    </mat-grid-tile>
+
+                    <!-- Accent Color -->
+                    <mat-grid-tile [colspan]="1">
+                        <div>
+                            <span>
+                                <mat-label
+                                    style="color: #5c5a5ad9; font-weight: 700"
+                                >
+                                    <!-- <span
+                                    style="
+                                        color: rgb(230, 13, 13);
+                                        margin-left: 0px;
+                                        margin-bottom: -33px;
+                                    "
+                                    >*</span -->
+                                    <!-- > -->
+                                    Accent Color</mat-label
+                                >
+                            </span>
+                            <span>
+                                <div
+                                    class="input-group"
+                                    style="
+                                        padding: 0;
+                                        margin-top: 3px;
+                                        border: 1px solid #c0c0db;
+                                        width: 381px;
+                                        height: 48px;
+                                        overflow: hidden;
+                                        border-radius: 7px;
+                                    "
+                                >
+                                    <input
+                                        matInput
+                                        name="112"
+                                        style="
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                            margin: 0;
+                                            background-color: #877a7a;
+                                            height: 60px;
+                                            width: 67px;
+                                        "
+                                        class="innerht1"
+                                        readonly
+                                    />
+
+                                    <input
+                                        matInput
+                                        name="Accent Color"
+                                        type="color"
+                                        class="colour"
+                                        style="
+                                            display: block;
+                                            height: 60px;
+                                            width: 218;
+                                            border: 1px solid #c0c0db;
+                                            padding-left: 22px;
+                                            font-size: 16px;
+                                        "
+                                        #colorpicker123
+                                        type="text"
+                                        [disabled]="true"
+                                        [value]="DATA.accentcolor"
+                                        [(colorPicker)]="DATA.accentcolor"
+                                        [cpOutputFormat]="'hex'"
+                                        [(ngModel)]="DATA.accentcolor"
+                                    />
+                                    <mat-icon
+                                        style="
+                                            padding: 0px;
+                                            width: 67px;
+                                            height: 60px;
+                                            border-radius: 8px;
+                                            display: block;
+                                            border: 1px solid #c0c0db;
+                                        "
+                                        [matTooltip]="'Select Color'"
+                                        class="iconmax"
+                                        matSuffix
+                                        (click)="colorpicker123.click()"
+                                        >colorize</mat-icon
+                                    >
+                                </div>
+                            </span>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                            style="margin-bottom: 17px"
+                        >
+                            <mat-label
+                                ><span style="color: red">*</span>Button
+                                Style</mat-label
+                            >
+                            <mat-select
+                                class="mr-1"
+                                name="Button Style"
+                                style="width: 351px"
+                                [placeholder]="'Select Button Style'"
+                                [(ngModel)]="DATA.BUTTONSTYLE"
+                                [disabled]="true"
+                            >
+                                <!-- <ng-container
+                                *ngFor="let abc of dataList"
+                            >
+                                <mat-option
+                                    [value]="abc.BUTTONSTYLE"
+                                >
+                                    {{ abc.BUTTONSTYLE }}
+                                </mat-option>
+                            </ng-container> -->
+                                <ng-container>
+                                    <mat-option [value]="'E'"
+                                        >External Styles
+                                    </mat-option>
+                                    <mat-option [value]="'P'"
+                                        >Page-Level style
+                                    </mat-option>
+                                    <mat-option [value]="'L'"
+                                        >Local style
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                            style="margin-bottom: 17px"
+                        >
+                            <mat-label
+                                ><span style="color: red">*</span>Manu
+                                Style</mat-label
+                            >
+                            <mat-select
+                                class="mr-1"
+                                name="Manu Style"
+                                style="width: 351px"
+                                [placeholder]="'Select Manu Style'"
+                                [(ngModel)]="DATA.MANUSTYLE"
+                                [disabled]="true"
+                            >
+                                <!-- <ng-container
+                            *ngFor="let abc of dataList"
+                        >
+                            <mat-option [value]="DATA.MANUSTYLE">
+                                {{ abc.MANUSTYLE }}
+                            </mat-option>
+                        </ng-container> -->
+                                <ng-container>
+                                    <mat-option [value]="'E'"
+                                        >External Styles
+                                    </mat-option>
+                                    <mat-option [value]="'P'"
+                                        >Page-Level style
+                                    </mat-option>
+                                    <mat-option [value]="'L'"
+                                        >Local style
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile
+                        [rowspan]="2"
+                        [colspan]="isScreenSmall ? 1 : 2"
+                    >
+                        <mat-form-field style="width: 792px">
+                            <mat-label> Custom Css</mat-label>
+                            <textarea
+                                matInput
+                                name="Custom Css"
+                                cols="20"
+                                rows="6"
+                                placeholder=" Custom Css"
+                                [(ngModel)]="DATA.CUSTOMSTYLE"
+                                [disabled]="true"
+                            ></textarea>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                            style="margin-bottom: 17px"
+                        >
+                            <mat-label
+                                ><span style="color: red">*</span>Layout
+                                Style</mat-label
+                            >
+                            <mat-select
+                                class="mr-1"
+                                name="Layout Style"
+                                style="width: 351px"
+                                [placeholder]="'Select Layout Style'"
+                                [(ngModel)]="DATA.LAYOUTSTYLE"
+                                [disabled]="true"
+                            >
+                                <!-- <ng-container
+                            *ngFor="let abc of dataList"
+                        >
+                            <mat-option [value]="DATA.LAYOUTSTYLE">
+                                {{ abc.LAYOUTSTYLE }}
+                            </mat-option>
+                        </ng-container> -->
+                                <ng-container>
+                                    <mat-option [value]="'E'"
+                                        >Table layout.
+                                    </mat-option>
+                                    <mat-option [value]="'M'"
+                                        >Positioning
+                                    </mat-option>
+                                    <mat-option [value]="'L'"
+                                        >Floats
+                                    </mat-option>
+                                    <mat-option [value]="'G'">Grid </mat-option>
+                                    <mat-option [value]="'F'"
+                                        >Flexbox
+                                    </mat-option>
+                                    <!--  -->
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel style="padding: 0px !important" [expanded]="true">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight"
+                        >Related Information</mat-panel-title
+                    >
+                </mat-expansion-panel-header>
+
+                <mat-grid-list [cols]="isScreenSmall ? 1 : 3" rowHeight="260px">
+                    <!-- first list -->
+                    <mat-grid-tile>
+                        <div
+                            style="height: 100%; width: 100%; padding: 0px 5px"
+                        >
+                            <mat-grid-list cols="1" rowHeight="40px">
+                                <mat-grid-tile>
+                                    <button
+                                        mat-flat-button
+                                        style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        "
+                                    >
+                                        Organizations
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div
+                                            class="space-y-2"
+                                            style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            "
+                                            cdkTextareaAutosize
+                                        >
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="7"
+                                                    rowHeight="30px"
+                                                >
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="5"
+                                                        style="
+                                                            padding: 5px !important;
+                                                        "
+                                                    >
+                                                        <b
+                                                            style="
+                                                                margin-right: 166px;
+                                                            "
+                                                            >Name</b
+                                                        >
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        style="
+                                                            margin-right: 166px !important;
+                                                        "
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <br />
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="7"
+                                                    rowHeight="30px"
+                                                >
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="5"
+                                                        style="
+                                                            padding: 5px !important;
+                                                        "
+                                                    >
+                                                        <b
+                                                            style="
+                                                                margin-right: 166px;
+                                                            "
+                                                            >Name</b
+                                                        >
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        style="
+                                                            margin-right: 166px !important;
+                                                        "
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- first list -->
+                </mat-grid-list>
+            </mat-expansion-panel>
+        </ng-container>
+    </mat-accordion>
+</div>

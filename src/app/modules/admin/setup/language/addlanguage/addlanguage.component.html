@@ -1,0 +1,91 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form #languageForm="ngForm">
+                        <div class="mt-2">
+
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 1" rowHeight="100px">
+
+                                <!-- Name -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Name</mat-label>
+                                        <input matInput name="NAME" [(ngModel)]="DATA.NAME" [placeholder]="'Name'"
+                                            [formControl]="name" [matTooltip]="getErrorMessage1()"
+                                            [matTooltipDisabled]="!name.invalid" />
+                                        <mat-error *ngIf="name.invalid">{{getErrorMessage1()}}</mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 2" rowHeight="100px">
+
+                                <!-- Code -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Code</mat-label>
+                                        <input matInput name="DATA.CODE" [(ngModel)]="DATA.CODE" [placeholder]="'Code'"
+                                            [formControl]="code" [matTooltip]="getErrorMessage2()"
+                                            [matTooltipDisabled]="!code.invalid" />
+                                        <mat-error *ngIf="code.invalid">{{getErrorMessage2()}}</mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Is Dialect -->
+                                <div style="text-align: right ;margin-right: 50px;padding-top: 10px; font-weight: 500;">
+                                    <mat-label><span style="color:red;">*</span>Is Dialect</mat-label> <br>
+                                </div>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <div class="flex-auto w-full" style="margin-left: 50px;margin-top: 40px;">
+                                        <mat-slide-toggle name="IS_DIALECT"
+                                            [(ngModel)]="DATA.IS_DIALECT"></mat-slide-toggle>
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <!-- Dialect Of -->
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 1" rowHeight="100px">
+                                <mat-grid-tile [colspan]="1" *ngIf="DATA.IS_DIALECT==true">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label><span style="color:red;">*</span>Dialect Of</mat-label>
+                                        <mat-select name="DIALECT_OF" [(ngModel)]="DATA.DIALECT_OF"
+                                            [formControl]="dailectOf" [matTooltip]="getErrorMessage3()"
+                                            [matTooltipDisabled]="!dailectOf.invalid">
+                                            <ng-container *ngFor="let language of oldlanguages2">
+                                                <mat-option [value]="language">
+                                                    {{ language }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error *ngIf="dailectOf.invalid">{{getErrorMessage3()}}</mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Actions -->
+    <div style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+
+        <!-- Cancel -->
+        <button class="ml-auto" mat-button (click)="closeDrawer(languageForm)">
+            Cancel
+        </button>
+
+        <!-- Save -->
+        <button class="ml-2" mat-flat-button [color]="'primary'" (click)="Save(languageForm)">
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+
+    </div>
+</div>

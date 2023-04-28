@@ -1,0 +1,102 @@
+<div class="inline-block p-6 sm:p-10 text-left print:p-0">
+
+    <div
+        class="w-240 p-16 rounded-2xl shadow bg-card print:w-auto print:rounded-none print:shadow-none print:bg-transparent">
+        <div class="-ml-3 sm:ml-0 mb-2 sm:mb-0 order-first sm:order-last text-right">
+            <span class="font-medium">Last Login Time :</span>
+            <span class="font-medium tracking-tight text-secondary">15/march/2023 15:30:14</span>
+        </div>
+        <div class="flex items-start mb-4 ">
+
+            <div>
+                <div
+                    class="flex flex-col items-center justify-center m-4 p-4 min-w-45 max-w-45 min-h-45 max-h-45 rounded border-2 cursor-pointer bg-card">
+                    <div class="flex items-center justify-center mb-3">
+                        <mat-icon  *ngIf="!oldlogindatadata[0].PERSONAL_IMAGES" class="h-30 w-30" svgIcon="feather:user"></mat-icon>
+                        <!-- <img class="h-30 w-30" src="../../../../../assets/images/avatars/male-02.jpg" alt=""> -->
+                        <img *ngIf="oldlogindatadata[0].PERSONAL_IMAGES" class="h-30 w-30" [src]=" oldlogindatadata[0].PERSONAL_IMAGES" alt="">
+                    </div>
+
+                </div>
+                <div class="text-center">
+                    <button class="items-center justify-center" mat-raised-button color="primary">Change</button>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-2 ml-10 gap-x-4 gap-y-1">
+                <div class="text-4xl tracking-tight text-secondary">
+                    <!-- Ashif Modin Nadaf -->
+                    {{oldlogindatadata[0].NAME}}
+                </div>
+                <div class="text-4xl"></div>
+                <div class="font-medium">Email ID :</div>
+                <div class="font-medium tracking-tight text-secondary">                    {{oldlogindatadata[0].EMAIL_ID}}</div>
+                <div class="font-medium">Phone No. :</div>
+                <div class="font-medium tracking-tight text-secondary">{{oldlogindatadata[0].PHONE_NO}}</div>
+                <div class="font-medium">WhatsApp No. :</div>
+                <div class="font-medium tracking-tight text-secondary">{{oldlogindatadata[0].WHATSAPP_NO}}</div>
+                <div class="font-medium">Date Of Birth :</div>
+                <div class="font-medium tracking-tight text-secondary">{{oldlogindatadata[0].DATE_OF_BIRTH}}</div>
+                <div class="font-medium">Company Name :</div>
+                <div class="font-medium tracking-tight text-secondary">{{oldlogindatadata[0].COMPANY_NAME}}</div>
+
+            </div>
+
+        </div>
+
+        <div class="border-t border-indigo-500">
+            <div
+                class="flex items-center mt-8 w-90 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                <button class="px-6" [ngClass]="{'bg-card pointer-events-none shadow': Customer,
+                                'bg-transparent': !Customer}" mat-flat-button (click)="customer()" disableRipple>
+                    Customer
+                </button>
+                <button class="px-6" [ngClass]="{'bg-card pointer-events-none shadow': Vender,
+                                'bg-transparent': !Vender}" mat-flat-button (click)="vender() " disableRipple>
+                    Vender
+                </button>
+                <button class="px-6" [ngClass]="{'bg-card pointer-events-none shadow': Talent,
+                                'bg-transparent': !Talent}" mat-flat-button (click)="talent()" disableRipple>
+                    Talent
+                </button>
+                <button class="px-6" [ngClass]="{'bg-card pointer-events-none shadow': Model,
+                                'bg-transparent': !Model}" mat-flat-button (click)="model()" disableRipple>
+                    Model
+                </button>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <div style="width: 102%; position: absolute; bottom: 0px"
+    class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+        <!-- Save -->
+        <button class="ml-auto" mat-flat-button [color]="'primary'" (click)="edit()"     (click)="organizationdrawer.toggle()">
+            Edit
+        </button>
+    </div>
+</div>
+
+<fuse-drawer class="w-screen max-w-screen sm:w-200 sm:max-w-200 z-999" fixed [mode]="'over'" [name]="'organizationdrawer'"
+    [position]="'right'" #organizationdrawer>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <div class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary">
+            <div class="ml-3 text-2xl items-center font-semibold tracking-tight">
+             
+                <span >Register Page </span>
+            </div>
+
+            <button class="ml-auto" mat-icon-button #closeDrawer id="closeDrawer"  (click)="organizationdrawer.close()">
+                <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </button>
+        </div>
+
+        <app-registerpage [DATA]="addorganization" 
+            [drawerClose]="organizationDrawerCloseCallback"></app-registerpage>
+
+    </div>
+</fuse-drawer>
+
