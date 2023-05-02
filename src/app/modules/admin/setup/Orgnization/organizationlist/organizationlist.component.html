@@ -39,6 +39,7 @@
                 class="ml-2"
                 mat-flat-button
                 [color]="'accent'"
+                (click)="toggleFilterBox()"
                 style="width: 42px !important; min-width: 42px !important"
             >
                 <mat-icon
@@ -57,6 +58,184 @@
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add Organization</span>
             </button>
+        </div>
+    </div>
+
+    <!---Filter section---->
+    <div *ngIf="showFilterBox == true">
+        <!-- for filter selector  -->
+        <div class="relative flex flex-col flex-auto items-center px-3">
+            <div class="w-full">
+                <form>
+                    <!-- Name -->
+                    <div class="mt-2">
+                        <mat-grid-list
+                            gutterSize="16px"
+                            [cols]="isScreenSmall ? 1 : 12"
+                            rowHeight="70px"
+                        >
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Operator"
+                                        [(ngModel)]="selectedOperator"
+                                        name="selectedOperator"
+                                    >
+                                        <mat-option
+                                            *ngFor="let operator of operators"
+                                            [value]="operator"
+                                        >
+                                            {{ operator }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1">
+                                <span
+                                    style="padding-top: 15px; font-weight: bold"
+                                    >When</span
+                                >
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Column"
+                                        [(ngModel)]="selectedColumn"
+                                        name="selectedColumn"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let colName of Select_columnName
+                                            "
+                                            [value]="colName"
+                                        >
+                                            {{ colName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-select
+                                        placeholder="Select Comparison"
+                                        [(ngModel)]="selectedComparison"
+                                        name="selectedComparison"
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let Comparison of comparisons
+                                            "
+                                            [value]="Comparison"
+                                        >
+                                            {{ Comparison }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="3">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <input
+                                        matInput
+                                        name="selectedValue"
+                                        [(ngModel)]="selectedValue"
+                                        #NAME="ngModel"
+                                        [placeholder]="'Enter Value'"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="2">
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    [matMenuTriggerFor]="menu"
+                                >
+                                    Insert Condition
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="generateQuery()"
+                                    >
+                                        Insert Condition
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="insertSubCondition()"
+                                    >
+                                        Insert Sub-condition
+                                    </button>
+                                </mat-menu>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- filter display  -->
+
+        <div *ngFor="let filterLine of filterList; let j = index">
+            <div class="filterborder">
+                <div
+                    *ngFor="let tag of filterLine['tagList']; let i = index"
+                    style="display: flex"
+                >
+                    <div class="filtertag">
+                        <div>{{ tag }}</div>
+                        <mat-icon
+                            class="delete-icon"
+                            (click)="removeTagGroup(j, i)"
+                            >close</mat-icon
+                        >
+                    </div>
+                    <div class="operator">{{ filterLine["tagList1"][i] }}</div>
+                </div>
+            </div>
+            <div>
+                <div class="operator" style="text-align: center">
+                    {{ filterListOperators[j] }}
+                </div>
+            </div>
+        </div>
+
+        <!-- filter display  -->
+
+        <div style="margin: 8px 20px 8px 0px">
+            <div style="text-align: end">
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px"
+                    (click)="resetFilter()"
+                >
+                    <span class="ml-2">Reset</span>
+                </button>
+
+                <button
+                    class="inline-flex ml-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    style="width: 100px"
+                >
+                    <span class="ml-2">Create</span>
+                </button>
+            </div>
         </div>
     </div>
 
