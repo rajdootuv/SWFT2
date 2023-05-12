@@ -32,6 +32,28 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDividerModule } from '@angular/material/divider'; 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; 
+import { DeleteVisitorComponent } from './visitor/delete-visitor/delete-visitor.component';
+import { AddCustomerComponent } from './coustomers/add-customer/add-customer.component';
+import { CoustomersComponent } from './coustomers/coustomers.component';
+import { CustomerContactComponent } from './coustomers/customer-contact/customer-contact.component';
+import { CustomerFilterComponent } from './coustomers/customer-filter/customer-filter.component';
+import { DeleteCustomerComponent } from './coustomers/delete-customer/delete-customer.component';
+import { AddDesignationComponent } from './users/add-designation/add-designation.component';
+import { AddroleComponent } from './users/addrole/addrole.component';
+import { AdduserComponent } from './users/adduser/adduser.component';
+import { DeleteUserComponent } from './users/delete-user/delete-user.component';
+import { TagsComponent } from './tags/tags.component';
+import { SelectOptionsComponent } from './select-options/select-options.component';
+import { VisitorFilterComponent } from './visitor/visitor-filter/visitor-filter.component';
+import { UserFilterComponent } from './users/user-filter/user-filter.component';
+import { UsersComponent } from './users/users.component';
+import { DesignationComponent } from './designation/designation.component';
+import { RolesComponent } from './designation/roles/roles.component';
+import { DetailViewComponent } from './designation/detailview/detailview.component';
+import { DeletedetailsComponent } from './designation/deletedetails/deletedetails.component';
+import { AdddetailsComponent } from './designation/adddetails/adddetails.component';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @NgModule({
     declarations: [
@@ -40,6 +62,26 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         AddvisitorComponent,
         AddvisitsComponent,
         VisitsComponent,
+        AdduserComponent,
+        AddroleComponent,
+        AddDesignationComponent,
+        UserFilterComponent,
+        CoustomersComponent,
+        AddCustomerComponent,
+        CustomerContactComponent,
+        CustomerFilterComponent,
+        TagsComponent,
+        DeleteUserComponent,
+        DeleteCustomerComponent,
+        SelectOptionsComponent,
+        DeleteVisitorComponent,
+        VisitorFilterComponent,
+        UsersComponent,
+        DesignationComponent,
+        RolesComponent,
+        DetailViewComponent,
+        DeletedetailsComponent,
+        AdddetailsComponent
  
     ],
     imports: [
@@ -67,10 +109,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         MatCardModule,
         MatMenuModule,
         GoogleMapsModule,
-
         MatTreeModule,
         MatDividerModule,
         MatSlideToggleModule,
+        MatChipsModule
     ],
 })
 export class AuthenticationModule {}

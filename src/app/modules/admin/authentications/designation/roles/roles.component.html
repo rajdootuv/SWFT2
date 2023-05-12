@@ -1,0 +1,66 @@
+<div class="flex flex-col w-full overflow-auto bg-card">
+  <div class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary">
+
+    <div class="ml-3 text-2xl font-semibold tracking-tight">
+          <span>Manage Roles</span>
+    </div>
+        <button class="ml-auto" mat-icon-button (click)="close()">
+        <mat-icon [svgIcon]="'heroicons_outline:x'" class="text-current"></mat-icon>
+        </button>
+  </div>
+
+</div>
+
+
+<!-- <mat-divider class="mt-6 mb-8"></mat-divider> -->
+
+<form>
+  <div>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <mat-checkbox class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node)"
+          (change)="todoLeafItemSelectionToggle(node)" [color]="'primary'">{{node.item}}</mat-checkbox>
+      </mat-tree-node>
+
+      <!-- <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+            <button mat-icon-button disabled></button>
+            <mat-form-field>
+              <input matInput #itemValue placeholder="New item...">
+            </mat-form-field>
+            <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
+          </mat-tree-node>
+         -->
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
+          (change)="todoItemSelectionToggle(node)" [color]="'primary'">{{node.item}}</mat-checkbox>
+        <!-- <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button> -->
+      </mat-tree-node>
+    </mat-tree>
+
+
+    <div class="footer">
+      <div style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+
+        <button class="ml-auto" mat-button (click)="resettree()">
+          Reset
+        </button>
+        <!-- Save -->
+        <button class="ml-2" mat-flat-button [color]="'primary'" (click)="createtree()">
+          Create
+
+        </button>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</form>

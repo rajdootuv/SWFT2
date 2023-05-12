@@ -1,0 +1,361 @@
+// .inventory-grid {
+//   grid-template-columns: 60px auto 110px 110px 160px 160px 100px 100px 40px;
+
+//   @screen sm {
+//     grid-template-columns: 60px auto 110px 110px 160px 160px 100px 100px 40px;
+//   }
+
+//   @screen md {
+//     grid-template-columns: 60px auto 110px 110px 160px 160px 100px 100px 40px;
+//   }
+
+//   @screen lg {
+//     grid-template-columns: 60px auto 110px 110px 160px 160px 100px 100px 40px;
+//   }
+// }
+
+// .example-headers-align .mat-expansion-panel-header-description {
+//   justify-content: space-between;
+//   align-items: center;
+// }
+
+// .example-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+//   margin-left: 8px;
+// }
+
+// .mdc-data-table__header-cell {
+//   background: rgb(226, 226, 226) !important;
+// }
+
+
+// .style-error {
+//   color: #ffffff !important;
+//   --mdc-snackbar-container-color: #f23a2f !important;
+// }
+
+// .style-success {
+//   color: #ffffff !important;
+//   --mdc-snackbar-container-color: #43a446 !important;
+// }
+
+// .mat-expansion-panel-body {
+//   padding: 0px 10px 15px !important;
+// }
+
+// .selectall .mdc-form-field {
+//   margin: 0px !important;
+//   padding: 0px !important;
+// }
+
+
+.table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.row {
+  display: table-row;
+}
+
+.cell {
+  display: table-cell;
+  padding: 10px;
+  font-weight: 500;
+
+}
+
+.cells {
+  display: table-cell;
+  padding: 10px;
+  // border: 1px solid black;
+  background-color: #989191;
+  color: white;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.header {
+  font-weight: bold;
+}
+
+
+// .progress-label {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   font-size: 16px;
+//   font-weight: bold;
+//   color: white;
+//   text-align: center;
+// }
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.label {
+  text-align: center;
+  flex: 1;
+}
+
+// $primary-color: #ff0000;
+// $border-radius: 100%;
+
+// .apply {
+//     background: $primary-color;
+//     border-radius: $border-radius;
+
+//     &:hover {
+//       opacity: 0.8;
+//     }
+
+//     &:active {
+//       transform: scale(0.9);
+//     }
+//   }
+
+
+
+* {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+}
+
+::ng-deep.example-custom-date-class::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 0.25rem;
+  background: #ff4081;
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+::ng-deep.example-custom-date-class:hover::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 0;
+  top: 24px;
+  min-width: 100px;
+  max-width: 200px;
+  border-radius: 10px;
+  padding: 12px;
+  background: greenyellow;
+  color: white !important;
+  font-size: 14px;
+  z-index: 1;
+}
+
+::ng-deep.todays_class::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 0.25rem;
+  background: #1e88e5;
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+::ng-deep.presentclass::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: green;
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+}
+
+::ng-deep.PresentDays::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: rgb(9, 99, 9);
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+}
+
+::ng-deep.Leavess::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: rgb(48, 21, 201);
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+}
+::ng-deep.absent::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: rgb(21, 201, 117);
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+}
+
+::ng-deep.sundays::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: red;
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+}
+
+::ng-deep.disabled-date::after {
+  counter-increment: section;
+  content: attr(aria-label);
+  border-radius: 3.25rem;
+  background: rgb(183, 177, 177);
+  color: white !important;
+  height: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2rem;
+  margin: 0.05rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  // background-color: blue;
+      padding: 36px;
+  background-clip: content-box;
+  // color: gray;
+  pointer-events: none;
+  cursor: default;
+}
+
+::ng-deep.disabled-date > .mat-calendar-body-cell-content,
+::ng-deep.normal > .mat-calendar-body-cell-content,
+::ng-deep.example-custom-date-class > .mat-calendar-body-cell-content,
+::ng-deep.sundays> .mat-calendar-body-cell-content,
+::ng-deep.absent> .mat-calendar-body-cell-content,
+
+::ng-deep.Leavess> .mat-calendar-body-cell-content,
+::ng-deep.PresentDays> .mat-calendar-body-cell-content,
+::ng-deep.todays_class > .mat-calendar-body-cell-content {
+  padding-bottom: 1.2rem;
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.mat-calendar-body-cell::after {
+  content: "";
+  position: absolute !important ;
+  top:5% !important ;
+  left: 0 !important ;
+  z-index: 0 !important ;
+  box-sizing: border-box !important ;
+  display: block !important ;
+  height: 32% !important ;
+  width: 39% !important ;
+  margin: 32px 0px 0px 39px !important ;
+
+}
+
+

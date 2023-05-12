@@ -1,0 +1,117 @@
+<div class="table-wrapper">
+    <table mat-table  class="mat-elevation-z8" matSort style="width: 100%;">
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef style="width: 80px;">
+              
+            <div style="display: flex;">
+              <div  matTooltip="Filter" (click)="showMenu = !showMenu" matTooltipPosition="above" [matMenuTriggerFor]="menu">
+                <mat-icon (click)="is_showMenuFilter = !is_showMenuFilter"
+                  style="margin-top: 6px;margin-right: 7px;">sort</mat-icon>
+              </div>
+            
+              <div style="position: relative;right: 1px;">
+                <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()" [color]="'primary'">
+                </mat-checkbox>
+              </div>
+            </div>
+
+            <mat-menu  #menu="matMenu" [overlapTrigger]="false" [hasBackdrop]="true" [class.menu-visible]="showMenu" (closed)="showMenu = false">
+              <div (click)="stopClickPropagation($event)">
+                <div id="filter-box" style="z-index: 999;">
+                  <div >
+                      <label *ngFor="let task of tasks;let i = index">
+                          <!-- <input type="checkbox" (ngModelChange)="onChange($event)" name="Full_Name">  -->
+                          <mat-checkbox  [checked]="allComplete" [color]="'primary'"
+                              [indeterminate]="someComplete()" (change)="setAll($event.checked, task)">
+                          </mat-checkbox>
+                          <span style="color: #8d8d8d;"> {{task}}</span>
+                      </label>
+              
+                  </div>
+                </div>
+              </div>
+            </mat-menu>
+              
+            </th>
+            <td mat-cell *matCellDef="let row" >
+              <mat-checkbox (click)="$event.stopPropagation()" style="position: relative;right: -32px;"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)"
+                            [color]="'primary'">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+      
+      
+        <!-- designation Column -->
+        <ng-container matColumnDef="designation">
+         
+          <th mat-header-cell *matHeaderCellDef style="width: 224px; text-align:center;">
+           <div style="display:flex">
+        
+            
+             <span style="margin-top: 2px;">Designation </span>
+            <span mat-sort-header sortActionDescription="Sort by NAME" style="margin:7px 0 0 6px"></span>
+          </div>
+          
+        <!-- </div> -->
+          </th>
+          <td mat-cell *matCellDef="let element" > Designation 1</td>
+        </ng-container>
+        
+      
+        <!-- Email Column -->
+        <ng-container matColumnDef="roles" >
+        <th mat-header-cell *matHeaderCellDef style="width: 180px; text-align:center;">
+          <div style="display:flex">
+            <span (click)="showMenu = !showMenu" matTooltipPosition="above" [matMenuTriggerFor]="menu"> <mat-icon style="font-size: 18px;margin: 0 6px 0 0;">filter_alt</mat-icon> </span>
+            <span style="margin-top: 2px;"> Roles </span>
+           <span mat-sort-header sortActionDescription="Sort by EMAIL" style="margin:7px 0 0 6px"></span>
+         </div>
+
+         <mat-menu  #menu="matMenu" [overlapTrigger]="false" [hasBackdrop]="true" [class.menu-visible]="showMenu" (closed)="showMenu = false">
+          <div (click)="stopClickPropagation($event)">
+            <div id="filter-box">
+              <div style="border-radius: 10px;border: 1px solid #d7d7d7;padding: 5px 0px 5px 6px;">
+                  <input type="search" placeholder="Search...">
+                  <span>
+                      <mat-icon style="position: relative;top: 4px;" class="icon-size-5" [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                  </span>
+              </div>
+              <div style="margin: 10px 1px 1px 8px;">
+                  <label>
+                      <input type="checkbox" name="filter-1"> 
+                      <span>EmailID 1</span> 
+                  </label>
+                  <label>
+                      <input type="checkbox" name="filter-2"> 
+                      <span>EmailID 3</span> 
+                  </label>
+                  <label>
+                      <input type="checkbox" name="filter-3">
+                      <span>EmailID 3</span> 
+                  </label>
+              </div>
+          
+            </div>
+          </div>
+        </mat-menu>
+
+
+         
+         </th>
+          <td mat-cell *matCellDef="let element" > Role1 </td>
+        </ng-container>
+      
+        
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="selection.toggle(row)">
+        </tr>
+      </table>
+</div>

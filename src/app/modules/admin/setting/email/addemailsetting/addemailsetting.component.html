@@ -1,0 +1,107 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form #form="ngForm">
+                       
+                        <div class="mt-2 ">
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+
+
+                                 <!-- Name -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label> Name</mat-label>
+                                        <input [(ngModel)]="DATA.NAME" matInput name="Name" [placeholder]="'Name'" #name="ngModel" required/>
+                                        <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+                                            Please Enter Valid Name
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Email Provider -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label>Email Provider</mat-label>
+                                        <mat-select [(ngModel)]="DATA.EMAIL_PROVIDER" name="EMAIL_PROVIDER" #email_pprovider="ngModel" required>
+                                            <ng-container *ngFor="let vendor of emailproviders">
+                                                <mat-option [value]="vendor">
+                                                    {{vendor}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error *ngIf="email_pprovider.invalid && (email_pprovider.dirty || email_pprovider.touched)">
+                                            Please select Email Provider
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Email -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label>Email</mat-label>
+                                        <input [(ngModel)]="DATA.EMAIL" matInput name="EMAIL"
+                                            [placeholder]="'Email ID'" #email="ngModel" required/>
+                                            <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                                                Please Enter Valid Email
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+                               
+                                <!-- password -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label>Password</mat-label>
+                                        <input id="password" matInput type="password" [(ngModel)]="DATA.PASSWORD" name="password"
+                                            #passwordField required>
+                                        <button mat-icon-button type="button"
+                                            (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                                            matSuffix>
+                                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                                                [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                                                [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)">
+                                            Please Enter Valid password
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </mat-grid-tile>
+
+                                <!-- OWNER -->
+
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                        <mat-label>OWNER</mat-label>
+                                        <input [(ngModel)]="DATA.OWNER" matInput name="OWNER" [placeholder]="'Owner'" #owner="ngModel" required/>
+                                        <mat-error *ngIf="owner.invalid && (owner.dirty || owner.touched)">
+                                            Please Enter Valid Owner Name
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+
+        <button class="ml-auto" mat-button (click)="closeDrawer(form)">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button class="ml-2" mat-flat-button [color]="'primary'" (click)="Save(form)">
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
+

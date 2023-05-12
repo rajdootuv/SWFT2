@@ -1,0 +1,162 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <!-- Name -->
+                        <div class="mt-2">
+                            <mat-grid-list
+                            gutterSize="16px"
+                            [cols]="isScreenSmall ? 1 : 3"
+                            rowHeight="100px"
+                        >
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label> Full Name</mat-label>
+                                    <input
+                                    matInput
+                                    name="NAME"
+                                    [(ngModel)]="
+                                        DATA.FULLNAME
+                                    "
+                                    [placeholder]="'Full Name'"
+                                />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <!-- Emails -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label> Email Id</mat-label>
+                                    <mat-icon
+                                        matPrefix
+                                        class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_solid:mail'"
+                                    ></mat-icon>
+                                    <input
+                                        matInput
+                                        name="DATA.EMAILID"
+                                        [(ngModel)]="DATA.EMAILID"
+                                        [placeholder]="'Email address'"
+                                        [spellcheck]="false"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label> Contact No.</mat-label>
+                                    <input
+                                        matInput maxlength="10" minlength="10"
+                                        name="CONTACTNO" pattern="^[6-9][0-9]{9}$"
+                                        [(ngModel)]="DATA.CONTACTNO"
+                                        [placeholder]="'Phone'"
+                                    />
+                                    <mat-select
+                                        class="mr-1"
+                                        name="Code"
+                                        style="width:60px;"
+                                        matPrefix
+                                        [(ngModel)]="DATA.CODE"
+                                    >
+                                        <ng-container
+                                            *ngFor="let country of countries"
+                                        >
+                                            <mat-option [value]="country.code">
+                                                {{ country.code }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label> Company Name</mat-label>
+                                    <input
+                                        matInput
+                                        name="COMPANY"
+                                        [(ngModel)]="
+                                            DATA.COMPANY
+                                        "
+                                        [placeholder]="'Company Name'"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label> Visited On</mat-label>
+
+                                    <input
+                                        matInput
+                                        name="VISITEDON"
+                                        [matDatepicker]="birthdayDatepicker"
+                                        [(ngModel)]="DATA.VISITEDON"
+                                        [placeholder]="'Date Of Visit'"
+                                    />
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="birthdayDatepicker"
+                                    >
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker
+                                        #birthdayDatepicker
+                                    ></mat-datepicker>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            
+                        </mat-grid-list>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <!-- Delete -->
+        <!-- <button
+            mat-button
+            [color]="'warn'"
+            [matTooltip]="'Delete'"
+            (click)="deleteContact()"
+        >
+            Delete
+        </button> -->
+        <!-- Cancel -->
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save()"
+        >
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
+

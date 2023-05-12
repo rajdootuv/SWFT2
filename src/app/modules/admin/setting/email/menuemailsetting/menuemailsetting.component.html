@@ -1,0 +1,524 @@
+<div class="flex flex-col p-6">
+    <mat-accordion class="mt-1" [multi]="true" #accordion="matAccordion">
+        <ng-container>
+            <!-- Primary Information -->
+
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight">Primary Information</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="mt-2 ">
+                    <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+                        <mat-grid-tile [colspan]="1">
+
+                            <!-- Name-->
+
+                            <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                <mat-label> Name</mat-label>
+                                <input [(ngModel)]="DATA1.NAME" matInput name="Name" [placeholder]="'Name'" disabled />
+                            </mat-form-field>
+                        </mat-grid-tile>
+
+                        <!-- Email provider -->
+
+                        <mat-grid-tile [colspan]="1">
+                            <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                <mat-label>Email Provider</mat-label>
+                                <mat-select [(ngModel)]="DATA1.EMAIL_PROVIDER" name="EMAIL_PROVIDER" disabled>
+                                    <ng-container *ngFor="let vendor of emailproviders">
+                                        <mat-option [value]="vendor">
+                                            {{vendor}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
+                        <!-- email -->
+                        <mat-grid-tile [colspan]="1">
+                            <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                <mat-label>Email</mat-label>
+                                <input [(ngModel)]="DATA1.EMAIL" matInput name="EMAIL" [placeholder]="'Email ID'"
+                                    disabled />
+
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <mat-grid-list gutterSize="16px" [cols]="isScreenSmall ? 1 : 3" rowHeight="100px">
+
+                        <!-- password-->
+
+                        <mat-grid-tile [colspan]="1">
+                            <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                <mat-label>Password</mat-label>
+                                <input id="password" matInput type="password" [(ngModel)]="DATA1.PASSWORD"
+                                    #passwordField disabled>
+                                <button mat-icon-button type="button"
+                                    (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                                    matSuffix>
+                                    <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                                        [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                                    <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                                        [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                                </button>
+                                <mat-error>
+                                    Password is required
+                                </mat-error>
+                            </mat-form-field>
+
+
+                        </mat-grid-tile>
+
+                        <!-- owner -->
+
+                        <mat-grid-tile [colspan]="1">
+                            <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                <mat-label>OWNER</mat-label>
+                                <input [(ngModel)]="DATA1.OWNER" matInput name="OWNER" [placeholder]="'Owner'"
+                                    disabled />
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="true" style="padding: 0px !important">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight">Related Information</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <mat-grid-list [cols]="isScreenSmall ? 1 : 3" rowHeight="260px">
+                    <!-- first list -->
+                    <mat-grid-tile>
+                        <div style="
+                                height: 100%;
+                                width: 100%;
+                                padding: 0px 5px;
+                            ">
+                            <mat-grid-list cols="1" rowHeight="40px">
+                                <mat-grid-tile>
+                                    <button mat-flat-button style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        ">
+                                        Order
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div class="space-y-2" style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            " cdkTextareaAutosize>
+
+                                            <!-- Card 1 -->
+
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+
+                                             <!-- Card 1 End -->
+                                            <br />
+
+                                            <!-- Card 2 -->
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+
+                                            <!-- Card 2 End-->
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- first list -->
+
+                    <!-- second list -->
+                    <mat-grid-tile>
+                        <div style="
+                                height: 100%;
+                                width: 100%;
+                                padding: 0px 5px;
+                            ">
+                            <mat-grid-list cols="1" rowHeight="40px">
+                                <mat-grid-tile>
+                                    <button mat-flat-button style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        ">
+                                        Order
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div class="space-y-2" style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            " cdkTextareaAutosize>
+
+                                            <!-- card 1 -->
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <!-- card 1 end -->
+                                            <br />
+
+                                            <!-- card 2  -->
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <!-- card 2 end  -->
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- second list -->
+
+                    <!-- third list -->
+                    <mat-grid-tile>
+                        <div style="
+                                height: 100%;
+                                width: 100%;
+                                padding: 0px 5px;
+                            ">
+                            <mat-grid-list cols="1" rowHeight="40px">
+                                <mat-grid-tile>
+                                    <button mat-flat-button style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        ">
+                                        Order
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div class="space-y-2" style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            " cdkTextareaAutosize>
+
+                                            <!-- card 1 -->
+                                            
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <!-- card 1 end  -->
+
+                                            <br />
+                                            <!-- card 2 start  -->
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list [cols]="7" rowHeight="30px">
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <mat-checkbox style="
+                                                                margin-top: -8px;
+                                                            "></mat-checkbox>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="5" style="
+                                                            padding: 5px !important;
+                                                        ">
+                                                        <b>Order Name</b>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1">
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Edit Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon [matTooltip]="
+                                                                    'Delete Information'
+                                                                " class="icon-size-5" [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="6">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Order Type
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Delivery
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile [colspan]="2">
+                                                        Customer
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <!-- card 2 end  -->
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- third list -->
+                </mat-grid-list>
+            </mat-expansion-panel>
+
+        </ng-container>
+    </mat-accordion>
+</div>
+
+<!-- Actions -->
+<div *ngIf="
+        DATA1.ID != undefined &&
+        DATA1.ID > 0 &&
+        deleteShow == true
+    " style="width: 100%; position: absolute; bottom: 0px; right: 6%"
+    class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+    <div style="text-align: center; width: 100%">
+        <div>
+            To delete the above informartion, Please solve below
+            question.
+        </div>
+        <span style="margin-right: 10px">{{ value }} + {{ value2 }} =
+        </span>
+        <mat-form-field style="width: 110px" [subscriptSizing]="'dynamic'">
+            <input matInput type="number" min="0" name="Answer" style="width: 110px !important" [(ngModel)]="answer"
+                [placeholder]="'Answer'" />
+        </mat-form-field>
+        <!-- Delete -->
+        <button class="ml-2" mat-flat-button [color]="'warn'" [matTooltip]="'Delete'" (click)="deleteInfo()">
+            Delete
+        </button>
+    </div>
+</div>

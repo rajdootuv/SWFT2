@@ -3,16 +3,49 @@
 >
     <!-- Header -->
     <div
-        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-3 md:px-3 sm:px-3 border-b"
     >
         <!-- Loader -->
         <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-2xl font-extrabold tracking-tight">Manage Floors</div>
+        <div
+            class="text-2xl font-extrabold tracking-tight"
+            style="margin-bottom: 10px"
+        >
+            <div style="justify-content: space-between; display: flex">
+                <span> Manage Floors </span>
+                <!-- Add floor button -->
+                <button
+                    *ngIf="isScreenSmall"
+                    class="ml-2"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="add()"
+                    (click)="newfloorDrawer2.toggle()"
+                >
+                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                    <span class="ml-2 mr-1">Add</span>
+                </button>
+            </div>
+        </div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-0 sm:mt-0 sm:ml-4">
+            <!-- Select all checkboxes -->
+            <label style="width: 180px" *ngIf="isScreenSmall">
+                <input
+                    type="checkbox"
+                    name="example_checkbox"
+                    (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                />
+                <span class="checkbox-label" *ngIf=" isAllSelected()">Deselect All</span>
+                <span class="checkbox-label" *ngIf=" !isAllSelected()">Select All</span>
+            </label>
+
+       
             <!-- Search -->
             <mat-form-field
                 class="fuse-mat-dense fuse-mat-rounded min-w-50"
@@ -30,12 +63,45 @@
                     [placeholder]="'Search floors'"
                 />
             </mat-form-field>
+
+            <!-- column selector -->
+            <button
+                *ngIf="isScreenSmall"
+                mat-icon-button
+                style="width: 20px !important; margin-left: 10px"
+                [matMenuTriggerFor]="menu23"
+                aria-label="Menu"
+            >
+                <mat-icon>sort</mat-icon>
+            </button>
+            <mat-menu #menu23="matMenu">
+                <span class="example-list-section">
+                    <ul>
+                        <li
+                            *ngFor="
+                                let col of floorsTableColumns2;
+                                let i = index
+                            "
+                        >
+                            <mat-checkbox
+                                [(ngModel)]="floorsTableColumns2[i]['SHOW']"
+                                name="column{{ i }}"
+                                (ngModelChange)="updateAllComplete($event, i)"
+                            >
+                                {{ col.NAME }}
+                            </mat-checkbox>
+                        </li>
+                    </ul>
+                </span>
+            </mat-menu>
+
             <!-- filter button -->
             <button
                 class="ml-2"
                 mat-flat-button
-                [color]="'accent'" (click)="toggleFilterBox()"
-                style="width: 42px !important; min-width: 42px !important"
+                [color]="'accent'"
+                (click)="toggleFilterBox()"
+                style="width: 35px !important; min-width: 35px !important"
             >
                 <mat-icon
                     class="icon-size-5"
@@ -44,6 +110,7 @@
             </button>
             <!-- Add floor button -->
             <button
+                *ngIf="!isScreenSmall"
                 class="ml-2"
                 mat-flat-button
                 [color]="'primary'"
@@ -57,7 +124,7 @@
     </div>
 
     <!---Filter section---->
-    <div *ngIf="showFilterBox==true">
+    <div *ngIf="showFilterBox == true">
         <!-- for filter selector  -->
         <div class="relative flex flex-col flex-auto items-center px-3">
             <div class="w-full">
@@ -65,16 +132,17 @@
                     <!-- Name -->
                     <div class="mt-2">
                         <mat-grid-list
-                            gutterSize="16px"
-                            [cols]="isScreenSmall ? 1 : 12"
-                            rowHeight="70px"
+                            gutterSize="4px"
+                            [cols]="12"
+                            [rowHeight]="isScreenSmall ? '60px' : '70px'"
                         >
-                            <mat-grid-tile [colspan]="2">
+                            <mat-grid-tile [colspan]="isScreenSmall ? 3 : 2">
                                 <mat-form-field
                                     class="w-full"
                                     [subscriptSizing]="'dynamic'"
                                 >
-                                    <mat-select placeholder="Select Operator"
+                                    <mat-select
+                                        placeholder="Select Operator"
                                         [(ngModel)]="selectedOperator"
                                         name="selectedOperator"
                                     >
@@ -87,16 +155,19 @@
                                     </mat-select>
                                 </mat-form-field>
                             </mat-grid-tile>
-                            <mat-grid-tile [colspan]="1">
-                                <span style="padding-top: 15px;
-                                font-weight: bold;">When</span>
-                            </mat-grid-tile>
                             <mat-grid-tile [colspan]="2">
+                                <span
+                                    style="padding-top: 15px; font-weight: bold"
+                                    >When</span
+                                >
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="isScreenSmall ? 7 : 2">
                                 <mat-form-field
                                     class="w-full"
                                     [subscriptSizing]="'dynamic'"
                                 >
-                                    <mat-select placeholder="Select Column"
+                                    <mat-select
+                                        placeholder="Select Column"
                                         [(ngModel)]="selectedColumn"
                                         name="selectedColumn"
                                     >
@@ -112,12 +183,13 @@
                                 </mat-form-field>
                             </mat-grid-tile>
 
-                            <mat-grid-tile [colspan]="2">
+                            <mat-grid-tile [colspan]="isScreenSmall ? 4 : 2">
                                 <mat-form-field
                                     class="w-full"
                                     [subscriptSizing]="'dynamic'"
                                 >
-                                    <mat-select placeholder="Select Comparison"
+                                    <mat-select
+                                        placeholder="Select Comparison"
                                         [(ngModel)]="selectedComparison"
                                         name="selectedComparison"
                                     >
@@ -133,7 +205,7 @@
                                 </mat-form-field>
                             </mat-grid-tile>
 
-                            <mat-grid-tile [colspan]="3">
+                            <mat-grid-tile [colspan]="isScreenSmall ? 8 : 3">
                                 <mat-form-field
                                     class="w-full"
                                     [subscriptSizing]="'dynamic'"
@@ -148,7 +220,7 @@
                                 </mat-form-field>
                             </mat-grid-tile>
 
-                            <mat-grid-tile [colspan]="2">
+                            <mat-grid-tile [colspan]="isScreenSmall ? 12 : 2">
                                 <button
                                     mat-raised-button
                                     color="primary"
@@ -180,7 +252,7 @@
         <!-- filter display  -->
 
         <div *ngFor="let filterLine of filterList; let j = index">
-            <div class="filterborder" >
+            <div class="filterborder">
                 <div
                     *ngFor="let tag of filterLine['tagList']; let i = index"
                     style="display: flex"
@@ -189,15 +261,17 @@
                         <div>{{ tag }}</div>
                         <mat-icon
                             class="delete-icon"
-                            (click)="removeTagGroup(j,i)"
+                            (click)="removeTagGroup(j, i)"
                             >close</mat-icon
                         >
                     </div>
-                    <div class="operator">{{ filterLine['tagList1'][i] }}</div>
+                    <div class="operator">{{ filterLine["tagList1"][i] }}</div>
                 </div>
             </div>
             <div>
-                <div class="operator" style="text-align: center;">{{ filterListOperators[j] }}</div>
+                <div class="operator" style="text-align: center">
+                    {{ filterListOperators[j] }}
+                </div>
             </div>
         </div>
 
@@ -209,7 +283,8 @@
                     class="inline-flex ml-3"
                     mat-flat-button
                     [color]="'primary'"
-                    style="width: 100px" (click)="resetFilter()"
+                    style="width: 100px"
+                    (click)="resetFilter()"
                 >
                     <span class="ml-2">Reset</span>
                 </button>
@@ -234,8 +309,9 @@
         >
             <ng-container *ngIf="floors$ | async as floors">
                 <ng-container *ngIf="floors.length > 0; else noFloors">
-                    <div class="overflow-x-auto mx-6">
+                    <div class="overflow-x-auto mx-3">
                         <table
+                            *ngIf="isScreenSmall == false"
                             class="w-full bg-transparent"
                             mat-table
                             matSort
@@ -867,6 +943,185 @@
                                 "
                             ></tr>
                         </table>
+
+                        <div
+                            *ngIf="isScreenSmall == true"
+                            style="width: 100%; padding: 0px 5px"
+                        >
+                            <div
+                                class="space-y-2"
+                                style="
+                                    width: 100%;
+                                    overflow-y: scroll;
+                                    height: 65vh;
+                                    padding: 5px;
+                                "
+                                cdkTextareaAutosize
+                            >
+                                <mat-card
+                                    *ngFor="
+                                        let data of recentTransactionsDataSource.data
+                                    "
+                                    style="padding-top: 7px; margin-bottom: 5px"
+                                >
+                                    <mat-grid-list [cols]="7" rowHeight="30px">
+                                        <mat-grid-tile [colspan]="1">
+                                            <mat-checkbox
+                                                name="selectall{{ data.ID }}"
+                                                (click)="
+                                                    $event.stopPropagation()
+                                                "
+                                                (click)="showMultiBox()"
+                                                (change)="
+                                                    $event
+                                                        ? selection.toggle(data)
+                                                        : null
+                                                "
+                                                [checked]="
+                                                    selection.isSelected(data)
+                                                "
+                                                [aria-label]="
+                                                    checkboxLabel(data)
+                                                "
+                                            >
+                                            </mat-checkbox>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile
+                                            class="detailed_card_content"
+                                            [colspan]="4"
+                                            style="padding: 5px !important"
+                                        >
+                                            <b>{{ data.NAME }}</b>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile [colspan]="2">
+                                            <span
+                                                style="margin-right: 3px"
+                                                (click)="edit(data)"
+                                                (click)="
+                                                    newfloorDrawer2.toggle()
+                                                "
+                                            >
+                                                <mat-icon
+                                                    [matTooltip]="
+                                                        'Edit Information'
+                                                    "
+                                                    class="icon-size-5"
+                                                    [svgIcon]="
+                                                        'heroicons_solid:pencil-alt'
+                                                    "
+                                                ></mat-icon>
+                                            </span>
+                                            <span
+                                                style="margin-right: 3px"
+                                                (click)="details(data)"
+                                                (click)="floorDrawer2.toggle()"
+                                                ><mat-icon
+                                                    class="icon-size-5"
+                                                    [matTooltip]="
+                                                        'View Information'
+                                                    "
+                                                    aria-hidden="false"
+                                                    aria-label="Details"
+                                                    fontIcon="menu"
+                                                ></mat-icon
+                                            ></span>
+                                            <span
+                                                (click)="detailsDelete(data)"
+                                                (click)="floorDrawer2.toggle()"
+                                            >
+                                                <mat-icon
+                                                    [matTooltip]="
+                                                        'Delete Information'
+                                                    "
+                                                    class="icon-size-5"
+                                                    [svgIcon]="
+                                                        'heroicons_outline:trash'
+                                                    "
+                                                ></mat-icon>
+                                            </span>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile
+                                            [colspan]="1"
+                                        ></mat-grid-tile>
+                                        <mat-grid-tile
+                                            class="detailed_card_content"
+                                            [colspan]="6"
+                                        >
+                                            {{ data.LOCATION }}
+                                        </mat-grid-tile>
+                                        <mat-grid-tile
+                                            [colspan]="1"
+                                        ></mat-grid-tile>
+                                        <mat-grid-tile
+                                            class="detailed_card_content"
+                                            [colspan]="2"
+                                        >
+                                            {{ data.LENGTH }}
+                                            <span
+                                                *ngIf="
+                                                    data.LENGTH != undefined &&
+                                                    data.LENGTH != null &&
+                                                    data.LENGTH_UNIT == 'F'
+                                                "
+                                                >Feet
+                                            </span>
+                                            <span
+                                                *ngIf="
+                                                    data.LENGTH != undefined &&
+                                                    data.LENGTH != null &&
+                                                    data.LENGTH_UNIT == 'M'
+                                                "
+                                                >Meter
+                                            </span>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile
+                                            class="detailed_card_content"
+                                            [colspan]="2"
+                                        >
+                                            {{ data.WIDTH }}
+                                            <span
+                                                *ngIf="
+                                                    data.WIDTH != undefined &&
+                                                    data.WIDTH != null &&
+                                                    data.WIDTH_UNIT == 'F'
+                                                "
+                                                >Feet
+                                            </span>
+                                            <span
+                                                *ngIf="
+                                                    data.WIDTH != undefined &&
+                                                    data.WIDTH != null &&
+                                                    data.WIDTH_UNIT == 'M'
+                                                "
+                                                >Meter
+                                            </span>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile
+                                            class="detailed_card_content"
+                                            [colspan]="2"
+                                        >
+                                            {{ data.HEIGHT }}
+                                            <span
+                                                *ngIf="
+                                                    data.HEIGHT != undefined &&
+                                                    data.HEIGHT != null &&
+                                                    data.HEIGHT_UNIT == 'F'
+                                                "
+                                                >Feet
+                                            </span>
+                                            <span
+                                                *ngIf="
+                                                    data.HEIGHT != undefined &&
+                                                    data.HEIGHT != null &&
+                                                    data.HEIGHT_UNIT == 'M'
+                                                "
+                                                >Meter
+                                            </span>
+                                        </mat-grid-tile>
+                                    </mat-grid-list>
+                                </mat-card>
+                            </div>
+                        </div>
                     </div>
 
                     <mat-paginator

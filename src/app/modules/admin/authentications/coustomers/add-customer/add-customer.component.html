@@ -1,0 +1,471 @@
+<div class="flex flex-col p-6" style="height: 900px;overflow: auto;">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form>
+                        <!-- Name -->
+                        <div class="mt-2">
+                            <mat-grid-list
+                            gutterSize="16px"
+                            [cols]="isScreenSmall ? 1 : 3"
+                            rowHeight="100px"
+                        >
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Full Name</mat-label>
+                                    <input
+                                    matInput
+                                    name="NAME"
+                                    [(ngModel)]="
+                                        DATA.NAME
+                                    "
+                                    [placeholder]="'Full Name'"
+                                    required pattern="[a-z]+(\s[a-z]+){2,3}$" #fullNameInput="ngModel"
+                                />
+                                <mat-error style="font-size:11px" *ngIf="fullNameInput.invalid && fullNameInput.touched">
+                                    Please Enter a full name Like 'John Doe Peterson'. 
+                                 </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <!-- Emails -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Email Id</mat-label>
+                                    <mat-icon
+                                        matPrefix
+                                        class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_solid:mail'"
+                                    ></mat-icon>
+                                    <input
+                                        matInput
+                                        name="DATA.EMAIL_ID"
+                                        [(ngModel)]="DATA.EMAIL_ID"
+                                        [placeholder]="'Email address'"
+                                        [spellcheck]="false"
+                                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"  #emailInput="ngModel"
+                                    />
+
+                                    <mat-error style="font-size:11px" *ngIf="emailInput.invalid && emailInput.touched">
+                                        Please enter a valid email address.
+                                      </mat-error>
+
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            
+                           
+                              <mat-grid-tile [colspan]="1" style="margin-top:33px">
+                                <div>
+                                    <div>
+                                        <!-- <mat-label><span style="color:red;">*</span>Mobile No</mat-label> -->
+                                        <mat-form-field class="flex-auto w-full">
+                                            <mat-label ><span style="color:red;">*</span>Mobile No</mat-label>
+                                            <input matInput maxlength="10" minlength="10" name="MOBILE_NO"  pattern="^[6-9]\d{9}$" required #mobileno="ngModel"
+                                      [(ngModel)]="DATA.MOBILE_NO" [placeholder]="'Phone'" />
+                                            <!-- <button mat-icon-button color="warn" (click)="removeInput(i)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button> -->
+                                           
+                                        </mat-form-field>
+                                        <span style="position: relative; bottom: 20px;" >
+                                            <mat-checkbox class="ml-4" name="whatsapp" (click)="is_WhatsappNO = !is_WhatsappNO">
+                                                <span>This number is on WhatsApp</span>
+                                              </mat-checkbox>
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+
+                            <!-- Birth Date  -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Date Of Birth</mat-label>
+
+                                    <input
+                                        matInput
+                                        name="DOB"
+                                        [matDatepicker]="birthdayDatepicker"
+                                        [(ngModel)]="DATA.DOB"
+                                        [placeholder]="'Date Of Birth'"
+                                        required #birth_date="ngModel"
+                                    />
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="birthdayDatepicker"
+                                    >
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker
+                                        #birthdayDatepicker
+                                    ></mat-datepicker>
+
+                                    <mat-error style="font-size:11px" *ngIf="birth_date.invalid && birth_date.touched">
+                                        Please Select Birth date.
+                                      </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <!-- componey name  -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Companey Name</mat-label>
+                                    <input
+                                        matInput
+                                        name="USER_NAME"
+                                        [(ngModel)]="
+                                            DATA.COMPANEY_NAME
+                                        "  required #companeyName="ngModel"
+                                        [placeholder]="'Companey Name'"
+                                    />
+
+                                    <mat-error style="font-size:11px" *ngIf="companeyName.invalid && companeyName.touched">
+                                        Please Enter Companey Name.
+                                      </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <!-- user Name -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field *ngIf="is_WhatsappNO"
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>WhatsApp No</mat-label>
+                                    <input
+                                        matInput
+                                        name="USER_NAME"
+                                        [(ngModel)]="
+                                            DATA.USERNAME
+                                        "
+                                        [placeholder]="'Companey Name'"
+                                    />
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+
+<!-- password  -->
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Password</mat-label>
+                                  
+                                    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="DATA.PASSWORD" name="PASSWORD" pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$" #passwordInput="ngModel" required>
+                                    <mat-error style="font-size:11px" *ngIf="passwordInput.invalid && passwordInput.touched">
+                                       Enter Password at list 8 characters 
+                                    </mat-error>
+                                    
+                                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                      [attr.aria-pressed]="hide">
+                                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+
+                            <mat-grid-tile [colspan]="1">
+                                <mat-form-field
+                                    class="flex-auto w-full"
+                                    [subscriptSizing]="'dynamic'"
+                                >
+                                    <mat-label><span style="color:red;">*</span>Confirm Password</mat-label>
+                                    
+
+                                    <input matInput [type]="hide1 ? 'password' : 'text'" [(ngModel)]="DATA.CONF_PASSWORD" name="CONF_PASSWORD"
+                                        placeholder="Confirm Password" required [pattern]="DATA.PASSWORD" #confpass="ngModel">
+                                    <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'"
+                                        [attr.aria-pressed]="hide1">
+                                        <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                    
+
+                                    <mat-error style="font-size: 11px;" *ngIf="confpass.invalid && confpass.touched">
+                                        password not match
+                                      </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                           
+
+                            <mat-grid-tile [colspan]="1">
+                                <div class="flex items-center justify-center w-32 h-32 rounded-full ring-4 ring-bg-card">
+                                  <img style="height: 130px;"
+                                    [src]="DATA.LOGO ? DATA.LOGO : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhdbyLuigk_nkMr3nDCb0j0zYexX2Pm6Iz-DAg9TMFC7BdtD954OvPXkoeMSVs7IfcMxM&usqp=CAU'"
+                                    id="avatar-preview" alt="Preview">
+                                
+                                  <div *ngIf="!is_ChooseOptions" class=" items-center ml-auto mb-1" style="position:relative;left:20px;top:11px">
+                                    <button mat-stroked-button (click)="toggleEdit($event)">
+                                      <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                                      <span class="ml-2">Edit</span>
+                                    </button>
+                                  </div>
+                                  <div style="display: flex;margin: 10px 0px 0px 28px" *ngIf="is_ChooseOptions">
+                                
+                                    <div>
+                                      <input
+                                        id="avatar-file-input"
+                                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                        type="file"
+                                        [multiple]="false"
+                                        [accept]="'image/jpeg, image/png'"
+                                        #avatarFileInput
+                                        (change)="previewImage($event)">
+                                      <label
+                                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                        for="avatar-file-input"
+                                        matRipple>
+                                        <mat-icon
+                                          class="text-black"
+                                          [svgIcon]="'heroicons_outline:camera'">camera</mat-icon>
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <button
+                                        mat-icon-button
+                                        (click)="removeAvatar()">
+                                        <mat-icon
+                                          class="text-black"
+                                          [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-grid-tile>
+                              
+
+
+                            <mat-grid-tile [colspan]="1">
+                                <div class="socialMediaInput">
+                                    <mat-label><span style="color:red;">*</span>Social Media Url's</mat-label>
+                                    <div *ngFor="let input of inputs; let i = index" class="flex">
+                                        <mat-form-field class="flex-auto w-full">
+                                            <!-- <mat-label><span style="color:red;">*</span>Social Media Url's</mat-label> -->
+                                            <input matInput  [(ngModel)]="input.value" name="Input" style="margin-bottom: 5px;">
+                                            <button [disabled]="inputs.length === 1" mat-icon-button color="warn"  (click)="removeInput(i)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                        <span (click)="addInput()" class="addIcon">
+                                            <!-- <mat-icon>add</mat-icon> -->
+                                            <mat-icon>add_circle</mat-icon>
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Website </mat-label>
+                                    <span matPrefix>https://</span>
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.WEBSITE_URL"
+                                      required #websiteurl="ngModel"
+                                    />
+                                    <mat-error style="font-size:11px" *ngIf="websiteurl.invalid && websiteurl.touched">
+                                        Please Enter User Name.
+                                      </mat-error>
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+
+
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Tax/Vat Number </mat-label>
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.TAX_NUMBER"
+                                      required #vatnumber="ngModel"
+                                    />
+                                    <mat-error style="font-size:11px" *ngIf="vatnumber.invalid && vatnumber.touched">
+                                        Please Enter User Name.
+                                      </mat-error>
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Address Line 1 </mat-label>
+                                   
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.ADDRESS_LINE1"
+                                      required #address1="ngModel"
+                                    />
+
+                                    <mat-error style="font-size:11px" *ngIf="address1.invalid && address1.touched">
+                                        Please Enter User Name.
+                                      </mat-error>
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Address Line 2 </mat-label>
+                                   
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.ADDRESS_LINE2"
+                                    />
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>City </mat-label>
+                                   
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.CITY"
+                                      required #city="ngModel"
+                                    />
+
+                                    <mat-error style="font-size:11px" *ngIf="city.invalid && city.touched">
+                                        Please Enter City Name.
+                                      </mat-error>
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" >
+                                <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                    <mat-label >
+                                        <span style="color:red;">*</span>Country</mat-label>
+                                    <mat-select name="COUNTRY"  [(ngModel)]="DATA.COUNTRY" #country="ngModel">
+                                            <ng-container *ngFor=" let country of Countries_Name " >
+                                                <mat-option [value]="country" >
+                                                    {{ country }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+
+                                        <mat-error style="font-size: 11px;" *ngIf="country.invalid && country.touched">
+                                            Please Select valid Option.
+                                          </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" >
+                                <mat-form-field class="flex-auto w-full" [subscriptSizing]="'dynamic'">
+                                    <mat-label >
+                                        <span style="color:red;">*</span>State</mat-label>
+                                    <mat-select name="COUNTRY"  [(ngModel)]="DATA.STATE" #state="ngModel">
+                                            <ng-container *ngFor=" let state of statesInIndia " >
+                                                <mat-option [value]="state" >
+                                                    {{ state }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error style="font-size: 11px;" *ngIf="state.invalid && state.touched">
+                                            Please Select valid Option.
+                                          </mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                              <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Pincode/zip </mat-label>
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.PINCODE"
+                                    />
+                                  </mat-form-field>
+                                  
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" style="margin-top:8px">
+                                <mat-form-field class="flex-auto w-full">
+                                    <mat-label><span style="color:red;">*</span>Geo Location </mat-label>
+                                    <span matPrefix><mat-icon>location_on</mat-icon></span>
+                                    <input
+                                      matInput
+                                      name="USER_NAME"
+                                      [(ngModel)]="DATA.LOCATION"
+                                    />
+                                  </mat-form-field>
+                            </mat-grid-tile>
+
+                            <!-- <mat-grid-tile class="mt-2.5" [colspan]="1">
+                                <button mat-raised-button (click)="openDialog(myDialog)"
+                                    color="primary"><mat-icon>location_on</mat-icon>
+                                    Geo Location</button>
+                            </mat-grid-tile>
+                        </mat-grid-list> -->
+
+                        </mat-grid-list>
+                            
+                        </div>
+                     
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <!-- Delete -->
+        <!-- <button
+            mat-button
+            [color]="'warn'"
+            [matTooltip]="'Delete'"
+            (click)="deleteContact()"
+        >
+            Delete
+        </button> -->
+        <!-- Cancel -->
+        <button class="ml-auto" mat-button (click)="closeDrawer()">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save()"
+        >
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>
+
+<!-- <ng-template #myDialog>
+    <google-map [center]="center" [zoom]="zoom" (mapClick)="addMarker2($event)">
+        <map-marker [position]="markerPositions" [options]="markerOptions"></map-marker>
+    </google-map>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose color="primary">Dismiss</button>
+    </mat-dialog-actions>
+</ng-template> -->

@@ -25,6 +25,9 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy
     private _matAutocomplete: MatAutocomplete;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+
+    isScreenSmall=true;
+
     /**
      * Constructor
      */

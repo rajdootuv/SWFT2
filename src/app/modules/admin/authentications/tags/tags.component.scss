@@ -1,0 +1,19 @@
+.addbutton{
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    background: #3465f2;
+    color: white;
+    font-weight: 600;
+}
+
+
+.style-error {
+    color: #ffffff !important;
+    --mdc-snackbar-container-color: #f23a2f !important;
+  }
+  
+  .style-success {
+    color: #ffffff  !important;
+    --mdc-snackbar-container-color: #43a446 !important;
+  }

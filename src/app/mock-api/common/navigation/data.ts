@@ -9,20 +9,54 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
-            // {
-            //     id      : 'masters.authentications',
-            //     title   : 'Authentication',
-            //     type    : 'collapsable',
-            //     icon    : 'heroicons_outline:clipboard-check',
-            //     children: [
-            //         {
-            //             id   : 'masters.authentications.visitors',
-            //             title: 'Visitors',
-            //             type : 'basic',
-            //             link : '/masters/authentications/visitors'
-            //         }
-            //     ]
-            // },
+            {
+                id: 'masters.authentications',
+                title: 'Authentication',
+                type: 'collapsable',
+                icon: 'heroicons_outline:clipboard-check',
+                children: [
+                    {
+                        id: 'masters.authentications.visitors',
+                        title: 'Visitors',
+                        type: 'basic',
+                        link: '/masters/authentications/visitors',
+                    },
+                    {
+                        id: 'masters.authentications.designation',
+                        title: 'Designation',
+                        type: 'basic',
+                        link: '/masters/authentications/designation',
+                    },
+                    {
+                        id   : 'masters.authentications.inventory',
+                        title: 'User',
+                        type : 'basic',
+                        link : '/masters/authentications/users'
+                    },
+
+                    {
+                        id   : 'masters.authentications.inventory',
+                        title: 'Customers',
+                        type : 'basic',
+                        link : '/masters/authentications/customers'
+                    },
+
+                    {
+                        id   : 'masters.authentications.inventory',
+                        title: 'SelectOption',
+                        type : 'basic',
+                        link : '/masters/authentications/selectoption'
+                    },
+
+
+                    {
+                        id   : 'masters.authentications.inventory',
+                        title: 'Tags',
+                        type : 'basic',
+                        link : '/masters/authentications/tags'
+                    }
+                ],
+            },
 
             {
                 id: 'masters.setup',
@@ -94,10 +128,80 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         link: '/masters/logger/loginactivity',
                     },
                     {
-                        id   : 'masters.logger.activeusers',
+                        id: 'masters.logger.activeusers',
                         title: 'Active Users',
-                        type : 'basic',
-                        link : '/masters/logger/activeusers'
+                        type: 'basic',
+                        link: '/masters/logger/activeusers',
+                    },
+                    {
+                        id: 'masters.logger.inventory',
+                        title: 'Event Visitors Logs',
+                        type: 'basic',
+                        link: '/masters/logger/eventlog',
+                    },
+
+                    {
+                        id: 'masters.logger.inventory',
+                        title: 'User Attendance Logs',
+                        type: 'basic',
+                        link: '/masters/logger/attendance',
+                    },
+                    {
+                        id: 'masters.logger.inventory',
+                        title: 'Studio Visitor Logs',
+                        type: 'basic',
+                        link: '/masters/logger/studio',
+                    },
+                    {
+                        id: 'masters.logger.inventory',
+                        title: 'User Activity',
+                        type: 'basic',
+                        link: '/masters/logger/user-activity',
+                    },
+                ],
+            },
+            {
+                id: 'masters.setting',
+
+                title: 'Setting',
+
+                type: 'collapsable',
+
+                icon: 'heroicons_outline:clipboard-check',
+
+                children: [
+                    {
+                        id: 'masters.setting.emailsetting',
+
+                        title: 'Email Setting',
+
+                        type: 'basic',
+
+                        link: '/masters/setting/emailsetting',
+                    },
+                    {
+                        id: 'masters.setting.inventory',
+                        title: 'Properties',
+                        type: 'basic',
+                        link: '/masters/setting/properties',
+                    },
+                    {
+                        id: 'masters.setting.inventory',
+                        title: 'SMTP Settings',
+                        type: 'basic',
+                        link: '/masters/setting/smtp',
+                    },
+                    {
+                        id: 'masters.setting.inventory',
+                        title: 'SMS Settings',
+                        type: 'basic',
+                        link: '/masters/setting/sms',
+                    },
+                    {
+                        id: 'masters.setting.inventory',
+                        title: 'Whatsapp Settings',
+                        type: 'basic',
+                        link: '/masters/setting/whatsapp',
                     },
                 ],
             },

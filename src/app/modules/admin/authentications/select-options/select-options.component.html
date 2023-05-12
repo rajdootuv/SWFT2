@@ -1,0 +1,804 @@
+<div
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
+>
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+
+        <!-- Add user button -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="is_addfielsShow = !is_addfielsShow"
+        >
+            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+            <span class="ml-2 mr-1">Add</span>
+        </button>
+    </div>
+
+    <div class="mt-2 add-field" *ngIf="is_addfielsShow">
+        <mat-grid-list
+            gutterSize="16px"
+            [cols]="isScreenSmall ? 1 : 3"
+            rowHeight="100px"
+        >
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field class="flex-auto" [subscriptSizing]="'dynamic'">
+                    <mat-label
+                        ><span style="color: red">*</span>FIELD ID</mat-label
+                    >
+                    <mat-select name="FIELD_ID" [(ngModel)]="DATA.FIELD_ID">
+                        <ng-container *ngFor="let user of Type_of_User">
+                            <mat-option [value]="user">
+                                {{ user }}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field
+                    class="flex-auto w-full"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <mat-label
+                        ><span style="color: red">*</span>Value</mat-label
+                    >
+                    <input
+                        matInput
+                        name="NAME"
+                        [placeholder]="'Full Name'"
+                        [(ngModel)]="DATA.VALUE"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1">
+                <!-- <mat-grid-tile> -->
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    "
+                >
+                    <div style="margin-right: 20px">
+                        <div style="position: relative; bottom: 15px">HTML</div>
+                        <mat-slide-toggle
+                            class="toggle-button"
+                            [(ngModel)]="DATA.HTML"
+                        ></mat-slide-toggle>
+                    </div>
+                    <button
+                        mat-flat-button
+                        [color]="'primary'"
+                        style="margin-top: 20px; margin-left: 77px"
+                        (click)="Save()"
+                    >
+                        <span class="ml-2 mr-1">
+                            <span *ngIf="DATA.ID == undefined || DATA.ID == 0"
+                                >Save</span
+                            >
+                            <span *ngIf="DATA.ID != undefined && DATA.ID > 0"
+                                >Update</span
+                            >
+                        </span>
+                    </button>
+                </div>
+                <!-- </mat-grid-tile> -->
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden" *ngIf="isLargeScreen">
+        <!-- Visitors list -->
+        <div
+            class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
+        >
+            <ng-container>
+                <ng-container>
+                    <div
+                        class="overflow-x-auto mx-6"
+                        style="width: 100%; overflow: auto"
+                    >
+                        <table
+                            class="w-full bg-transparent"
+                            mat-table
+                            matSort
+                            [dataSource]="recentTransactionsDataSource"
+                            [trackBy]="trackByFn"
+                            #visitorsTable
+                        >
+                            <!-- Checkbox Column -->
+                            <ng-container matColumnDef="checkbox">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    style="
+                                        min-width: 70px !important;
+                                        text-align: center;
+                                        padding-right: 0px;
+                                        padding-left: 5px;
+                                    "
+                                >
+                                    <button
+                                        mat-icon-button
+                                        style="width: 20px !important"
+                                        [matMenuTriggerFor]="menu"
+                                        aria-label="Menu"
+                                    >
+                                        <mat-icon
+                                            style="
+                                                position: relative;
+                                                right: 6px;
+                                                bottom: 6px;
+                                            "
+                                            >sort</mat-icon
+                                        >
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <span class="example-list-section">
+                                            <ul>
+                                                <li
+                                                    *ngFor="
+                                                        let col of visitorsTableColumns2;
+                                                        let i = index
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        [(ngModel)]="
+                                                            visitorsTableColumns2[
+                                                                i
+                                                            ]['SHOW']
+                                                        "
+                                                        name="column{{ i }}"
+                                                        (ngModelChange)="
+                                                            updateAllComplete(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ col.NAME }}
+                                                    </mat-checkbox>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </mat-menu>
+
+                                    <mat-checkbox
+                                        style="
+                                            position: relative;
+                                            top: 4px;
+                                            right: 8px;
+                                        "
+                                        name="selectall"
+                                        class="selectall"
+                                        (change)="
+                                            $event ? toggleAllRows() : null
+                                        "
+                                        [checked]="
+                                            selection.hasValue() &&
+                                            isAllSelected()
+                                        "
+                                        [indeterminate]="
+                                            selection.hasValue() &&
+                                            !isAllSelected()
+                                        "
+                                        [aria-label]="checkboxLabel()"
+                                    >
+                                    </mat-checkbox>
+                                </th>
+                                <td
+                                    mat-cell
+                                    style="text-align: center !important"
+                                    *matCellDef="let row"
+                                >
+                                    <mat-checkbox
+                                        name="selectall{{ row.ID }}"
+                                        (click)="$event.stopPropagation()"
+                                        (click)="showMultiBox()"
+                                        (change)="
+                                            $event
+                                                ? selection.toggle(row)
+                                                : null
+                                        "
+                                        [checked]="selection.isSelected(row)"
+                                        [aria-label]="checkboxLabel(row)"
+                                    >
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <!-- Action -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let select_option">
+                                    <span
+                                        style="display: inline-flex"
+                                        class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                    >
+                                        <span
+                                            (click)="edit(select_option)"
+                                            (click)="
+                                                is_editValues = !is_editValues
+                                            "
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Edit Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_solid:pencil-alt'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+
+                                        <span
+                                            (click)="
+                                                detailsDelete(select_option)
+                                            "
+                                            (click)="openDialog()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Delete Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_outline:trash'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+                                        <ng-template #dialogTemplate let-data>
+                                            <h2 mat-dialog-title>
+                                                Delete Confirmation
+                                            </h2>
+                                            <mat-dialog-content>
+                                                Are you sure you want to delete
+                                                this item?
+                                            </mat-dialog-content>
+                                            <mat-dialog-actions align="end">
+                                                <button
+                                                    mat-button
+                                                    mat-dialog-close
+                                                    (click)="closeDialog()"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    mat-button
+                                                    [mat-dialog-close]="true"
+                                                    cdkFocusInitial
+                                                    (click)="deleteItem()"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </mat-dialog-actions>
+                                        </ng-template>
+
+                                        <!-- <span (click)="openDialog()">
+                                            <mat-icon [matTooltip]="'Delete Information'" class="icon-size-5" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                          </span> -->
+
+                                        <!--    <ng-template #dialogTemplate let-data>
+                                            <h2 mat-dialog-title>Delete Confirmation</h2>
+                                            <mat-dialog-content>
+                                              Are you sure you want to delete this item?
+                                            </mat-dialog-content>
+                                            <mat-dialog-actions align="end">
+                                              <button mat-button mat-dialog-close (click)="closeDialog()">Cancel</button>
+                                              <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="deleteItem(select_option)">Delete</button>
+                                            </mat-dialog-actions>
+                                          </ng-template> -->
+                                    </span>
+                                </td>
+                            </ng-container>
+                            <!-- NAME -->
+                            <ng-container matColumnDef="FIELD_ID">
+                                <!-- <th
+                            mat-header-cell *matHeaderCellDef mat-sort-header
+                            >
+                              Full Name
+                            </th> -->
+
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            matTooltip="Filter"
+                                            (click)="showMenu = !showMenu"
+                                            matTooltipPosition="above"
+                                            [matMenuTriggerFor]="menu"
+                                        >
+                                            <mat-icon
+                                                style="
+                                                    font-size: 18px;
+                                                    margin: 0 6px 0 0;
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+                                        </span>
+                                        <span style="margin-top: 2px">
+                                            Field ID
+                                        </span>
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by NAME"
+                                            style="margin: 7px 0 0 6px"
+                                        ></span>
+                                    </div>
+
+                                    <mat-menu
+                                        #menu="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    style="
+                                                        border-radius: 10px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                    "
+                                                >
+                                                    <input
+                                                        class="searchInput"
+                                                        type="search"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span class="searchIcon">
+                                                        <mat-icon
+                                                            style="
+                                                                position: relative;
+                                                                top: 4px;
+                                                            "
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+
+                                <td mat-cell *matCellDef="let select_option">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ select_option.FIELD_ID }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- EMAIL_ID -->
+                            <ng-container matColumnDef="VALUE">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            (click)="showMenu = !showMenu"
+                                            matTooltipPosition="above"
+                                            [matMenuTriggerFor]="menu"
+                                        >
+                                            <mat-icon
+                                                style="
+                                                    font-size: 18px;
+                                                    margin: 0 6px 0 0;
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+                                        </span>
+                                        <span style="margin-top: 2px">
+                                            Value
+                                        </span>
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by EMAIL_ID"
+                                            style="margin: 7px 0 0 6px"
+                                        ></span>
+                                    </div>
+
+                                    <mat-menu
+                                        #menu="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    style="
+                                                        border-radius: 10px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                    "
+                                                >
+                                                    <input
+                                                        class="searchInput"
+                                                        type="search"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span class="searchIcon">
+                                                        <mat-icon
+                                                            style="
+                                                                position: relative;
+                                                                top: 4px;
+                                                            "
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let select_option">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ select_option.VALUE }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- BIRTH DATE -->
+                            <ng-container matColumnDef="HTML">
+                                <!-- <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                               Birth Date
+                            </th> -->
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            (click)="showMenu = !showMenu"
+                                            matTooltipPosition="above"
+                                            [matMenuTriggerFor]="menu"
+                                        >
+                                            <mat-icon
+                                                style="
+                                                    font-size: 18px;
+                                                    margin: 0 6px 0 0;
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+                                        </span>
+                                        <span style="margin-top: 2px">
+                                            HTML
+                                        </span>
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by DOB"
+                                            style="margin: 7px 0 0 6px"
+                                        ></span>
+                                    </div>
+
+                                    <mat-menu
+                                        #menu="matMenu"
+                                        [overlapTrigger]="false"
+                                        [hasBackdrop]="true"
+                                        [class.menu-visible]="showMenu"
+                                        (closed)="showMenu = false"
+                                    >
+                                        <div
+                                            (click)="
+                                                stopClickPropagation($event)
+                                            "
+                                        >
+                                            <div id="filter-box">
+                                                <div
+                                                    style="
+                                                        border-radius: 10px;
+                                                        border: 1px solid
+                                                            #d7d7d7;
+                                                        padding: 5px 0px 5px 6px;
+                                                    "
+                                                >
+                                                    <input
+                                                        class="searchInput"
+                                                        type="search"
+                                                        placeholder="Search..."
+                                                    />
+                                                    <span class="searchIcon">
+                                                        <mat-icon
+                                                            style="
+                                                                position: relative;
+                                                                top: 4px;
+                                                            "
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-menu>
+                                </th>
+                                <td mat-cell *matCellDef="let select_option">
+                                    <span class="pr-6 whitespace-nowrap">
+                                        <mat-slide-toggle
+                                            [(ngModel)]="select_option.HTML"
+                                            name="HTML"
+                                        ></mat-slide-toggle>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="customerTableColumns"
+                            ></tr>
+                            <tr
+                                class="order-row h-16"
+                                mat-row
+                                *matRowDef="
+                                    let row;
+                                    columns: customerTableColumns
+                                "
+                            ></tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator
+                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        [length]="pagination.length"
+                        [pageIndex]="pagination.page"
+                        [pageSize]="pagination.size"
+                        [pageSizeOptions]="[10, 20, 30, 40, 50]"
+                        [showFirstLastButtons]="true"
+                    ></mat-paginator>
+                </ng-container>
+            </ng-container>
+
+            <ng-template #noVisitors>
+                <div
+                    class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+                >
+                    There are no visitors data!
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <div *ngIf="!isLargeScreen">
+        <mat-grid-list
+            [cols]="isScreenSmall ? 1 : 3"
+            rowHeight="260px"
+            style="margin-top: 15px"
+        >
+            <!-- first list -->
+            <mat-grid-tile>
+                <div style="height: 100%; width: 100%; padding: 0px 5px">
+                    <mat-grid-list
+                        cols="1"
+                        rowHeight="40px"
+                        style="margin-bottom: 10px"
+                    >
+                        <mat-grid-tile>
+                            <button mat-flat-button>
+                                <span
+                                    style="
+                                        border: 1px solid #d7d7d7;
+                                        padding: 6px 165px 6px 165px;
+                                        font-size: 20px;
+                                        background-color: #d7d7d7;
+                                    "
+                                >
+                                    Customer
+                                </span>
+                            </button>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <mat-grid-list cols="1" rowHeight="250px">
+                        <mat-grid-tile>
+                            <ng-container>
+                                <div
+                                    class="space-y-2"
+                                    style="
+                                        width: 100%;
+                                        overflow-y: scroll;
+                                        height: 100%;
+                                        padding: 5px;
+                                    "
+                                    cdkTextareaAutosize
+                                >
+                                    <mat-card
+                                        style="padding-top: 7px"
+                                        *ngFor="
+                                            let user of recentTransactionsDataSource.filteredData
+                                        "
+                                    >
+                                        <mat-grid-list
+                                            [cols]="7"
+                                            rowHeight="30px"
+                                        >
+                                            <mat-grid-tile [colspan]="1">
+                                                <mat-checkbox
+                                                    style="margin-top: -8px"
+                                                ></mat-checkbox>
+                                            </mat-grid-tile>
+                                            <mat-grid-tile
+                                                [colspan]="5"
+                                                style="padding: 5px !important"
+                                            >
+                                                <b>{{ user.NAME }}</b>
+                                            </mat-grid-tile>
+                                            <mat-grid-tile [colspan]="1">
+                                                <span
+                                                    (click)="edit(user)"
+                                                    (click)="
+                                                        addUserDrawer.toggle()
+                                                    "
+                                                >
+                                                    <mat-icon
+                                                        [matTooltip]="
+                                                            'Edit Information'
+                                                        "
+                                                        class="icon-size-5"
+                                                        [svgIcon]="
+                                                            'heroicons_solid:pencil-alt'
+                                                        "
+                                                    ></mat-icon>
+                                                </span>
+                                                <span
+                                                    (click)="
+                                                        detailsDelete(user)
+                                                    "
+                                                    (click)="
+                                                        DeleteUser.toggle()
+                                                    "
+                                                >
+                                                    <mat-icon
+                                                        [matTooltip]="
+                                                            'Delete Information'
+                                                        "
+                                                        class="icon-size-5"
+                                                        [svgIcon]="
+                                                            'heroicons_outline:trash'
+                                                        "
+                                                    ></mat-icon>
+                                                </span>
+                                            </mat-grid-tile>
+                                            <mat-grid-tile
+                                                [colspan]="1"
+                                            ></mat-grid-tile>
+                                            <mat-grid-tile [colspan]="6">{{
+                                                user.EMAIL_ID
+                                            }}</mat-grid-tile>
+                                            <mat-grid-tile
+                                                [colspan]="1"
+                                            ></mat-grid-tile>
+                                            <mat-grid-tile [colspan]="2">{{
+                                                user.MOBILE_NO
+                                            }}</mat-grid-tile>
+                                            <mat-grid-tile [colspan]="2">{{
+                                                user.DOB
+                                            }}</mat-grid-tile>
+                                            <mat-grid-tile [colspan]="2">{{
+                                                user.CITY
+                                            }}</mat-grid-tile>
+                                        </mat-grid-list>
+                                    </mat-card>
+                                    <br />
+                                </div>
+                            </ng-container>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </div>
+
+                <mat-paginator
+                    class="pagination-bar"
+                    [ngClass]="{ 'pointer-events-none': isLoading }"
+                    [length]="pagination.length"
+                    [pageIndex]="pagination.page"
+                    [pageSize]="pagination.size"
+                    [pageSizeOptions]="[10, 20, 30, 40, 50]"
+                    [showFirstLastButtons]="true"
+                ></mat-paginator>
+            </mat-grid-tile>
+            <!-- first list -->
+        </mat-grid-list>
+    </div>
+
+    <div
+    style="
+        justify-content: center;
+        position: relative;
+        align-items: center;
+        display: flex;
+    "
+>
+    <mat-card
+        *ngIf="showMultiSelect == true"
+        style="
+            padding: 2px;
+            margin: 10px;
+            position: absolute;
+            z-index: 777;
+            width: 370px;
+            bottom: 37px;
+        "
+    >
+        <mat-grid-list [cols]="12" rowHeight="50px">
+            <mat-grid-tile [colspan]="2" class="detailed_card_content">
+                <div
+                    style="
+                        border-radius: 8px;
+                        background-color: grey;
+                        color: white;
+                        text-align: center;
+                        padding: 20px;
+                    "
+                >
+                    {{ rowsSelected }}
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="6" class="detailed_card_content">
+                <b *ngIf="rowsSelected == 1">row selected</b>
+                <b *ngIf="rowsSelected > 1">rows selected</b>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="detailed_card_content">
+                <span>
+                    <mat-icon
+                        (click)="editSelection()"
+                        [matTooltip]="'Edit Selected Rows'"
+                        [svgIcon]="'heroicons_solid:pencil-alt'"
+                    ></mat-icon>
+                </span>
+
+                <span>
+                    <mat-icon
+                        (click)="deleteSelection()"
+                        [matTooltip]="'Delete Selected Rows'"
+                        [svgIcon]="'heroicons_outline:trash'"
+                    ></mat-icon>
+                </span>
+            </mat-grid-tile>
+
+            <mat-grid-tile
+                [colspan]="2"
+                class="detailed_card_content"
+                style="border-left: 1px solid grey"
+            >
+                <div>
+                    <mat-icon
+                        (click)="removeSelection()"
+                        [matTooltip]="'Remove Selection'"
+                        [svgIcon]="'heroicons_solid:x-circle'"
+                    ></mat-icon>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card>
+</div>
+</div>

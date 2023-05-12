@@ -1,0 +1,225 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col w-full">
+        <ng-container>
+            <div class="relative flex flex-col flex-auto items-center px-3">
+                <div class="w-full">
+                    <form #myForm="ngForm">
+                      
+                        <div class="mt-2">
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <!-- Name -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>
+                                            <span style="color: red">*</span>
+                                            Name</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="servicenm"
+                                            required
+                                            #nameInput="ngModel"
+                                            [(ngModel)]="DATA.NAME"
+                                            [placeholder]="'Name'"
+                                        />
+                                        <mat-error
+                                            *ngIf="
+                                                nameInput.invalid &&
+                                                (nameInput.dirty ||
+                                                    nameInput.touched)
+                                            "
+                                        >
+                                            <span
+                                                *ngIf="
+                                                    nameInput.errors?.required
+                                                "
+                                                >Name is required.</span
+                                            >
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Base URL -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>
+                                            <span style="color: red">*</span>
+                                            Base URL</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="host"
+                                            required
+                                            #baseInput="ngModel"
+                                            [(ngModel)]="DATA.BaseUrl"
+                                            [placeholder]="'https://'"
+                                        />
+
+                                        <mat-error
+                                            *ngIf="
+                                                baseInput.invalid &&
+                                                (baseInput.dirty ||
+                                                    baseInput.touched)
+                                            "
+                                        >
+                                            <span
+                                                *ngIf="
+                                                    baseInput.errors?.required
+                                                "
+                                                >Base Url is required.</span
+                                            >
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                    <!-- Authentication Header -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>
+                                            Authentication Header</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="portno"
+                                            [(ngModel)]="
+                                                DATA.AuthenticationHeader
+                                            "
+                                            [placeholder]="
+                                                'Authentication Header'
+                                            "
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile
+                                    [colspan]="isScreenSmall ? 1 : 2"
+                                    [rowspan]="2"
+                                >
+                                    <mat-form-field style="width: 792px">
+                                        <mat-label> Headers</mat-label>
+                                        <textarea
+                                            matInput
+                                            name="Headers"
+                                            rowspan="2"
+                                            cols="20"
+                                            rows="6"
+                                            placeholder=" Headers"
+                                            [(ngModel)]="DATA.Headers"
+                                        ></textarea>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                    <!-- Method -->
+                                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>
+                                            <span style="color: red">*</span>
+                                            Method</mat-label
+                                        >
+                                        <mat-select
+                                            #methodInput="ngModel"
+                                            name="abc"
+                                            [(ngModel)]="DATA.Method"
+                                            required
+                                        >
+                                            <ng-container
+                                                *ngFor="let abc of dataList"
+                                            >
+                                                <mat-option
+                                                    [value]="abc.Method"
+                                                >
+                                                    {{ abc.Method }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="
+                                                methodInput.invalid &&
+                                                (methodInput.dirty ||
+                                                    methodInput.touched)
+                                            "
+                                        >
+                                            <span
+                                                *ngIf="
+                                                    methodInput.errors?.required
+                                                "
+                                                >Method is required.</span
+                                            >
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Body -->
+
+                                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>
+
+                                            Body</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="body"
+                                            [(ngModel)]="DATA.Body"
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile [colspan]="1">
+                                    <div
+                                        style="
+                                            margin-right: 170px;
+                                            margin-bottom: 44px;
+                                        "
+                                    >
+                                        <mat-checkbox
+                                            name="enabled"
+                                            [(ngModel)]="DATA.primary"
+                                            ><b>Is Primary</b></mat-checkbox
+                                        >
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <button class="ml-auto" mat-button (click)="closeDrawer(myForm)">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save(myForm)"
+        >
+            <span *ngIf="DATA.ID == undefined || DATA.ID == 0">Save</span>
+            <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span>
+        </button>
+    </div>
+</div>

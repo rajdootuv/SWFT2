@@ -1,0 +1,69 @@
+.step {
+  
+    padding: 10px;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    
+    background-color: cream;
+  }
+  
+  .v-stepper {
+    position: relative;
+  /*   visibility: visible; */
+  }
+  
+  
+  /* regular step */
+  .step .circle {
+    background-color: white;
+    border: 3px solid gray;
+    border-radius: 100%;
+    width: 13px;    /* +6 for border */
+    height: 13px;
+    display: inline-block;
+  }
+
+  .circle {
+    background-color: white;
+    border: 3px solid gray;
+    border-radius: 100%;
+    width: 28px;    /* +6 for border */
+    height: 28px;
+    display: inline-block;
+  }
+
+  .step.completed .circle {
+    visibility: visible;
+    background-color: gray;
+    border-color: gray;
+  }
+  
+  
+  .step .line {
+      top: 20px;
+    left: 6px;
+  /*   height: 120px; */
+    height: 100%;
+      
+      position: absolute;
+      border-left: 3px solid gray;
+  }
+  
+  
+  .step.completed .line {
+    border-left: 2px solid grey;
+  }
+  
+
+  
+
+  .content {
+    width: 1087px;
+    margin-left: 10px;
+    display: inline-block;
+  }
+  
+  
+  /* codepen override */

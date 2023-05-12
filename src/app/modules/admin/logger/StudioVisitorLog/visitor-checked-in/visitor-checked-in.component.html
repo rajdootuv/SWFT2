@@ -1,0 +1,286 @@
+<div class="flex flex-col p-6">
+    <div class="flex flex-col flex-auto min-w-0">
+        <!-- Main -->
+        <div
+            class="flex flex-col flex-auto items-center p-6 sm:p-10"
+            style="
+                background: white;
+
+                margin: 0px;
+            "
+        >
+            <ng-container>
+                <div class="flex flex-col w-full max-w-5xl">
+                    <div class="flex items-center justify-center mb-3">
+                        <!-- <mat-icon   class="h-30 w-30" svgIcon="feather:user"></mat-icon> -->
+                        <img
+                            style="border-radius: 163px"
+                            class="h-20 w-21"
+                            src="assets/images/logo/logo.svg"
+                            alt=""
+                        />
+                    </div>
+                    <div
+                        class="mt-2 text-1xl sm:text-1xl tracking-tight leading-tight"
+                        style="
+                            text-align: center;
+                            font-size: 15px;
+                            font-weight: 600;
+                            font-family: 'Times New Roman', Times, serif, serif;
+                        "
+                    >
+                        STUDIO WORK FLOW TOOL
+                    </div>
+                    <div
+                        style="text-align: center"
+                        class="mt-2 text-2xl sm:text-2xl tracking-tight leading-tight"
+                        style="text-align: center"
+                    >
+                        <mat-form-field
+                            class="flex-auto"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Contact Number</mat-label>
+                            <input
+                                matInput
+                                name="MOBILE_NO"
+                                [(ngModel)]="DATA.MOBILE_NO"
+                                [placeholder]="'Phone'"
+                            />
+                            <mat-select class="mr-1.5" name="COde" matPrefix>
+                                <ng-container *ngFor="let country of countries">
+                                    <mat-option [value]="country.code">
+                                        {{ country.code }}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- Form -->
+                    <div
+                        class="mt-4 sm:mt-6 p-5 pb-7 sm:p-9 sm:pb-9 shadow rounded-2xl bg-card"
+                        style="border: 1px solid black; margin-bottom: 42px"
+                    >
+                        <!-- Alert -->
+
+                        <form class="space-y-3" #supportNgForm="ngForm">
+                            <div class="mb-6">
+                                <div
+                                    class="text-2xl tracking-tight"
+                                    style="font-weight: 600"
+                                >
+                                    Visitor Information
+                                </div>
+                            </div>
+                            <mat-grid-list
+                                gutterSize="16px"
+                                [cols]="isScreenSmall ? 1 : 3"
+                                rowHeight="100px"
+                            >
+                                <!-- NAME -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Full Name</mat-label>
+                                        <input
+                                            matInput
+                                            name="NAME"
+                                            [(ngModel)]="DATA.NAME"
+                                            [placeholder]="'Full Name'"
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- Emails -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Email</mat-label>
+                                        <mat-icon
+                                            matPrefix
+                                            class="hidden sm:flex icon-size-5"
+                                            [svgIcon]="'heroicons_solid:mail'"
+                                        ></mat-icon>
+                                        <input
+                                            type="email"
+                                            matInput
+                                            name="email"
+                                            [(ngModel)]="DATA.EMAIL_ID"
+                                            [placeholder]="'Email address'"
+                                            [spellcheck]="false"
+                                            #baseInput="ngModel"
+                                            [pattern]="emailpattern"
+                                            
+                                        />
+
+                                        <mat-error *ngIf="baseInput.touched">
+                                            <span
+                                                *ngIf="baseInput.errors?.email"
+                                                >Invalid Email
+                                                
+                                                </span
+                                            >
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <!--MOBILE_NO -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Contact Number</mat-label>
+                                        <input
+                                            matInput
+                                            type="number"
+                                            name="MOBILE_NO"
+                                            [(ngModel)]="DATA.MOBILE_NO"
+                                            [placeholder]="'Phone'"
+                                        />
+                                        <mat-select
+                                            class="mr-1.5"
+                                            name="COde"
+                                            matPrefix
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let country of countries
+                                                "
+                                            >
+                                                <mat-option
+                                                    [value]="country.code"
+                                                >
+                                                    {{ country.code }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <!-- COMPANY_NAME -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label>Company Name</mat-label>
+                                        <input
+                                            matInput
+                                            name="COMPANY_NAME"
+                                            [(ngModel)]="DATA.COMPANY_NAME"
+                                            [placeholder]="'Company Name'"
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label
+                                            >Designation/Profession</mat-label
+                                        >
+                                        <input
+                                            matInput
+                                            name="DESIGNATION"
+                                            [(ngModel)]="DATA.DESIGNATION"
+                                            [placeholder]="
+                                                'Designation/Profession'
+                                            "
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1"></mat-grid-tile>
+                                <!-- PURPOSE_OF_VISIT -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label> Purpose Of Visit</mat-label>
+                                        <input
+                                            matInput
+                                            name="PURPOSE_OF_VISIT"
+                                            [(ngModel)]="DATA.PURPOSE_OF_VISIT"
+                                            [placeholder]="'Purpose of visit'"
+                                        />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <!-- MEETING_WITH_ID -->
+                                <mat-grid-tile [colspan]="1">
+                                    <mat-form-field
+                                        class="flex-auto w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label> Meeting With</mat-label>
+                                        <mat-select
+                                            name="MEETING_WITH_ID"
+                                            [(ngModel)]="DATA.MEETING_WITH_ID"
+                                        >
+                                            <ng-container
+                                                *ngFor="let vendor of vendors"
+                                            >
+                                                <mat-option [value]="vendor.ID">
+                                                    {{ vendor.NAME }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field> </mat-grid-tile
+                                >.
+                                <!-- DATE_OF_VISIT -->
+
+                                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                    <mat-form-field
+                                        class="w-full"
+                                        [subscriptSizing]="'dynamic'"
+                                    >
+                                        <mat-label> Date Of Visit</mat-label>
+
+                                        <input
+                                            matInput
+                                            name="DATE_OF_VISIT"
+                                            [matDatepicker]="birthdayDatepicker"
+                                            [(ngModel)]="DATA.DATE_OF_VISIT"
+                                            [placeholder]="'Date Of Visit'"
+                                        />
+                                        <mat-datepicker-toggle
+                                            matSuffix
+                                            [for]="birthdayDatepicker"
+                                        >
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                            #birthdayDatepicker
+                                        ></mat-datepicker>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </form>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <!-- Actions -->
+    <div
+        style="width: 102%; position: absolute; bottom: 0px"
+        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+    >
+        <button class="ml-auto" mat-button (click)="closeDrawer(supportNgForm)">
+            Cancel
+        </button>
+        <!-- Save -->
+        <button
+            class="ml-2"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="Save(supportNgForm)"
+        >
+            <span>Save</span>
+            <!-- <span *ngIf="DATA.ID != undefined && DATA.ID > 0">Update</span> -->
+        </button>
+    </div>
+</div>

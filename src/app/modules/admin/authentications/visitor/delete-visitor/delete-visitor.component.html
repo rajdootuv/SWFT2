@@ -1,0 +1,725 @@
+<div class="flex flex-col p-6" style="padding-bottom: 110px !important">
+    <mat-accordion class="mt-1" [multi]="true" #accordion="matAccordion">
+        <ng-container>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight"
+                        >Primary Information</mat-panel-title
+                    >
+                </mat-expansion-panel-header>
+                <mat-grid-list
+                    gutterSize="16px"
+                    [cols]="isScreenSmall ? 1 : 3"
+                    rowHeight="100px"
+                >
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Full Name</mat-label>
+                            <input
+                                matInput
+                                name="NAME"
+                                [(ngModel)]="selectedVisitor.NAME"
+                                [placeholder]="'Full Name'"
+                                disabled
+                            />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <!-- Emails -->
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Email</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:mail'"
+                            ></mat-icon>
+                            <input
+                                matInput
+                                name="selectedVisitor.EMAIL_ID"
+                                [(ngModel)]="selectedVisitor.EMAIL_ID"
+                                [placeholder]="'Email address'"
+                                [spellcheck]="false"
+                                disabled
+                            />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Phone</mat-label>
+                            <input
+                                matInput
+                                name="MOBILE_NO"
+                                [(ngModel)]="selectedVisitor.MOBILE_NO"
+                                [placeholder]="'Phone'"
+                                disabled
+                            />
+                            <mat-select
+                                class="mr-1.5"
+                                name="COde"
+                                matPrefix
+                                [(ngModel)]="selectedVisitor.CODE"
+                                disabled
+                            >
+                                <ng-container *ngFor="let country of countries">
+                                    <mat-option [value]="country.code">
+                                        {{ country.code }}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Company Name</mat-label>
+                            <input
+                                matInput
+                                name="COMPANY_NAME"
+                                [(ngModel)]="selectedVisitor.COMPANY_NAME"
+                                [placeholder]="'Company Name'"
+                                disabled
+                            />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <mat-form-field
+                            class="flex-auto w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Designation/Profession</mat-label>
+                            <input
+                                matInput
+                                name="DESIGNATION"
+                                [(ngModel)]="selectedVisitor.DESIGNATION"
+                                disabled
+                                [placeholder]="'Designation/Profession'"
+                            />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel  [expanded]="true" style="padding: 0px !important">
+                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                    <mat-panel-title class="font-medium leading-tight"
+                        >Connected Information</mat-panel-title
+                    >
+                </mat-expansion-panel-header>
+
+                <mat-grid-list [cols]="isScreenSmall ? 1 : 3" rowHeight="260px">
+                    <!-- first list -->
+                    <mat-grid-tile>
+                        <div
+                            style="height: 100%; width: 100%; padding: 0px 5px"
+                        >
+                            <mat-grid-list cols="1" rowHeight="50px">
+                                <mat-grid-tile>
+                                    <button
+                                        mat-flat-button
+                                        style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        "
+                                    >
+                                        Organization
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div
+                                            class="space-y-2"
+                                            style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            "
+                                            cdkTextareaAutosize
+                                        >
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <br />
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- first list -->
+
+                    <!-- second list -->
+                    <mat-grid-tile>
+                        <div
+                            style="height: 100%; width: 100%; padding: 0px 5px"
+                        >
+                            <mat-grid-list cols="1" rowHeight="50px">
+                                <mat-grid-tile>
+                                    <button
+                                        mat-flat-button
+                                        style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        "
+                                    >
+                                        Studio
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div
+                                            class="space-y-2"
+                                            style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            "
+                                            cdkTextareaAutosize
+                                        >
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <br />
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- second list -->
+
+                    <!-- third list -->
+                    <mat-grid-tile>
+                        <div
+                            style="height: 100%; width: 100%; padding: 0px 5px"
+                        >
+                            <mat-grid-list cols="1" rowHeight="50px">
+                                <mat-grid-tile>
+                                    <button
+                                        mat-flat-button
+                                        style="
+                                            border-style: solid;
+                                            border-width: thin;
+                                            width: 96%;
+                                            margin: 5px;
+                                        "
+                                    >
+                                        Studio
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="1" rowHeight="210px">
+                                <mat-grid-tile>
+                                    <ng-container>
+                                        <div
+                                            class="space-y-2"
+                                            style="
+                                                width: 100%;
+                                                overflow-y: scroll;
+                                                height: 200px;
+                                                padding: 5px;
+                                            "
+                                            cdkTextareaAutosize
+                                        >
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                            <br />
+                                            <mat-card style="padding-top: 7px">
+                                                <mat-grid-list
+                                                    [cols]="6"
+                                                    rowHeight="30px"
+                                                >
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <mat-checkbox
+                                                            style="
+                                                                margin-top: -8px;
+                                                            "
+                                                        ></mat-checkbox>
+                                                    </mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        <b>Name</b>
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    >
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Edit Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_solid:pencil-alt'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+
+                                                        <span>
+                                                            <mat-icon
+                                                                [matTooltip]="
+                                                                    'Delete Information'
+                                                                "
+                                                                class="icon-size-5"
+                                                                [svgIcon]="
+                                                                    'heroicons_outline:trash'
+                                                                "
+                                                            ></mat-icon>
+                                                        </span>
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="6"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        website.com
+                                                    </mat-grid-tile>
+                                                    <!-- <mat-grid-tile
+                                                        [colspan]="1"
+                                                    ></mat-grid-tile> -->
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        City
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        State
+                                                    </mat-grid-tile>
+                                                    <mat-grid-tile
+                                                        [colspan]="2"
+                                                        class="detailed_card_content"
+                                                    >
+                                                        Country
+                                                    </mat-grid-tile>
+                                                </mat-grid-list>
+                                            </mat-card>
+                                        </div>
+                                    </ng-container>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                    </mat-grid-tile>
+                    <!-- third list -->
+                </mat-grid-list>
+            </mat-expansion-panel>
+        </ng-container>
+    </mat-accordion>
+</div>

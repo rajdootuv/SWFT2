@@ -1,0 +1,118 @@
+export const smtps = [
+    {
+        
+        ID: 1,
+        SERVICENAME: 'Aniket  Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 1,
+        AUTHENTICATIONTYPE: 'XOAuth2',
+        LOGINURL: 'xyz',
+        SSEnabled: true,
+    },
+    {
+        ID: 2,
+        SERVICENAME: 'Abhishek Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 2,
+        AUTHENTICATIONTYPE: 'XOAuth',
+        LOGINURL: 'xyz',
+
+        SSEnabled: true,
+    },
+    {
+        ID: 3,
+        SERVICENAME: 'shubham Patil',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 3,
+        AUTHENTICATIONTYPE: 'Plain',
+        LOGINURL: 'xyz',
+
+        SSEnabled: false,
+    },
+    {
+        ID: 4,
+        SERVICENAME: 'Rahul Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 3,
+        AUTHENTICATIONTYPE: 'Login',
+        LOGINURL: 'xyz',
+
+        SSEnabled: true,
+    },
+    {
+        ID: 5,
+        SERVICENAME: 'Mohit Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 4,
+        AUTHENTICATIONTYPE: 'XOAuth2',
+        LOGINURL: 'xyz',
+        SSEnabled: false,
+    },
+    {
+        ID: 6,
+        SERVICENAME: 'Aniket  Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 5,
+        AUTHENTICATIONTYPE: 'XOAuth',
+        LOGINURL: 'xyz',
+        SSEnabled: true,
+    },
+    {
+        ID: 7,
+        SERVICENAME: 'Abhishek Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 5,
+        AUTHENTICATIONTYPE: 'Plain',
+        LOGINURL: 'xyz',
+
+        SSEnabled: true,
+    },
+    {
+        ID: 8,
+        SERVICENAME: 'shubham Patil',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 7,
+        AUTHENTICATIONTYPE: 'Login',
+        LOGINURL: 'xyz',
+
+        SSEnabled: false,
+    },
+    {
+        ID: 9,
+        SERVICENAME: 'Rahul Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 8,
+        AUTHENTICATIONTYPE: 'Login',
+        LOGINURL: 'xyz',
+
+        SSEnabled: true,
+    },
+    {
+        ID: 10,
+        SERVICENAME: 'Mohit Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 9,
+        AUTHENTICATIONTYPE: 'XOAuth',
+        LOGINURL: 'xyz',
+        SSEnabled: false,
+    },
+    {
+        ID: 11,
+        SERVICENAME: 'Rahul Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com',
+        PORTNUMBER: 10,
+        AUTHENTICATIONTYPE: 'XOAuth',
+        LOGINURL: 'xyz',
+
+        SSEnabled: true,
+    },
+    {
+        ID: 12,
+        SERVICENAME: 'Mohit Ganapati Gurav',
+        HOSTNAME: 'aptefoods.com1',
+        PORTNUMBER: 11,
+        AUTHENTICATIONTYPE: 'Login',
+        LOGINURL: 'xyz',
+        SSEnabled: false,
+    },
+];

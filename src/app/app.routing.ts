@@ -132,7 +132,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/logger/loginactivity.module'
                             ).then((m) => m.LoginActivityModule),
                     },
-                   
+                    {
+                        path: 'setting',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/setting/setting.module'
+                            ).then((m) => m.SettingModule),
+                    },
             ] },
             {
                 path: 'myprofile',

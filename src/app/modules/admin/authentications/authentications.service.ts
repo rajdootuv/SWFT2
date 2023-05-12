@@ -17,9 +17,11 @@ import {
     AuthenticationVendor,
     Visits,
     Customers,
-    SelectOptions,
     Users,
     Talents,
+    TagsList,
+    Selectoptions,
+    Designations,
 } from 'app/modules/admin/authentications/authentications.types';
 
 @Injectable({
@@ -35,6 +37,9 @@ export class AuthenticationService {
     private _visitors: BehaviorSubject<Visitors[] | null> = new BehaviorSubject(
         null
     );
+    private _designations: BehaviorSubject<Designations[] | null> = new BehaviorSubject(
+        null
+    );
     private _vendors: BehaviorSubject<AuthenticationVendor[] | null> =
         new BehaviorSubject(null);
     private _visits: BehaviorSubject<Visits[] | null> = new BehaviorSubject(
@@ -47,13 +52,21 @@ export class AuthenticationService {
     );
     private _customers: BehaviorSubject<Customers[] | null> =
         new BehaviorSubject(null);
-    private _selectoption: BehaviorSubject<SelectOptions | null> =
+    private _selectoption: BehaviorSubject<Selectoptions | null> =
         new BehaviorSubject(null);
-    private _selectoptions: BehaviorSubject<SelectOptions[] | null> =
+    private _selectoptions: BehaviorSubject<Selectoptions[] | null> =
         new BehaviorSubject(null);
     private _talents: BehaviorSubject<Talents[] | null> = new BehaviorSubject(
         null
     );
+
+    private _taglist: BehaviorSubject<TagsList | null> = new BehaviorSubject(
+        null
+    );
+    private _taglists: BehaviorSubject<TagsList[] | null> = new BehaviorSubject(
+        null
+    );
+
     /**
      * Constructor
      */
@@ -85,6 +98,13 @@ export class AuthenticationService {
     }
 
     /**
+     * Getter for designations
+     */
+    get designations$(): Observable<Designations[]> {
+        return this._designations.asObservable();
+    }
+
+    /**
      * Getter for visitors
      */
     get visits$(): Observable<Visits[]> {
@@ -106,7 +126,7 @@ export class AuthenticationService {
         return this._customer.asObservable();
     }
 
-    get selectoption$(): Observable<SelectOptions> {
+    get selectoption$(): Observable<Selectoptions> {
         return this._selectoption.asObservable();
     }
     get customers$(): Observable<Customers[]> {
@@ -117,8 +137,14 @@ export class AuthenticationService {
         return this._users.asObservable();
     }
 
-    get selectoptions$(): Observable<SelectOptions[]> {
+    get selectoptions$(): Observable<Selectoptions[]> {
         return this._selectoptions.asObservable();
+    }
+    get taglists$(): Observable<TagsList[]> {
+        return this._taglists.asObservable();
+    }
+    get taglist$(): Observable<TagsList> {
+        return this._taglist.asObservable();
     }
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -328,6 +354,196 @@ export class AuthenticationService {
             );
     }
 
+    getSelectOptions(
+        page: number = 0,
+        size: number = 10,
+        sort: string = 'NAME',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+    ): Observable<{
+        pagination: AuthenticationPagination;
+        selectoptions: Selectoptions[];
+    }> {
+        return this._httpClient
+            .get<{
+                pagination: AuthenticationPagination;
+                selectoptions: Selectoptions[];
+            }>('api/apps/selectoptions/selectoptions', {
+                params: {
+                    page: '' + page,
+                    size: '' + size,
+                    sort,
+                    order,
+                    search,
+                },
+            })
+            .pipe(
+                tap((response) => {
+                    this._pagination.next(response.pagination);
+                    this._selectoptions.next(response.selectoptions);
+                })
+            );
+    }
+
+    updateSelectOptions(
+        id: number,
+        user: Selectoptions
+    ): Observable<Selectoptions> {
+        return this.selectoptions$.pipe(
+            take(1),
+            switchMap((selectoptions) =>
+                this._httpClient
+                    .patch<Selectoptions>(
+                        'api/apps/selectoptions/selectoption',
+                        {
+                            id,
+                            user,
+                        }
+                    )
+                    .pipe(
+                        map((updatedOption) => {
+                            // Update the visitors
+                            this._selectoptions.next(selectoptions);
+
+                            // Return the updated visitor
+                            return updatedOption;
+                        })
+                    )
+            )
+        );
+    }
+
+    deleteOptions(id: any): Observable<boolean> {
+        return this.selectoptions$.pipe(
+            take(1),
+            switchMap((selectoptions) =>
+                this._httpClient
+                    .delete('api/apps/customers/customer', { params: { id } })
+                    .pipe(
+                        map((isDeleted: boolean) => {
+                            // Find the index of the deleted visitor
+                            const index = selectoptions.findIndex(
+                                (item) => item.ID === id
+                            );
+
+                            // Delete the visitor
+                            selectoptions.splice(index, 1);
+
+                            // Update the visitors
+                            this._selectoptions.next(selectoptions);
+
+                            // Return the deleted status
+                            return isDeleted;
+                        })
+                    )
+            )
+        );
+    }
+
+    createOptions(selectoptions: Selectoptions): Observable<Selectoptions> {
+        return this.selectoptions$.pipe(
+            take(1),
+            switchMap((selectoptions) =>
+                this._httpClient
+                    .post<Selectoptions>(
+                        'api/apps/selectoptions/selectoption',
+                        { selectoptions }
+                    )
+                    .pipe(
+                        map((newOptions) => {
+                            // Update the visitors with the new visitor
+                            this._selectoptions.next([
+                                newOptions,
+                                ...selectoptions,
+                            ]);
+
+                            // Return the new visitor
+                            return newOptions;
+                        })
+                    )
+            )
+        );
+    }
+
+    //////services for talent/////////////
+    get talents$(): Observable<Talents[]> {
+        return this._talents.asObservable();
+    }
+
+    updateTalent(id: number, talent: Talents): Observable<Talents> {
+        return this.talents$.pipe(
+            take(1),
+            switchMap((talents) =>
+                this._httpClient
+                    .patch<Talents>('api/apps/talents/talents', {
+                        id,
+                        talent,
+                    })
+                    .pipe(
+                        map((updatedTalent) => {
+                            // Update the visitors
+                            this._talents.next(talents);
+
+                            // Return the updated visitor
+                            return updatedTalent;
+                        })
+                    )
+            )
+        );
+    }
+
+    getTalents(
+        page: number = 0,
+        size: number = 10,
+        sort: string = 'NAME',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+    ): Observable<{
+        pagination: AuthenticationPagination;
+        talents: Talents[];
+    }> {
+        return this._httpClient
+            .get<{ pagination: AuthenticationPagination; talents: Talents[] }>(
+                'api/apps/talents/talents',
+                {
+                    params: {
+                        page: '' + page,
+                        size: '' + size,
+                        sort,
+                        order,
+                        search,
+                    },
+                }
+            )
+            .pipe(
+                tap((response) => {
+                    console.log(response);
+
+                    this._pagination.next(response.pagination);
+                    this._talents.next(response.talents);
+                })
+            );
+    }
+
+    createTalent(talent: Talents): Observable<Talents> {
+        return this.talents$.pipe(
+            take(1),
+            switchMap((talents) =>
+                this._httpClient
+                    .post<Talents>('api/apps/talents/talents', { talent })
+                    .pipe(
+                        map((newTalent) => {
+                            // Update the visitors with the new visitor
+                            this._talents.next([newTalent, ...talents]);
+
+                            // Return the new visitor
+                            return newTalent;
+                        })
+                    )
+            )
+        );
+    }
+
     // get user
 
     getUsers(
@@ -428,119 +644,6 @@ export class AuthenticationService {
             )
         );
     }
-
-    getSelectOptions(
-        page: number = 0,
-        size: number = 10,
-        sort: string = 'NAME',
-        order: 'asc' | 'desc' | '' = 'asc',
-        search: string = ''
-    ): Observable<{
-        pagination: AuthenticationPagination;
-        selectoptions: SelectOptions[];
-    }> {
-        return this._httpClient
-            .get<{
-                pagination: AuthenticationPagination;
-                selectoptions: SelectOptions[];
-            }>('api/apps/selectoptions/selectoptions', {
-                params: {
-                    page: '' + page,
-                    size: '' + size,
-                    sort,
-                    order,
-                    search,
-                },
-            })
-            .pipe(
-                tap((response) => {
-                    this._pagination.next(response.pagination);
-                    this._selectoptions.next(response.selectoptions);
-                })
-            );
-    }
-
-    updateSelectOptions(
-        id: number,
-        user: SelectOptions
-    ): Observable<SelectOptions> {
-        return this.selectoptions$.pipe(
-            take(1),
-            switchMap((selectoptions) =>
-                this._httpClient
-                    .patch<SelectOptions>(
-                        'api/apps/selectoptions/selectoption',
-                        {
-                            id,
-                            user,
-                        }
-                    )
-                    .pipe(
-                        map((updatedOption) => {
-                            // Update the visitors
-                            this._selectoptions.next(selectoptions);
-
-                            // Return the updated visitor
-                            return updatedOption;
-                        })
-                    )
-            )
-        );
-    }
-
-    deleteOptions(id: any): Observable<boolean> {
-        return this.selectoptions$.pipe(
-            take(1),
-            switchMap((selectoptions) =>
-                this._httpClient
-                    .delete('api/apps/customers/customer', { params: { id } })
-                    .pipe(
-                        map((isDeleted: boolean) => {
-                            // Find the index of the deleted visitor
-                            const index = selectoptions.findIndex(
-                                (item) => item.ID === id
-                            );
-
-                            // Delete the visitor
-                            selectoptions.splice(index, 1);
-
-                            // Update the visitors
-                            this._selectoptions.next(selectoptions);
-
-                            // Return the deleted status
-                            return isDeleted;
-                        })
-                    )
-            )
-        );
-    }
-
-    createOptions(selectoptions: SelectOptions): Observable<SelectOptions> {
-        return this.selectoptions$.pipe(
-            take(1),
-            switchMap((selectoptions) =>
-                this._httpClient
-                    .post<SelectOptions>(
-                        'api/apps/selectoptions/selectoption',
-                        { selectoptions }
-                    )
-                    .pipe(
-                        map((newOptions) => {
-                            // Update the visitors with the new visitor
-                            this._selectoptions.next([
-                                newOptions,
-                                ...selectoptions,
-                            ]);
-
-                            // Return the new visitor
-                            return newOptions;
-                        })
-                    )
-            )
-        );
-    }
-
-    // Select options api's
 
     getCustomers(
         page: number = 0,
@@ -643,34 +746,9 @@ export class AuthenticationService {
         );
     }
 
-    //////services for talent/////////////
-    get talents$(): Observable<Talents[]> {
-        return this._talents.asObservable();
-    }
+    // get user
 
-    updateTalent(id: number, talent: Talents): Observable<Talents> {
-        return this.talents$.pipe(
-            take(1),
-            switchMap((talents) =>
-                this._httpClient
-                    .patch<Talents>('api/apps/talents/talents', {
-                        id,
-                        talent,
-                    })
-                    .pipe(
-                        map((updatedTalent) => {
-                            // Update the visitors
-                            this._talents.next(talents);
-
-                            // Return the updated visitor
-                            return updatedTalent;
-                        })
-                    )
-            )
-        );
-    }
-
-    getTalents(
+    getSelectoptions(
         page: number = 0,
         size: number = 10,
         sort: string = 'NAME',
@@ -678,44 +756,310 @@ export class AuthenticationService {
         search: string = ''
     ): Observable<{
         pagination: AuthenticationPagination;
-        talents: Talents[];
+        selectoptions: Selectoptions[];
     }> {
         return this._httpClient
-            .get<{ pagination: AuthenticationPagination; talents: Talents[] }>(
-                'api/apps/talents/talents',
-                {
-                    params: {
-                        page: '' + page,
-                        size: '' + size,
-                        sort,
-                        order,
-                        search,
-                    },
-                }
-            )
+            .get<{
+                pagination: AuthenticationPagination;
+                selectoptions: Selectoptions[];
+            }>('api/apps/selectoptions/selectoptions', {
+                params: {
+                    page: '' + page,
+                    size: '' + size,
+                    sort,
+                    order,
+                    search,
+                },
+            })
             .pipe(
                 tap((response) => {
-                    console.log(response);
-
                     this._pagination.next(response.pagination);
-                    this._talents.next(response.talents);
+                    this._selectoptions.next(response.selectoptions);
                 })
             );
     }
 
-    createTalent(talent: Talents): Observable<Talents> {
-        return this.talents$.pipe(
+    /**
+     * Create Users
+     */
+    createSelectoption(selectoption: Selectoptions): Observable<Selectoptions> {
+        return this.selectoptions$.pipe(
             take(1),
-            switchMap((talents) =>
+            switchMap((selectoptions) =>
                 this._httpClient
-                    .post<Talents>('api/apps/talents/talents', { talent })
+                    .post<Selectoptions>(
+                        'api/apps/selectoptions/selectoption',
+                        { selectoption }
+                    )
                     .pipe(
-                        map((newTalent) => {
+                        map((newUser) => {
                             // Update the visitors with the new visitor
-                            this._talents.next([newTalent, ...talents]);
+                            this._selectoptions.next([
+                                newUser,
+                                ...selectoptions,
+                            ]);
 
                             // Return the new visitor
-                            return newTalent;
+                            return newUser;
+                        })
+                    )
+            )
+        );
+    }
+
+    updateSelectoption(
+        id: number,
+        selectoption: Selectoptions
+    ): Observable<Selectoptions> {
+        return this.selectoptions$.pipe(
+            take(1),
+            switchMap((selectoptions) =>
+                this._httpClient
+                    .patch<Selectoptions>(
+                        'api/apps/selectoptions/selectoption',
+                        {
+                            id,
+                            selectoption,
+                        }
+                    )
+                    .pipe(
+                        map((updateSelectoption) => {
+                            // Update the visitors
+                            this._selectoptions.next(selectoptions);
+
+                            // Return the updated visitor
+                            return updateSelectoption;
+                        })
+                    )
+            )
+        );
+    }
+
+    deleteSelectoption(id: number): Observable<boolean> {
+        return this.selectoptions$.pipe(
+            take(1),
+            switchMap((selectoptions) =>
+                this._httpClient
+                    .delete('api/apps/selectoptions/selectoption', {
+                        params: { id },
+                    })
+                    .pipe(
+                        map((isDeleted: boolean) => {
+                            // Find the index of the deleted visitor
+                            const index = selectoptions.findIndex(
+                                (item) => item.ID === id
+                            );
+
+                            // Delete the visitor
+                            selectoptions.splice(index, 1);
+
+                            // Update the visitors
+                            this._selectoptions.next(selectoptions);
+
+                            // Return the deleted status
+                            return isDeleted;
+                        })
+                    )
+            )
+        );
+    }
+
+    createTagslist(taglist: TagsList): Observable<TagsList> {
+        return this.taglists$.pipe(
+            take(1),
+            switchMap((taglists) =>
+                this._httpClient
+                    .post<TagsList>('api/apps/taglists/taglist', { taglist })
+                    .pipe(
+                        map((newUser) => {
+                            // Update the visitors with the new visitor
+                            this._taglists.next([newUser, ...taglists]);
+
+                            // Return the new visitor
+                            return newUser;
+                        })
+                    )
+            )
+        );
+    }
+
+    deleteTaglist(id: number): Observable<boolean> {
+        return this.taglists$.pipe(
+            take(1),
+            switchMap((taglists) =>
+                this._httpClient
+                    .delete('api/apps/taglists/taglist', { params: { id } })
+                    .pipe(
+                        map((isDeleted: boolean) => {
+                            // Find the index of the deleted visitor
+                            const index = taglists.findIndex(
+                                (item) => item.ID === id
+                            );
+
+                            // Delete the visitor
+                            taglists.splice(index, 1);
+
+                            // Update the visitors
+                            this._taglists.next(taglists);
+
+                            // Return the deleted status
+                            return isDeleted;
+                        })
+                    )
+            )
+        );
+    }
+
+    gettagsList(
+        page: number = 0,
+        size: number = 10,
+        sort: string = 'NAME',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+    ): Observable<{
+        pagination: AuthenticationPagination;
+        taglists: TagsList[];
+    }> {
+        return this._httpClient
+            .get<{
+                pagination: AuthenticationPagination;
+                taglists: TagsList[];
+            }>('api/apps/taglists/taglists', {
+                params: {
+                    page: '' + page,
+                    size: '' + size,
+                    sort,
+                    order,
+                    search,
+                },
+            })
+            .pipe(
+                tap((response) => {
+                    this._pagination.next(response.pagination);
+                    this._taglists.next(response.taglists);
+                })
+            );
+    }
+
+    /**
+     * Get designations
+     *
+     *
+     * @param page
+     * @param size
+     * @param sort
+     * @param order
+     * @param search
+     */
+    getDesignations(
+        page: number = 0,
+        size: number = 10,
+        sort: string = 'NAME',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+    ): Observable<{
+        pagination: AuthenticationPagination;
+        designations: Designations[];
+    }> {
+        return this._httpClient
+            .get<{
+                pagination: AuthenticationPagination;
+                designations: Designations[];
+            }>('api/apps/designations/designations', {
+                params: {
+                    page: '' + page,
+                    size: '' + size,
+                    sort,
+                    order,
+                    search,
+                },
+            })
+            .pipe(
+                tap((response) => {
+                    this._pagination.next(response.pagination);
+                    this._designations.next(response.designations);
+                })
+            );
+    }
+
+
+
+    /**
+     * Create designation
+     */
+    createDesignation(designation: Designations): Observable<Designations> {
+        return this.designations$.pipe(
+            take(1),
+            switchMap((designations) =>
+                this._httpClient
+                    .post<Designations>('api/apps/designations/designation', { designation })
+                    .pipe(
+                        map((newDesignation) => {
+                            // Update the designations with the new designation
+                            this._designations.next([newDesignation, ...designations]);
+
+                            // Return the new designation
+                            return newDesignation;
+                        })
+                    )
+            )
+        );
+    }
+
+    /**
+     * Update designation
+     *
+     * @param id
+     * @param designation
+     */
+    updateDesignation(id: number, designation: Designations): Observable<Designations> {
+        return this.designations$.pipe(
+            take(1),
+            switchMap((designations) =>
+                this._httpClient
+                    .patch<Designations>('api/apps/designations/designation', {
+                        id,
+                        designation,
+                    })
+                    .pipe(
+                        map((updatedDesignation) => {
+                            // Update the designations
+                            this._designations.next(designations);
+
+                            // Return the updated designation
+                            return updatedDesignation;
+                        })
+                    )
+            )
+        );
+    }
+
+    /**
+     * Delete the designation
+     *
+     * @param id
+     */
+    deleteDesignation(id: number): Observable<boolean> {
+        return this.designations$.pipe(
+            take(1),
+            switchMap((designations) =>
+                this._httpClient
+                    .delete('api/apps/designations/designation', { params: { id } })
+                    .pipe(
+                        map((isDeleted: boolean) => {
+                            // Find the index of the deleted designation
+                            const index = designations.findIndex(
+                                (item) => item.ID === id
+                            );
+
+                            // Delete the designation
+                            designations.splice(index, 1);
+
+                            // Update the designations
+                            this._designations.next(designations);
+
+                            // Return the deleted status
+                            return isDeleted;
                         })
                     )
             )

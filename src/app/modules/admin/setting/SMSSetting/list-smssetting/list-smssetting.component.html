@@ -1,0 +1,1026 @@
+<div
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
+>
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-6 px-6 md:px-6 border-b"
+    >
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-2xl font-extrabold tracking-tight">
+            Manage SMS Setting
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-0 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field
+                class="fuse-mat-dense fuse-mat-rounded min-w-50"
+                [subscriptSizing]="'dynamic'"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"
+                ></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search sms'"
+                />
+            </mat-form-field>
+
+            <!-- filter button -->
+            <!-- <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'"
+                style="width: 42px !important; min-width: 42px !important"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_outline:filter'"
+                ></mat-icon>
+            </button> -->
+            <!-- Add visitor button  (click)="smsDrawer.toggle()"-->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="add()"
+                (click)="smsDrawer.toggle()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add SMS</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Visitors list -->
+
+        <div
+            class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
+        >
+            <ng-container *ngIf="sms$ | async as sms">
+                <ng-container *ngIf="sms.length > 0; else nosms">
+                    <div class="overflow-x-auto mx-6">
+                        <table
+                            class="w-full bg-transparent"
+                            mat-table
+                            matSort
+                            [dataSource]="recentTransactionsDataSource"
+                            [trackBy]="trackByFn"
+                            #sms
+                        >
+                            <!-- Checkbox Column -->
+                            <ng-container matColumnDef="checkbox">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    style="
+                                        min-width: 70px !important;
+                                        padding-right: 0px;
+                                        padding-left: 5px;
+                                    "
+                                >
+                                    <button
+                                        mat-icon-button
+                                        style="width: 20px !important"
+                                        [matMenuTriggerFor]="menu"
+                                        aria-label="Menu"
+                                    >
+                                        <mat-icon>sort</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <span class="example-list-section">
+                                            <ul>
+                                                <li
+                                                    *ngFor="
+                                                        let col of smsTableColumns2;
+                                                        let i = index
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        [(ngModel)]="
+                                                            smsTableColumns2[i][
+                                                                'SHOW'
+                                                            ]
+                                                        "
+                                                        name="column{{ i }}"
+                                                        (ngModelChange)="
+                                                            updateAllComplete(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ col.NAME }}
+                                                    </mat-checkbox>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </mat-menu>
+
+                                    <mat-checkbox
+                                        name="selectall"
+                                        class="selectall"
+                                        (change)="
+                                            $event ? toggleAllRows() : null
+                                        "
+                                        [checked]="
+                                            selection.hasValue() &&
+                                            isAllSelected()
+                                        "
+                                        [indeterminate]="
+                                            selection.hasValue() &&
+                                            !isAllSelected()
+                                        "
+                                        [aria-label]="checkboxLabel()"
+                                    >
+                                    </mat-checkbox>
+                                </th>
+                                <td
+                                    mat-cell
+                                    style="text-align: center !important"
+                                    *matCellDef="let row"
+                                >
+                                    <mat-checkbox
+                                        name="selectall{{ row.ID }}"
+                                        (click)="$event.stopPropagation()"
+                                        (click)="showMultiBox()"
+                                        (change)="
+                                            $event
+                                                ? selection.toggle(row)
+                                                : null
+                                        "
+                                        [checked]="selection.isSelected(row)"
+                                        [aria-label]="checkboxLabel(row)"
+                                    >
+                                    </mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <!-- Action -->
+                            <ng-container matColumnDef="ACTION">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let property">
+                                    <span
+                                        style="display: inline-flex"
+                                        class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                    >
+                                        <span
+                                            (click)="edit(property)"
+                                            (click)="smsDrawer.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Edit Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_solid:pencil-alt'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+                                        <span
+                                            (click)="details(property)"
+                                            (click)="visitorDrawer2.toggle()"
+                                            ><mat-icon
+                                                class="icon-size-5"
+                                                [matTooltip]="
+                                                    'View Information'
+                                                "
+                                                aria-hidden="false"
+                                                aria-label="Details"
+                                                fontIcon="menu"
+                                            ></mat-icon
+                                        ></span>
+                                        <span
+                                            (click)="detailsDelete(property)"
+                                            (click)="visitorDrawer2.toggle()"
+                                        >
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Delete Information'
+                                                "
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_outline:trash'
+                                                "
+                                            ></mat-icon>
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+                            <!-- SERVICENAME -->
+
+                            <ng-container matColumnDef="NAME">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by NAME"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Name </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu1
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu1="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+
+                                                        mat-menu-item
+                                                        (click)="
+                                                            onMenuItemClick(
+                                                                $event
+                                                            )
+                                                        "
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <!-- <div
+                                                    style="
+                                                        overflow: scroll;
+                                                        height: 101px;
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10"
+                                                        *ngFor="
+                                                            let data of dataList
+                                                        "
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true"
+                                                    >
+                                                        <span>{{
+                                                            data.NAME
+                                                        }}</span>
+                                                    </mat-checkbox>
+                                                </div> -->
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.NAME }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- Base URL -->
+                            <ng-container matColumnDef="BaseUrl">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by BaseUrl"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Base URL </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu12
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu12="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+
+                                                        mat-menu-item
+                                                        (click)="
+                                                            onMenuItemClick(
+                                                                $event
+                                                            )
+                                                        "
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <!-- <div
+                                                    style="
+                                                        overflow: scroll;
+                                                        height: 101px;
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10"
+                                                        *ngFor="
+                                                            let data of dataList
+                                                        "
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true"
+                                                    >
+                                                        <span>{{
+                                                            data.BaseUrl
+                                                        }}</span>
+                                                       
+                                                    </mat-checkbox>
+                                                </div> -->
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.BaseUrl }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!--  -->
+                            <ng-container matColumnDef="AuthenticationHeader">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by AuthenticationHeader"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Authentication Header </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu13
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu13="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+                                                        mat-menu-item
+                                                        (click)="
+                                                            onMenuItemClick(
+                                                                $event
+                                                            )
+                                                        "
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <!-- <div
+                                                    style="
+                                                        overflow: scroll;
+                                                        height: 101px;
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10"
+                                                        *ngFor="
+                                                            let data of dataList
+                                                        "
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true"
+                                                    >
+                                                        <span>{{
+                                                            data.AuthenticationHeader
+                                                        }}</span>
+                                                       
+                                                    </mat-checkbox>
+                                                </div> -->
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.AuthenticationHeader }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!--  -->
+                            <ng-container matColumnDef="Method">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by Method"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Method </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu14
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu14="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1600px;
+                                                   
+                                                "
+                                            >
+                                                <div
+                                                    class="mt-4"
+                                                    mat-menu-item
+                                                    (click)="
+                                                        onMenuItemClick($event)
+                                                    "     
+                                                    >   
+                                                                                          
+                                                    <mat-form-field
+                                                    class="flex-auto w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                    <mat-select
+                                                    #methodInput="ngModel"
+                                                    name="abc"
+                                                    [(ngModel)]="DATA.Method"
+                                                    [placeholder]="
+                                                                'Method'
+                                                            "
+                                                    required
+                                                >
+                                                    <ng-container
+                                                        *ngFor="let abc of dataList"
+                                                    >
+                                                        <mat-option
+                                                            [value]="abc.Method"
+                                                        >
+                                                            {{ abc.Method }}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <!-- <div
+                                                    style="
+                                                        overflow: scroll;
+                                                        height: 101px;
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10"
+                                                        *ngFor="
+                                                            let data of dataList
+                                                        "
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true"
+                                                    >
+                                                        <span>{{
+                                                            data.Method
+                                                        }}</span>
+                                                       
+                                                    </mat-checkbox>
+                                                </div> -->
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.Method }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!--  -->
+                            <ng-container matColumnDef="Body">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <div style="display: flex">
+                                        <span
+                                            mat-sort-header
+                                            sortActionDescription="Sort by Body"
+                                            style="margin: 7px 6px 0 0px"
+                                            class="maticonic1"
+                                        ></span>
+
+                                        <span> Body </span>
+                                        <span>
+                                            <mat-icon
+                                                style="
+                                                    font-size: 20px;
+                                                    color: #8d8d8d;
+                                                    cursor: pointer;
+                                                "
+                                                [matMenuTriggerFor]="
+                                                    beforeMenu15
+                                                "
+                                                >filter_alt</mat-icon
+                                            >
+
+                                            <mat-menu
+                                                #beforeMenu15="matMenu"
+                                                xPosition="before"
+                                                style="
+                                                    width: 1500px;
+                                                    height: 100px;
+                                                "
+                                            >
+                                                <div
+                                                    class="mt-4"
+                                                    style="width: 200px"
+                                                >
+                                                    <mat-form-field
+                                                        style="
+                                                            padding-left: 10px;
+                                                            padding-right: 10px;
+                                                        "
+                                                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                                                        [subscriptSizing]="
+                                                            'dynamic'
+                                                        "
+                                                    >
+                                                        <mat-icon
+                                                            matPrefix
+                                                            class="icon-size-5"
+                                                            [svgIcon]="
+                                                                'heroicons_solid:search'
+                                                            "
+                                                        ></mat-icon>
+
+                                                        <input
+                                                        mat-menu-item
+                                                        (click)="
+                                                            onMenuItemClick(
+                                                                $event
+                                                            )
+                                                        "
+                                                            matInput
+                                                            [autocomplete]="
+                                                                'onn'
+                                                            "
+                                                            [placeholder]="
+                                                                'Search.....'
+                                                            "
+                                                            #searchField
+                                                        />
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <!-- <div
+                                                    style="
+                                                        overflow: scroll;
+                                                        height: 101px;
+                                                    "
+                                                >
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10"
+                                                        *ngFor="
+                                                            let data of dataList
+                                                        "
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true"
+                                                    >
+                                                        <span>{{
+                                                            data.Body
+                                                        }}</span>
+                                                    </mat-checkbox>
+                                                </div> -->
+                                            </mat-menu>
+                                        </span>
+                                    </div>
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let property"
+                                    style="text-align: center"
+                                >
+                                    <span class="pr-6 whitespace-nowrap">
+                                        {{ property.Body }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="smsTableColumns"
+                            ></tr>
+                            <tr
+                                class="order-row h-16"
+                                mat-row
+                                *matRowDef="let row; columns: smsTableColumns"
+                            ></tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator
+                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        [length]="pagination.length"
+                        [pageIndex]="pagination.page"
+                        [pageSize]="pagination.size"
+                        [pageSizeOptions]="[10, 20, 30, 40, 50]"
+                        [showFirstLastButtons]="true"
+                    ></mat-paginator>
+                </ng-container>
+            </ng-container>
+
+            <ng-template #nosms>
+                <div
+                    class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+                >
+                    There are no sms data!
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <div
+        style="
+            justify-content: center;
+            position: relative;
+            align-items: center;
+            display: flex;
+        "
+    >
+        <mat-card
+            *ngIf="showMultiSelect == true"
+            style="
+                padding: 2px;
+                margin: 10px;
+                position: absolute;
+                z-index: 777;
+                width: 370px;
+                bottom: 37px;
+            "
+        >
+            <mat-grid-list [cols]="12" rowHeight="50px">
+                <mat-grid-tile [colspan]="2">
+                    <div
+                        style="
+                            border-radius: 8px;
+                            background-color: grey;
+                            color: white;
+                            text-align: center;
+                            padding: 20px;
+                        "
+                    >
+                        {{ rowsSelected }}
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="6" class="detailed_card_content">
+                    <b *ngIf="rowsSelected == 1">row selected</b>
+                    <b *ngIf="rowsSelected > 1">rows selected</b>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2">
+                    <span>
+                        <mat-icon
+                            (click)="editSelection()"
+                            [matTooltip]="'Edit Selected Rows'"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"
+                        ></mat-icon>
+                    </span>
+
+                    <span>
+                        <mat-icon
+                            (click)="deleteSelection()"
+                            [matTooltip]="'Delete Selected Rows'"
+                            [svgIcon]="'heroicons_outline:trash'"
+                        ></mat-icon>
+                    </span>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="2"
+                    style="border-left: 1px solid grey"
+                >
+                    <div>
+                        <mat-icon
+                            (click)="removeSelection()"
+                            [matTooltip]="'Remove Selection'"
+                            [svgIcon]="'heroicons_solid:x-circle'"
+                        ></mat-icon>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card>
+    </div>
+</div>
+
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'smsDrawer'"
+    [position]="'right'"
+    #smsDrawer
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                <span *ngIf="Propert.ID != undefined && Propert.ID > 0"
+                    >Edit SMS Setting</span
+                >
+                <span
+                    *ngIf="
+                        Propert.ID == undefined ||
+                        Propert.ID == null ||
+                        Propert.ID == 0
+                    "
+                    >Add SMS Setting</span
+                >
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer
+                id="closeDrawer"
+                (click)="smsDrawer.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+
+        <app-add-smssetting
+            [DATA]="Propert"
+            [drawerClose]="smsDrawerCloseCallback"
+        ></app-add-smssetting>
+    </div>
+</fuse-drawer>
+
+<fuse-drawer
+    class="w-screen max-w-screen sm:w-320 sm:max-w-320 z-999"
+    fixed
+    [mode]="'over'"
+    [name]="'visitorDrawer2'"
+    [position]="'right'"
+    #visitorDrawer2
+>
+    <div class="flex flex-col w-full overflow-auto bg-card">
+        <div
+            class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary"
+        >
+            <!-- <mat-icon
+                class="icon-size-7 text-current"
+                [svgIcon]="'heroicons_solid:cog'"
+            ></mat-icon> -->
+
+            <div
+                *ngIf="
+                    selectedVisitor.ID != undefined &&
+                        selectedVisitor.ID > 0 &&
+                        deleteShow == true;
+                    else abc
+                "
+                class="ml-3 text-2xl font-semibold tracking-tight"
+            >
+                Do You Really Want To Delete ?
+            </div>
+            <ng-template
+                #abc
+               
+            >
+               <span  class="ml-3 text-2xl font-semibold tracking-tight">
+                View Details
+               </span> 
+            </ng-template>
+
+            <!-- <div
+               
+            class="ml-3 text-2xl font-semibold tracking-tight"
+            
+        >
+            View Details
+        </div> -->
+            <button
+                class="ml-auto"
+                mat-icon-button
+                #closeDrawer2
+                id="closeDrawer2"
+                (click)="visitorDrawer2.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </button>
+        </div>
+
+        <!-- Actions -->
+
+        <app-smsdetails
+            [DATA]="selectedVisitor"
+            [drawerClose]="detailsDrawerCloseCallback"
+        ></app-smsdetails>
+        <div
+            *ngIf="
+                selectedVisitor.ID != undefined &&
+                selectedVisitor.ID > 0 &&
+                deleteShow == true
+            "
+            style="width: 100%; position: absolute; bottom: 0px; right: 6%"
+            class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+        >
+            <div style="text-align: center; width: 100%">
+             
+                <span style="font-size: 11px; display: block; color: #f60f0f"
+                >To delete the above information, Please solve below
+                question.</span
+            >
+                <span style="margin-right: 10px"
+                    >{{ value }} + {{ value2 }} =
+                </span>
+
+                <mat-form-field
+                    style="width: 110px"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <input
+                        matInput
+                        type="number"
+                        min="0"
+                        name="Answer"
+                        style="width: 110px !important"
+                        [(ngModel)]="answer"
+                        [placeholder]="'Answer'"
+                    />
+                </mat-form-field>
+                <!-- Delete -->
+                <button
+                    class="ml-2"
+                    mat-flat-button
+                    [color]="'warn'"
+                    [matTooltip]="'Delete'"
+                    (click)="deleteInfo()"
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</fuse-drawer>

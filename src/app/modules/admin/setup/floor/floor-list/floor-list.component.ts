@@ -233,6 +233,24 @@ export class FloorListComponent implements OnInit, AfterViewInit, OnDestroy {
                     })
                 )
                 .subscribe();
+        } else {
+            // Get floors if sort or page changes
+            merge( this._paginator.page)
+                .pipe(
+                    switchMap(() => {
+                        this.isLoading = true;
+                        return this._apiService.getFloors(
+                            this._paginator.pageIndex,
+                            this._paginator.pageSize,
+                            'NAME',
+                            'asc'
+                        );
+                    }),
+                    map(() => {
+                        this.isLoading = false;
+                    })
+                )
+                .subscribe();
         }
     }
 

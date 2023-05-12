@@ -1,0 +1,45 @@
+<form #myForm="ngForm">
+    
+    <!-- <div class="header text-white bg-primary" >
+       <div style="display: flex;" routerLink="/example">
+        <span style="margin-right: 15px;margin-top: 3px;cursor: pointer;" (click)="close()"><mat-icon style="color: white;">arrow_back</mat-icon></span>
+        <h3 class="text-2xl font-semibold tracking-tight" >Manage Roles</h3> 
+       </div>
+        <div class="search-box">
+          <span class="filter-icon" style="margin-right: 1rem;border: none;cursor: pointer;" (click)="close()"><mat-icon style="color: white;">highlight_off</mat-icon></span>
+        </div>
+    </div> -->
+    
+    <div>
+
+
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+            <button mat-icon-button disabled></button>
+            <mat-checkbox class="checklist-leaf-node"
+                          [checked]="checklistSelection.isSelected(node)"
+                          (change)="todoLeafItemSelectionToggle(node); changeNode($event.checked ,node.item)">{{node.item}}</mat-checkbox>
+          </mat-tree-node>
+        
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle
+                    [attr.aria-label]="'Toggle ' + node.item">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <mat-checkbox [checked]="descendantsAllSelected(node)"
+                          [indeterminate]="descendantsPartiallySelected(node)"
+                          (change)="todoItemSelectionToggle(node); changeNode($event.checked,node.item)">{{node.item}}</mat-checkbox>
+            <!-- <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button> -->
+          </mat-tree-node>
+        </mat-tree>
+        
+
+
+    </div> 
+
+  
+</form> 
+
+

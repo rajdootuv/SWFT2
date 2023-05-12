@@ -36,44 +36,6 @@ export interface AuthenticationVendor {
     slug: string;
 }
 
-export class Users {
-    ID: number;
-    NAME: string;
-    EMAIL_ID: string;
-    MOBILE_NO: number;
-    DOB: Date;
-    USER_TYPE: string;
-    CODE: string = '+91';
-    PICTURE: string;
-    USERNAME: string;
-    USER_BELONGS_TO: string;
-    PASSWORD: string;
-    CONF_PASSWORD: string;
-}
-
-export class Customers {
-    ID: number;
-    NAME: string;
-    EMAIL_ID: string;
-    MOBILE_NO: number;
-    DOB: Date;
-    COMPANEY_NAME: string;
-    CODE: string = '+91';
-    PASSWORD: string;
-    CONF_PASSWORD: string;
-    WEBSITE_URL: string;
-    IS_WHATSAPP_NO: boolean;
-    LOGO: string;
-    SOCIAL_MEDIA_URLS: string;
-    TAX_NUMBER: string;
-    ADDRESS_LINE1: string;
-    ADDRESS_LINE2: string;
-    CITY: string;
-    COUNTRY: string;
-    STATE: string;
-    PINCODE: number;
-    LOCATION: string;
-}
 
 export interface SelectOptions {
     ID: string;
@@ -128,4 +90,68 @@ export class Talents {
     ACTIVE: boolean;
 
     TAXNO: number;
+}
+
+
+export class Selectoptions {
+    ID: number;
+    FIELD_ID: string;
+    VALUE: string
+    HTML: boolean;
+}
+
+
+
+export class TagsList {
+    ID: number;
+    TAG_NAME: string
+}
+
+export class Users {
+    ID: number;
+    NAME: string;
+    EMAIL_ID: string;
+    MOBILE_NO: number;
+    DOB: Date;
+    USER_TYPE: string;
+    CODE:string='+91';
+    PICTURE:string;
+    USERNAME:string;
+    USER_BELONGS_TO : string;
+    PASSWORD:string;
+    CONF_PASSWORD : string;
+}
+
+
+export class Customers {
+    ID: number;
+    NAME: string;
+    EMAIL_ID: string;
+    MOBILE_NO: number;
+    DOB: Date;
+    COMPANEY_NAME : string;
+    CODE:string='+91';
+    PASSWORD:string;
+    CONF_PASSWORD : string;
+    WEBSITE_URL : string;
+    IS_WHATSAPP_NO :boolean;
+    LOGO : string;
+    SOCIAL_MEDIA_URLS : string;
+    TAX_NUMBER : string;
+    ADDRESS_LINE1 : string;
+    ADDRESS_LINE2 : string;
+    CITY : string;
+    COUNTRY : string;
+    STATE : string;
+    PINCODE : number;
+    LOCATION : string;
+
+
+}
+
+
+export class Designations{
+    ID:any;
+    NAME:string='';
+    IS_ACTIVE:Boolean = true;
 }

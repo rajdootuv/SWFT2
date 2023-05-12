@@ -1,0 +1,68 @@
+<div class="inline-block p-6 sm:p-0 text-left print:p-0">
+    <div
+        class="w-499 p-16 rounded-2xl shadow bg-card print:w-auto print:rounded-none print:shadow-none print:bg-transparent"
+    >
+        <div class="flex items-start mb-4">
+            <div>
+                <div
+                    style="width: 190px; height: 186px"
+                    class="flex flex-col items-center justify-center m-4 p-4 min-w-45 max-w-45 min-h-45 max-h-45 rounded-2xl border-2 cursor-pointer bg-card"
+                >
+                    <div class="flex items-center justify-center mb-3">
+                        <!-- <mat-icon   class="h-30 w-30" svgIcon="feather:user"></mat-icon> -->
+                        <img
+                            style="border-radius: 163px"
+                            class="h-30 w-30"
+                            src="../../../../../assets/images/avatars/male-02.jpg"
+                            alt=""
+                        />
+                        <!-- <img *ngIf="oldlogindatadata[0].PERSONAL_IMAGES" class="h-30 w-30" [src]=" oldlogindatadata[0].PERSONAL_IMAGES" alt=""> -->
+                    </div>
+                    <div class="child" style="font-weight: 800">xyz xyz</div>
+                    <div class="child" style="font-size: 11px">
+                        UI/UX Designer
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; width: 70%">
+                <div class="table" style="width: 555px">
+                    <div class="row">
+                        <div class="cell">Total Present Days</div>
+                        <div class="cell"><div class="cells">15</div></div>
+                        <div class="cell">Total Half Days</div>
+                        <div class="cell"><div class="cells">2</div></div>
+                        <div class="cell">Total Leaves</div>
+                        <div class="cell"><div class="cells">2</div></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">Total Working Hours</div>
+
+                        <div class="cell"><div class="cells">200</div></div>
+                    </div>
+                </div>
+
+                <div style="margin-left: 13px; margin-top: 12px; width: 709px">
+                    <mat-progress-bar
+                        mode="determinate"
+                        [value]="progressValue"
+                        [ngStyle]="{ 'background-color': progressBarColor() }"
+                    ></mat-progress-bar>
+
+                    <div class="progress-labels">
+                        <div
+                            class="label"
+                            *ngFor="let label of progressLabels()"
+                        >
+                            {{ label }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-indigo-500">
+            <mat-calendar [dateClass]="dateClass" ></mat-calendar>
+        </div>
+    </div>
+</div>
